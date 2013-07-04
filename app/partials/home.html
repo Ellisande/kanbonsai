@@ -1,0 +1,14 @@
+<div class="row-fluid">
+	<div class="span12">
+		<input type="text" ng-model="query" class="search"/>
+		<select ng-model="orderProp">
+	        <option value="-available">Available</option>
+	        <option value="name">Alphabetical</option>
+        </select>
+		<ul>
+			<li ng-repeat="meeting in meetings | filter:query | orderBy:orderProp">
+				<a href="#/{{meeting.name}}">{{meeting.name}}</a>
+			</li>
+		</ul>
+	</div>
+</div>

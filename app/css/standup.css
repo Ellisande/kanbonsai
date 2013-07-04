@@ -1,0 +1,22 @@
+div.countdown-menu p{
+  padding-right: 5px;
+}
+
+div.author {
+  color: dimgrey;
+}
+
+div.rundown label{
+  color: dimgrey;
+  font-weight: bold;
+}
+
+div.comment {
+  border-bottom: 1px solid #AAA;
+  margin-bottom: 5px;
+}
+
+img.brand-image{
+  height: 40px;
+  width: 150px;
+}
