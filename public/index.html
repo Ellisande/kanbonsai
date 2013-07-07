@@ -22,21 +22,10 @@
         <a class="brand" href="#"><img src="images/logo.png" class="brand-image" /></a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><a href="#/new">New Meeting</a></li>
-            <li><a class="inline" href="index">Current Meeting: meetingName</a></li>
+            <!-- Removed temporarily while focusing on single meeting principle -->
+            <!-- <li><a href="#/new">New Meeting</a></li> -->
+            <li><a class="inline" href="#/meeting/vri">Current Meeting: VRI</a></li>
           </ul>
-          <div class="countdown-menu">
-            <!-- convert to ng-repeat -->
-            <p class="navbar-text pull-right">
-              Comment Countdown: 3:15
-            </p>
-            <p class="navbar-text pull-right">
-              Voting Countdown: 3:15
-            </p>
-            <p class="navbar-text pull-right">
-              Meeting Start: 3:15
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -56,7 +45,7 @@
             <li class="nav-header">Inactive Meetings</li>
             <!--change to ng-repeats-->
             <li ng-repeat="meeting in meetings | filter:available=false">
-              <span class="unavailable">{{meeting.name}}</span> <span class="time">{{meeting.startTime | checkmark}}</span>
+              <span class="unavailable">{{meeting.name}}</span> <span class="time">{{meeting.startTime | timeTillStart}}</span>
             </li>
           </ul>
         </div>

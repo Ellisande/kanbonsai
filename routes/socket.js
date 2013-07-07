@@ -1,25 +1,33 @@
 var allNames = [
-  'Mayor McCheese','Hamburgler','Strawberry Shortcake','Xena, Warrior Princess','Kruul the Warrior King'
+  'Mayor McCheese','Hamburgler','Strawberry Shortcake','Xena, Warrior Princess','Kruul the Warrior King','Hippie','Mr. Drippy',
+  'Master Shake','Grimmace','Sailor Moon','Blue','A Fish Called Wonda','Resivior Dog','Marsellus Wallus'
 ];
 
 var randomName = function(allNames){
-  return allNames[Math.floor((Math.random()*allName.length))];
+  return allNames[Math.floor((Math.random()*allNames.length))];
 };
 
+function isNameFree(name, participants){
+  return participants.indexOf(name) == -1;
+}
+
+function getNewName(allNames, participants){
+  var name;
+  do{
+    name = randomName(allNames);
+  } while (!isNameFree(name, participants))
+
+  return name;
+}
+
 function ServerMeeting(name){
+  var moment = require('moment');
   this.name = name;
   this.userIds = 1;
   this.commentIds = 1;
   this.participants = [];
   this.comments = [];
-  this.startTime = new Date();
-
-  // find the lowest unused "guest" name and claim it
-  this.addParticipant = function () {
-    var newGuy = 'Person'+this.userIds++;
-    this.participants.push(newGuy);
-    return newGuy;
-  };
+  this.startTime = moment(new Date()).add('minutes',15);
 
   // serialize claimed names as an array
   this.getAllNames = function () {
@@ -60,8 +68,8 @@ meetings.push(new ServerMeeting('vri'));
 // export function for listening to the socket
 module.exports = function (socket) {
   var meeting = meetings[0];
-  meeting.getAllComments();
-  var name = meeting.addParticipant();
+  var name = getNewName(allNames, meeting.participants);
+  meeting.participants.push(name);
 
   // send the new user their name and a list of users
   socket.emit('init', {
