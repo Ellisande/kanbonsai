@@ -10,7 +10,8 @@ var express = require('express'),
 var app = module.exports = express.createServer();
 
 // Hook Socket.io into Express
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(app, {log: false});
+//var io = require('socket.io').listen(app);
 
 // Configuration
 
@@ -204,6 +205,7 @@ var socket = function (socket) {
 
 io.on('connection', socket);
 
+app.settings.env = 'production';
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });

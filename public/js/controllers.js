@@ -84,11 +84,19 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 				comments.splice(i,1);
 				continue;
 			}
-
-			var containingIndex = comments[i].voters.indexOf(userToRemove);
-			if(containingIndex !== -1){
-				comments[i].voters.splice(containingIndex,1);
-			} 
+            
+            var totalVoters = comments[i].voters.length;
+            for(var j = 0; j < totalVoters; j++){
+                if(comments[i].voters[j] === userToRemove){
+                    comments[i].voters.splice(j,1);
+                    j--;
+                    totalVoters--;
+                }
+            }
+//			var containingIndex = comments[i].voters.indexOf(userToRemove);
+//			if(containingIndex !== -1){
+//				comments[i].voters.splice(containingIndex,1);
+//			} 
 		}
 	});
 
