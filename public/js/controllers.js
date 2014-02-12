@@ -52,6 +52,7 @@ function CreateCtrl($scope){
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	socket.connect($routeParams.meetingName);
+    socket.emit('subscribe', {name: $routeParams.meetingName});
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
 	socket.on('init', function (data) 
@@ -94,9 +95,9 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	socket.on('comment:vote', function(data){
 		var allComments = $scope.meeting.comments;
 		for(var i = 0; i < allComments.length; i++){
-			if(allComments[i].author === data.comment.author){
-				allComments[i].voters.push(data.voter);
-			}
+			if(allComments[i].author === data.comment.author && allComments[i].status === data.comment.status){
+                allComments[i] = data.comment;        
+            }
 		}
 	});
 
@@ -104,8 +105,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 		var commentToPost = $scope.userComment;
 		commentToPost.author = $scope.user;
 		commentToPost.voters = [];
-		console.log("This is the author " + $scope.user);
-		$scope.meeting.comments.push(commentToPost);
 		socket.emit('comment:post',{
 			comment: commentToPost
 		});
@@ -114,7 +113,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 
 	$scope.vote = function(comment){
 		var voter = $scope.user;
-		comment.voters.push(voter);
 		socket.emit('comment:vote', {
 			comment: comment,
 			voter: voter
@@ -123,6 +121,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 
 	$scope.snapshot = function(){
 		snapshot.grab($scope.meeting);
+        socket.emit('unsubscribe',{});
 		$location.url('snapshot');
 	};
 
@@ -133,5 +132,3 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 		this.votes = function(){return this.voters.length};
 	}
 } 
-
-//PhoneDetailCtrl.$inject = ['$scope', '$routeParams'];

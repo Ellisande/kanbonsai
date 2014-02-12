@@ -28,7 +28,7 @@ app
       })
     },
     connect: function(meetingName){
-      socket = io.connect('http://www.ellisande.com:3000/meeting/'+meetingName);
+      socket = io.connect('http://www.ellisande.com:3000/');
     }
   };
 }).

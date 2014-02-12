@@ -83,11 +83,16 @@ module.exports = function (socket) {
     user: name
   });
 
+  socket.on('joinRoom', function(data){
+      console.log("Got called bitches");
+      socket.join(data.meetingName);
+  });
+    
   socket.on('comment:post', function(data){
     var newComment = data.comment;
     newComment.voters = [];
     meeting.comments.push(newComment);
-    socket.broadcast.emit('comment:post', {
+    socket.broadcast.to('unit').emit('comment:post', {
         comment: newComment
     });
   });
@@ -131,25 +136,5 @@ module.exports = function (socket) {
   // });
 
   // clean up when a user leaves, and broadcast it to other users
-  socket.on('disconnect', function () {
-    var allUsers = meeting.participants;
-    allUsers.splice(allUsers.indexOf(name), 1);
 
-    var comments = meeting.comments;
-    for(var i = 0; i < comments.length; i++){
-      if(comments[i].author === name){
-        comments.splice(i,1);
-        continue;
-      }
-
-      var containingIndex = comments[i].voters.indexOf(name);
-      if(containingIndex !== -1){
-        comments[i].voters.splice(containingIndex,1);
-      }
-    }
-
-    socket.broadcast.emit('user:left', {
-      user: name
-    });
-  });
 };
