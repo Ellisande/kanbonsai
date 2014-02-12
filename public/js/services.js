@@ -6,7 +6,7 @@
 // Demonstrate how to register services
 // In this case it is a simple value service.
 app.factory('socket', function ($rootScope) {
-  var socket = io.connect();
+  var socket;
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  
@@ -25,6 +25,9 @@ app.factory('socket', function ($rootScope) {
           }
         });
       })
+    },
+    connect: function(meetingName){
+      socket = io.connect('http://www.ellisande.com:3000/meeting/'+meetingName);
     }
   };
 });

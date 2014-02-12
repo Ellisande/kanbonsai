@@ -49,7 +49,7 @@ app.configure('production', function(){
 
 // Socket.io Communication
 
-io.sockets.on('connection', socket);
+io.of('/meeting/unit').on('connection', socket);
 
 // Start server
 

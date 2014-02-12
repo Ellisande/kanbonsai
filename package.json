@@ -3,9 +3,8 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.5.10"
-    , "socket.io": ">= 0.9.6"
-    , "jade": ">= 0.26.1"
+      "express": "2.5.x"
+    , "socket.io": ">= 0.9.x"
     , "moment": "2.x"
   }
 }

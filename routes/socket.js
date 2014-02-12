@@ -1,6 +1,8 @@
 var allNames = [
   'Mayor McCheese','Hamburgler','Strawberry Shortcake','Xena, Warrior Princess','Kruul the Warrior King','Hippie','Mr. Drippy',
-  'Master Shake','Grimmace','Sailor Moon','Blue','A Fish Called Wonda','Resivior Dog','Marsellus Wallus'
+  'Master Shake','Grimmace','Sailor Moon','Blue','A Fish Called Wonda','Resivior Dog','Marsellus Wallus',"Tony Stark","Justin Beiber",
+  'Bubble Puppy','Dora the Explorer','Spongebob Squarepants','Moonpie','Smores','Onyx','Uncle Bob','Godzilla',
+  'McLovin'
 ];
 
 var randomName = function(allNames){
@@ -82,9 +84,6 @@ module.exports = function (socket) {
   });
 
   socket.on('comment:post', function(data){
-    if(indexOfCommentByAuthor(meeting.comments,data.comment.author) != -1){
-      return;
-    }
     var newComment = data.comment;
     newComment.voters = [];
     meeting.comments.push(newComment);
@@ -99,7 +98,7 @@ module.exports = function (socket) {
     var comments = meeting.comments;
 
     for(var i = 0; i < comments.length; i++){
-      if(comments[i].author === poster && comments[i].voters.indexOf(voter) === -1){
+      if(comments[i].author === poster){
         comments[i].voters.push(voter);
         socket.broadcast.emit('comment:vote', {
           comment: comments[i],
@@ -112,24 +111,24 @@ module.exports = function (socket) {
 
   });
 
-  // validate a user's name change, and broadcast it on success
-  socket.on('change:name', function (data, fn) {
-    if (userNames.claim(data.name)) {
-      var oldName = name;
-      userNames.free(oldName);
+  // // validate a user's name change, and broadcast it on success
+  // socket.on('change:name', function (data, fn) {
+  //   if (userNames.claim(data.name)) {
+  //     var oldName = name;
+  //     userNames.free(oldName);
 
-      name = data.name;
+  //     name = data.name;
       
-      socket.broadcast.emit('change:name', {
-        oldName: oldName,
-        newName: name
-      });
+  //     socket.broadcast.emit('change:name', {
+  //       oldName: oldName,
+  //       newName: name
+  //     });
 
-      fn(true);
-    } else {
-      fn(false);
-    }
-  });
+  //     fn(true);
+  //   } else {
+  //     fn(false);
+  //   }
+  // });
 
   // clean up when a user leaves, and broadcast it to other users
   socket.on('disconnect', function () {
@@ -138,7 +137,7 @@ module.exports = function (socket) {
 
     var comments = meeting.comments;
     for(var i = 0; i < comments.length; i++){
-      if(comments[i].author == name){
+      if(comments[i].author === name){
         comments.splice(i,1);
         continue;
       }

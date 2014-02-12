@@ -10,5 +10,5 @@ var app = angular.module('standup', ['standupFilters']).
       when('/meeting/:meetingName', {templateUrl: 'partials/meeting.html', controller: MeetingCtrl}).
       //Removed temporarily while focusing on single meeting principle.
       //when('/new', {templateUrl: "partials/create.html", controller: CreateCtrl}).
-      otherwise({redirectTo: '/meeting/vri'});
+      otherwise({redirectTo: '/meeting/unit'});
 }]);

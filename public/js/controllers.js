@@ -42,6 +42,7 @@ function CreateCtrl($scope){
 }
 
 function MeetingCtrl($scope, $routeParams, socket) {
+	socket.connect($routeParams.meetingName);
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
 	socket.on('init', function (data) 
@@ -77,7 +78,7 @@ function MeetingCtrl($scope, $routeParams, socket) {
 			var containingIndex = comments[i].voters.indexOf(userToRemove);
 			if(containingIndex !== -1){
 				comments[i].voters.splice(containingIndex,1);
-			}
+			} 
 		}
 	});
 
@@ -91,10 +92,6 @@ function MeetingCtrl($scope, $routeParams, socket) {
 	});
 
 	$scope.sendComment = function(){
-		if(indexOfCommentByAuthor($scope.meeting.comments, $scope.user) != -1){
-			$scope.userComment = {};
-			return;
-		}
 		var commentToPost = $scope.userComment;
 		commentToPost.author = $scope.user;
 		commentToPost.voters = [];
@@ -117,27 +114,11 @@ function MeetingCtrl($scope, $routeParams, socket) {
 		}
 	};
 
-	$scope.iCommented = function(){
-		return indexOfCommentByAuthor($scope.meeting.comments, $scope.user) != -1;
-	}
-
 	function Comment(author){
 		this.status = '';
-		this.today = '';
-		this.yesterday = '';
-		this.roadblock = '';
 		this.voters = [];
 		this.author = author;
 		this.votes = function(){return this.voters.length};
-	}
-
-	function indexOfCommentByAuthor(comments, author){
-		for(var i = 0; i < comments.length; i++){
-		    if(comments[i].author === author){
-		      return i;
-		    }
-	  	}
-	  return -1;
 	}
 } 
 
