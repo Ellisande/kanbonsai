@@ -32,6 +32,15 @@ function NavCtrl($scope, socket){
 	// $scope.meetings = MeetingService.all;
 }
 
+//PhoneListCtrl.$inject = ['$scope', '$http'];
+function SnapshotCtrl($scope, snapshot){
+	var meeting = snapshot.get();
+	console.log("Meeting:" + meeting);
+	$scope.meetings = [meeting];
+	$scope.meeting = meeting;
+}
+
+
 function CreateCtrl($scope){
 	// $scope.meeting = new Meeting();
 
@@ -41,7 +50,7 @@ function CreateCtrl($scope){
 	// };
 }
 
-function MeetingCtrl($scope, $routeParams, socket) {
+function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	socket.connect($routeParams.meetingName);
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
@@ -105,13 +114,16 @@ function MeetingCtrl($scope, $routeParams, socket) {
 
 	$scope.vote = function(comment){
 		var voter = $scope.user;
-		if(comment.voters.indexOf(voter) === -1){
-			comment.voters.push(voter);
-			socket.emit('comment:vote', {
-				comment: comment,
-				voter: voter
-			});
-		}
+		comment.voters.push(voter);
+		socket.emit('comment:vote', {
+			comment: comment,
+			voter: voter
+		});
+	};
+
+	$scope.snapshot = function(){
+		snapshot.grab($scope.meeting);
+		$location.url('snapshot');
 	};
 
 	function Comment(author){

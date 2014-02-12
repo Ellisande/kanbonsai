@@ -50,7 +50,6 @@ app.configure('production', function(){
 // Socket.io Communication
 
 io.of('/meeting/unit').on('connection', socket);
-
 // Start server
 
 app.listen(3000, function(){
