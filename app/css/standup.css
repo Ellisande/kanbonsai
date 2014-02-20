@@ -22,7 +22,8 @@ div.comment {
 
 img.brand-image{
   height: 40px;
-  width: 150px;
+  width: 60px;
+    float:left;
 }
 
 .uparrow{

@@ -28,7 +28,8 @@ app
       })
     },
     connect: function(meetingName){
-      socket = io.connect('http://www.ellisande.com:3000/');
+//      socket = io.connect('http://www.ellisande.com:3000/');
+      socket = io.connect('http://localhost:3000/');
     }
   };
 }).
