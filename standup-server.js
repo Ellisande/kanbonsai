@@ -54,7 +54,8 @@ var allNames = [
   'Mayor McCheese','Hamburgler','Strawberry Shortcake','Xena, Warrior Princess','Kruul the Warrior King','Hippie','Mr. Drippy',
   'Master Shake','Grimmace','Sailor Moon','Blue','A Fish Called Wonda','Resivior Dog','Marsellus Wallus',"Tony Stark","Justin Beiber",
   'Bubble Puppy','Dora the Explorer','Spongebob Squarepants','Moonpie','Smores','Onyx','Uncle Bob','Godzilla',
-  'McLovin'
+  'McLovin','Sparky, the Fire Breathing Chameleon','The Tin Man', 'Magic Mike', 'Squared', 'MD', 'Darth Helemet', 'President Scroob',
+  'Glass Popcorn'
 ];
 
 var randomName = function(allNames){
@@ -175,13 +176,18 @@ var socket = function (socket) {
   });
 
   var unsubscribe = function () {
+    socket.leave(roomName);
+      
     var allUsers = meeting.participants || [];
     allUsers.splice(allUsers.indexOf(name), 1);
 
     var comments = meeting.comments;
-    for(var i = 0; i < comments.length; i++){
+    var totalComments = comments.length;
+    for(var i = 0; i < totalComments; i++){
       if(comments[i].author === name){
         comments.splice(i,1);
+        i--;
+        totalComments--;
         continue;
       }
 
@@ -190,12 +196,12 @@ var socket = function (socket) {
         comments[i].voters.splice(containingIndex,1);
       }
     }
-
+      
     io.sockets.in(roomName).emit('user:left', {
       user: name
     });
 
-    socket.leave(roomName);
+
   }
   // clean up when a user leaves, and broadcast it to other users
   socket.on('unsubscribe', unsubscribe);

@@ -35,9 +35,8 @@ function NavCtrl($scope, socket){
 //PhoneListCtrl.$inject = ['$scope', '$http'];
 function SnapshotCtrl($scope, snapshot){
 	var meeting = snapshot.get();
-	console.log("Meeting:" + meeting);
-	$scope.meetings = [meeting];
-	$scope.meeting = meeting;
+	console.log("Post retrieve:");console.log(meeting);
+	$scope.comments = meeting;
 }
 
 
@@ -79,9 +78,12 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 		}
 
 		var comments = $scope.meeting.comments;
-		for(var i = 0; i < comments.length; i++){
+        var totalComments = $scope.meeting.comments.length;
+		for(var i = 0; i < totalComments; i++){
 			if(comments[i].author == userToRemove){
 				comments.splice(i,1);
+                i--;
+                totalComments--;
 				continue;
 			}
             
@@ -128,9 +130,9 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	};
 
 	$scope.snapshot = function(){
-		snapshot.grab($scope.meeting);
-        socket.emit('unsubscribe',{});
-		$location.url('snapshot');
+		snapshot.grab($scope.meeting.comments);
+        socket.emit('unsubscribe');
+        $location.url('snapshot');
 	};
 
 	function Comment(author){

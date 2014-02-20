@@ -36,9 +36,18 @@ factory('snapshot', function (){
   return {
     capture: {},
     grab: function(meeting){
-      this.capture = meeting;
+      console.log("In the service:");
+      console.log(meeting);
+      for (var attr in meeting) {
+        if (meeting.hasOwnProperty(attr)) this.capture[attr] = meeting[attr];
+        for(var subAttr in meeting[attr]){
+            if(meeting[attr].hasOwnProperty(subAttr)) this.capture[attr][subAttr] = meeting[attr][subAttr];
+        }
+      }
     },
     get: function(){
+      console.log("On the retrieve");
+      console.log(this.capture);
       var temp = this.capture;
       this.capture = {};
       return temp;
