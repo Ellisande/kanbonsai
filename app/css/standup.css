@@ -1,0 +1,63 @@
+a {
+    cursor: pointer;
+}
+
+div.countdown-menu p{
+  padding-right: 5px;
+}
+
+div.author {
+  color: dimgrey;
+}
+
+div.rundown label{
+  color: dimgrey;
+  font-weight: bold;
+}
+
+div.comment {
+  border-bottom: 1px solid #AAA;
+  margin-bottom: 5px;
+}
+
+img.brand-image{
+  height: 40px;
+  width: 150px;
+}
+
+.uparrow{
+	background-image: url('/images/uparrow.png');
+	background-position: left;
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	cursor: pointer;
+	padding-left: 20px;
+	font-size: 20px;
+}
+
+div.by-line{
+	font-size: x-small;
+	color: dimgrey;
+	font-weight: bold;
+}
+
+div.rundown label{
+	display: inline;
+	font-variant: small-caps;
+}
+
+div.rundown span{
+	font-weight: bold;
+}
+
+div.rundown span.roadblocks{
+	color: #bf0f0f;
+}
+
+div.rundown span.today {
+	color: #1e9f11;
+}
+
+div.rundown span.yesterday {
+	color: #1c1cc3;
+}

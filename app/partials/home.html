@@ -1,0 +1,17 @@
+<div class="row-fluid">
+	<div class="span12">
+		<form ng-submit="sendMessage()">
+			<input type="text" ng-model="message" class="search"/>
+			<input type="submit" class="btn btn-success" title="Submit" />
+		</form>
+		<select ng-model="orderProp">
+	        <option value="-available">Available</option>
+	        <option value="name">Alphabetical</option>
+        </select>
+		<ul>
+			<li ng-repeat="meeting in messages">
+				<a href="#/">{{meeting.user}} {{meeting.text}}</a>
+			</li>
+		</ul>
+	</div>
+</div>
