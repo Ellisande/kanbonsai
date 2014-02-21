@@ -1,17 +1,20 @@
 var ServerMeeting = require('./server-meeting');
 var model = require('./model');
 var meetings = {default: new ServerMeeting('default')};
-// export function for listening to the socket
+
 var socket = function(io){
   return function (socket) {
       var meeting = meetings.default;
       var name = "";
-      var roomName = "";
+      var roomName = "default";
 
 
       // send the new user their name and a list of users
-      var initialize = function(){
-        meeting = meetings[roomName] || function(){meetings[roomName] = new ServerMeeting(roomName); return meetings[roomName];}();
+      var initialize = function(roomName){
+        meeting = meetings[roomName] || function(){
+            meetings[roomName] = new ServerMeeting(roomName); 
+            return meetings[roomName];
+        }();
         name = model.getNewName(meeting.participants);
         meeting.participants.push(name);
         socket.emit('init', {
@@ -19,17 +22,23 @@ var socket = function(io){
             meeting: meeting
         });
 
+        io.sockets.emit('meetings:update', {
+          meetings: meetings
+        });
+          
         socket.broadcast.to(roomName).emit('user:join', {
             user: name
         });
       };
 
+      // join a room.
       socket.on('subscribe', function(data){
         socket.join(data.name);
         roomName = data.name;
         initialize(data.name);
       });
 
+      // event to save and broadcast out when a user adds a comment.
       socket.on('comment:post', function(data){
         var newComment = data.comment;
         newComment.voters = [];
@@ -39,23 +48,34 @@ var socket = function(io){
         });
       });
 
+      // event to save and broadcast out when a user votes up a comment.
       socket.on('comment:vote', function(data){
         var poster = data.comment.author;
         var voter = data.voter;
         var comments = meeting.comments;
 
-        for(var i = 0; i < comments.length; i++){
-          if(comments[i].author === poster && comments[i].status === data.comment.status){
-            comments[i].voters.push(voter);
-            io.sockets.in(roomName).emit('comment:vote', {
-              comment: comments[i],
-              voter: voter
-            });
-            break;
-          }
-        }
-
-
+        comments.forEach(function(comment){
+            if(comment.author === poster && comment.status === data.comment.status){
+                if(comment.voters.indexOf(voter) == -1){
+                    comment.voters.push(voter);
+                    io.sockets.in(roomName).emit('comment:vote', {
+                      comment: comment,
+                      voter: voter
+                    });
+                }
+            }
+        });  
+      });
+      
+      socket.on('timer:start', function(data){
+        meeting.timer.endTime = new Date().getTime()+data.duration;
+        io.sockets.in(roomName).emit('timer:start', {
+            duration: data.duration
+        });
+      });
+      
+      socket.on('timer:stop', function(){
+        io.sockets.in(roomName).emit('timer:stop', {});
       });
 
       var unsubscribe = function () {
@@ -84,11 +104,13 @@ var socket = function(io){
           user: name
         });
 
-
+        roomName = "default";
+        meeting = meetings["default"];
+        
       }
+      
       // clean up when a user leaves, and broadcast it to other users
       socket.on('unsubscribe', unsubscribe);
-
       socket.on('disconnect', unsubscribe);
     };
 }

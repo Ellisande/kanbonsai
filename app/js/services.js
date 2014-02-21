@@ -27,7 +27,7 @@ app
         });
       })
     },
-    connect: function(meetingName){
+    connect: function(){
 //      socket = io.connect('http://www.ellisande.com:3000/');
       socket = io.connect('http://localhost:3000/');
     }
@@ -54,6 +54,57 @@ factory('snapshot', function (){
       return temp;
     }
   };
+}). 
+factory('timerService', function(socket, $timeout){
+    return function($scope){
+        $scope.duration = moment.duration(3, 'minutes');
+        var currentTimeout = {};
+        
+        var startTimeout = function(timer){
+            var onTimeout = function(){
+                timer.expired = moment().isAfter(timer.endTime);
+                if(timer.expired){
+                    $scope.duration = moment.duration(3, 'minutes');
+                } else {
+                    $scope.duration = timer.currentDuration();
+                    currentTimeout = $timeout(onTimeout,1000);
+                }
+            }
+            currentTimeout = $timeout(onTimeout,1000);
+        };
+        
+        var timer = {
+            endTime: moment(),
+            currentDuration: function(){
+              return moment.duration(this.endTime.diff(moment()));  
+            },
+            start: function(duration){
+                socket.emit('timer:start',{
+                    duration:duration
+                });
+            },
+
+            stop: function(){
+                $scope.duration = moment.duration(3,'minutes');
+                $timeout.cancel(currentTimeout);
+                socket.emit('timer:stop',{});
+                timer.expired = true;
+            },
+
+            expired: true
+        };
+
+        socket.on('timer:start', function(data){
+            timer.endTime = moment().add(data.duration, 'milliseconds');
+            startTimeout(timer);
+            timer.expired = false;
+        });
+
+        socket.on('timer:stop', function(){
+            timer.stop();
+        });
+        return timer;   
+    };
 });
 
 function Meeting(name, startTime){

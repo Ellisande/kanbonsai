@@ -62,3 +62,16 @@ div.rundown span.today {
 div.rundown span.yesterday {
 	color: #1c1cc3;
 }
+a.unavailable {
+    color: dimgrey;
+}
+
+.timer {
+    color: #AAA;
+    font-size: 2.0em;
+    font-weight: bold;
+}
+
+.timer.low {
+    color: rgba(255, 0, 0, 0.6);
+}

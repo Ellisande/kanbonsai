@@ -27,7 +27,7 @@
           <ul class="nav">
             <!-- Removed temporarily while focusing on single meeting principle -->
             <!-- <li><a href="#/new">New Meeting</a></li> -->
-            <li><a class="inline" href="#/meeting/unit">Current Meeting: Unit Meeting</a></li>
+<!--            <li><a class="inline" href="#/meeting/unit">Current Meeting: Unit Meeting</a></li>-->
           </ul>
         </div>
       </div>
@@ -39,16 +39,16 @@
       <div class="span2">
         <!-- start sidebar -->
         <div class="well sidebar-nav">
-          <ul class="nav nav-list" ng-controller="NavCtrl">
+          <ul class="nav nav-list" ng-controller="MeetingListCtrl">
             <li class="nav-header">Active Meetings</li>
             <!--change to ng-repeats-->
-            <li ng-repeat="meeting in meetings | filter:available=true">
-              <a href="#/meeting/{{meeting.name}}">{{meeting.name}}</a>
+            <li ng-repeat="meeting in meetings"  ng-show="meeting.participants.length>0">
+              <a href="#/meeting/{{meeting.name}}" ng-click="leave()">{{meeting.name}}: {{meeting.participants.length}}</a>
             </li>
             <li class="nav-header">Inactive Meetings</li>
             <!--change to ng-repeats-->
-            <li ng-repeat="meeting in meetings | filter:available=false">
-              <span class="unavailable">{{meeting.name}}</span> <span class="time">{{meeting.startTime | timeTillStart}}</span>
+            <li ng-repeat="inactiveMeeting in meetings" ng-show="inactiveMeeting.participants.length<1">
+              <a href="#/meeting/{{inactiveMeeting.name}}" class="unavailable" ng-click="leave()">{{inactiveMeeting.name}}</a>
             </li>
           </ul>
         </div>

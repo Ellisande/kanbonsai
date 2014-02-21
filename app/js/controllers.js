@@ -1,6 +1,16 @@
 'use strict';
 
 /* Controllers */
+function MeetingListCtrl($scope, socket){
+    socket.connect("/");
+    socket.on('meetings:update', function(meetings){
+       $scope.meetings = meetings.meetings;
+    });
+    $scope.meetingFilter = "participants.length>0";
+    $scope.leave = function(){
+        socket.emit('unsubscribe');
+    }
+}
 
 function HomeCtrl($scope, socket) {
   $scope.messages = [];
@@ -28,8 +38,17 @@ function HomeCtrl($scope, socket) {
 }
 
 //PhoneListCtrl.$inject = ['$scope', '$http'];
-function NavCtrl($scope, socket){
-	// $scope.meetings = MeetingService.all;
+function TimerCtrl($scope, timerService){
+    $scope.duration = moment.duration(0);
+    $scope.timer = timerService($scope);
+    $scope.start = function(){
+//        $scope.timer.start(180000);
+        $scope.timer.start(20000);
+    };
+    
+    $scope.stop = function(){
+        $scope.timer.stop();
+    }
 }
 
 //PhoneListCtrl.$inject = ['$scope', '$http'];
@@ -37,6 +56,7 @@ function SnapshotCtrl($scope, snapshot){
 	var meeting = snapshot.get();
 	console.log("Post retrieve:");console.log(meeting);
 	$scope.comments = meeting;
+    $scope.commentOrder = '-voters.length';
 }
 
 
@@ -51,6 +71,7 @@ function CreateCtrl($scope){
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	socket.connect($routeParams.meetingName);
+    socket.emit('unsubscribe');
     socket.emit('subscribe', {name: $routeParams.meetingName});
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
@@ -69,8 +90,14 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	});
 
 	socket.on('user:left', function(data){
+        if($scope.meeting === undefined){return;}
 		var userToRemove = data.user;
 		var allUsers = $scope.meeting.participants;
+        allUsers.forEach(function(user){
+            if(userToRemove === user){
+                allUsers.splice(allUsers.indexOf(user),1);
+            }
+        });
 		for(var i = 0; i < allUsers.length; i++){
 			if(allUsers[i] === userToRemove){
 				allUsers.splice(i,1);
@@ -95,10 +122,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
                     totalVoters--;
                 }
             }
-//			var containingIndex = comments[i].voters.indexOf(userToRemove);
-//			if(containingIndex !== -1){
-//				comments[i].voters.splice(containingIndex,1);
-//			} 
 		}
 	});
 

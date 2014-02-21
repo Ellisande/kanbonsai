@@ -3,11 +3,17 @@
 module.exports = function ServerMeeting(name) {
     var moment = require('moment');
     this.name = name;
-    this.userIds = 1;
-    this.commentIds = 1;
     this.participants = [];
     this.comments = [];
     this.startTime = moment(new Date()).add('minutes', 15);
+    this.timer = {
+        endTime: 0,
+        isStarted: function(){
+            var now = moment();
+            var endTime = moment(endTime);
+            return now.isAfter(endTime);
+        }
+    };
 
     // serialize claimed names as an array
     this.getAllNames = function () {
