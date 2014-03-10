@@ -28,8 +28,15 @@ app
       })
     },
     connect: function(){
-      socket = io.connect('http://www.ellisande.com:3000/');
-//      socket = io.connect('http://localhost:3000/');
+//      socket = io.connect('http://www.ellisande.com:3000/');
+      if(!socket){
+          socket = io.connect('http://localhost:3000/');
+      } else {
+        //socket.socket.connect();
+      }
+    },
+    disconnect: function(){
+      socket.disconnect();
     }
   };
 }).
@@ -37,14 +44,7 @@ factory('snapshot', function (){
   return {
     capture: {},
     grab: function(meeting){
-      console.log("In the service:");
-      console.log(meeting);
-      for (var attr in meeting) {
-        if (meeting.hasOwnProperty(attr)) this.capture[attr] = meeting[attr];
-        for(var subAttr in meeting[attr]){
-            if(meeting[attr].hasOwnProperty(subAttr)) this.capture[attr][subAttr] = meeting[attr][subAttr];
-        }
-      }
+      this.capture = angular.copy(meeting);
     },
     get: function(){
       console.log("On the retrieve");
@@ -87,21 +87,24 @@ factory('timerService', function(socket, $timeout){
             stop: function(){
                 $scope.duration = moment.duration(3,'minutes');
                 $timeout.cancel(currentTimeout);
-                socket.emit('timer:stop',{});
                 timer.expired = true;
+                socket.emit('timer:stop',{});
             },
 
             expired: true
         };
 
         socket.on('timer:start', function(data){
+            $timeout.cancel(currentTimeout);
             timer.endTime = moment().add(data.duration, 'milliseconds');
             startTimeout(timer);
             timer.expired = false;
         });
 
         socket.on('timer:stop', function(){
-            timer.stop();
+            if(!timer.expired){
+                timer.stop()
+            };
         });
         return timer;   
     };
