@@ -36,13 +36,13 @@
   <!-- Body Section -->
   <div class="container-fluid">
     <div class="row-fluid">
-      <div class="span2">
+      <div class="span2 sidebar-nav">
         <!-- start sidebar -->
-        <div class="well sidebar-nav">
+        <div class="well">
           <ul class="nav nav-list" ng-controller="MeetingListCtrl">
             <li class="nav-header">Active Meetings</li>
             <!--change to ng-repeats-->
-            <li ng-repeat="meeting in meetings"  ng-show="meeting.participants.length>0">
+            <li ng-repeat="meeting in meetings | orderBy:meeting.participants.length"  ng-show="meeting.participants.length>0">
               <a href="#/meeting/{{meeting.name}}" ng-click="leave()">{{meeting.name}}: {{meeting.participants.length}}</a>
             </li>
             <li class="nav-header">Inactive Meetings</li>
