@@ -28,9 +28,9 @@ app
       })
     },
     connect: function(){
-//      socket = io.connect('http://www.ellisande.com:3000/');
       if(!socket){
-          socket = io.connect('http://localhost:3000/');
+          socket = io.connect('http://www.ellisande.com:3000/');
+//          socket = io.connect('http://localhost:3000/');
       } else {
         //socket.socket.connect();
       }
