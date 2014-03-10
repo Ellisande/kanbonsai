@@ -1,17 +1,33 @@
 <div class="row-fluid">
-	<div class="span12">
-		<form ng-submit="sendMessage()">
-			<input type="text" ng-model="message" class="search"/>
-			<input type="submit" class="btn btn-success" title="Submit" />
-		</form>
-		<select ng-model="orderProp">
-	        <option value="-available">Available</option>
-	        <option value="name">Alphabetical</option>
-        </select>
-		<ul>
-			<li ng-repeat="meeting in messages">
-				<a href="#/">{{meeting.user}} {{meeting.text}}</a>
-			</li>
-		</ul>
+	<div class="hero-unit">
+	    <h1 class="welcome">Welcome to Lean Coffee!</h1>
+	    <p>Lean Coffee is the fast, effective way to maxmize the potential of your meetings!</p>
+	</div>
+	<div class="span3">
+	    <h3>How does it work?</h3>
+	    <p>Lean Coffee has four simple steps:</p>
+	    <ol>
+	       <li>Suggest Topics</li>
+	       <li>Vote on Topics</li>
+	       <li>Talk About Topics</li>
+	       <li>Vote to Keep Talking</li>
+	    </ol>
+    </div>
+	<div class="span3">
+	    <h3>Who should use it?</h3>
+	    <p>Lorem ipsum</p>
+	</div>
+	<div class="span4">
+	    <h3>How do I get started?</h3>
+	    <p>Getting started is simple! Either choose an existing meeting on the left side or create your own meeting!</p>
+	    <div>
+	        <form class="form-search" id="create-form" name="create-form" ng-submit="create()">
+	            <fieldset>
+                    <input type="text" name="meeting-name" class="search-query" ng-model="meetingName" placeholder="Meeting Name">
+                    <button class="btn btn-success">Create a Meeting!</button>
+	            </fieldset>
+	        </form>
+	    </div>
 	</div>
 </div>
+
