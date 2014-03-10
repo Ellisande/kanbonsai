@@ -7,7 +7,7 @@
 		<input type="text" ng-model="commentQuery">
 	</div>
 
-	<div class="row-fluid comment" ng-repeat="comment in comments | filter:commentQuery | orderBy:commentOrder">
+	<div class="row-fluid comment" ng-repeat="comment in snapshot.comments | filter:commentQuery | orderBy:snapshot.commentOrder">
 		<div class="span12">
 			<div class="row-fluid">
 				<div class="span10 author">
