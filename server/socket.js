@@ -8,7 +8,9 @@ var socket = function(io){
       var name = "";
       var roomName = "default";
 
-
+      socket.emit('meetings:update',{
+        meetings: meetings
+      });
       // send the new user their name and a list of users
       var initialize = function(roomName){
         meeting = meetings[roomName] || function(){
@@ -17,6 +19,7 @@ var socket = function(io){
         }();
         name = model.getNewName(meeting.participants);
         meeting.participants.push(name);
+//        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
         socket.emit('init', {
             user: name,
             meeting: meeting
@@ -46,6 +49,7 @@ var socket = function(io){
         io.sockets.in(roomName).emit('comment:post', {
             comment: newComment
         });
+//        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
       });
 
       // event to save and broadcast out when a user votes up a comment.
