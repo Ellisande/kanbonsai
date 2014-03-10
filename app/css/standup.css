@@ -68,10 +68,45 @@ a.unavailable {
 
 .timer {
     color: #AAA;
-    font-size: 2.0em;
+    font-size: 1.8em;
     font-weight: bold;
+}
+
+.timer li {
+    padding-right: 50%;
 }
 
 .timer.low {
     color: rgba(255, 0, 0, 0.6);
+}
+
+.welcome {
+/*
+    background-image: url(../images/coffee_cup.png);
+    background-repeat: no-repeat;
+    background-position: center;
+*/
+}
+
+.jumbotron {
+    
+}
+
+.hero-unit {
+    background-image: url(../images/coffee_cup.png);
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+
+
+.sidebar-nav {
+    
+}
+
+.meeting-header {
+    font-weight: bold;
+    color: dimgrey;
+    font-variant: small-caps;
+    font-size: 1.3em;
 }
