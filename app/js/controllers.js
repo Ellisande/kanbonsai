@@ -2,48 +2,28 @@
 
 /* Controllers */
 function MeetingListCtrl($scope, socket){
-    socket.connect("/");
+    socket.connect();
     socket.on('meetings:update', function(meetings){
        $scope.meetings = meetings.meetings;
     });
-    $scope.meetingFilter = "participants.length>0";
     $scope.leave = function(){
         socket.emit('unsubscribe');
     }
 }
 
-function HomeCtrl($scope, socket) {
-  $scope.messages = [];
-  socket.on('send:message', function (message) {
-    $scope.messages.push(message);
-  });
-
-
-  $scope.sendMessage = function () {
-    socket.emit('send:message', {
-      message: $scope.message
-    });
-
-    // add the message to our model locally
-    $scope.messages.push({
-      user: $scope.name,
-      text: $scope.message
-    });
-
-    // clear message box
-    $scope.message = '';
-  };
-  
-  $scope.orderProp = '-available';
+function HomeCtrl($scope, $location, socket) {
+    socket.connect();
+    $scope.create = function(){
+        $location.url('/meeting/'+$scope.meetingName);
+    }
 }
 
-//PhoneListCtrl.$inject = ['$scope', '$http'];
 function TimerCtrl($scope, timerService){
     $scope.duration = moment.duration(0);
     $scope.timer = timerService($scope);
     $scope.start = function(){
-//        $scope.timer.start(180000);
-        $scope.timer.start(20000);
+        $scope.timer.start(180000);
+//        $scope.timer.start(20000);
     };
     
     $scope.stop = function(){
@@ -54,19 +34,13 @@ function TimerCtrl($scope, timerService){
 //PhoneListCtrl.$inject = ['$scope', '$http'];
 function SnapshotCtrl($scope, snapshot){
 	var meeting = snapshot.get();
-	console.log("Post retrieve:");console.log(meeting);
-	$scope.comments = meeting;
-    $scope.commentOrder = '-voters.length';
+    $scope.snapshot = {};
+	$scope.snapshot.comments = meeting;
+    $scope.snapshot.commentOrder = '-voters.length';
 }
 
 
 function CreateCtrl($scope){
-	// $scope.meeting = new Meeting();
-
-	// $scope.add = function(meeting){
-	// 	MeetingService.add(meeting, MeetingService.all);
-	// 	$scope.meeting = new Meeting();
-	// };
 }
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
@@ -86,6 +60,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	});
 
 	socket.on('comment:post', function(data){
+        console.log('Posting a comment');
 		$scope.meeting.comments.push(data.comment);
 	});
 
@@ -155,6 +130,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	$scope.snapshot = function(){
 		snapshot.grab($scope.meeting.comments);
         socket.emit('unsubscribe');
+        socket.disconnect();
         $location.url('snapshot');
 	};
 
