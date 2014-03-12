@@ -44,7 +44,7 @@
 		-->
 		<li class="meeting-header">Meeting: {{meeting.name}}</li>
 		<li class="nav-header">Timer</li>
-        <li ng-controller="TimerCtrl" class="timer">
+        <li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
             <span>{{duration.minutes() | timer}} :</span>
             <span>{{duration.seconds() | timer}}</span>
             <button class="btn btn-success btn-small " ng-click="start()" ng-show="timer.expired">Start</button>
