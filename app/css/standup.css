@@ -80,28 +80,10 @@ a.unavailable {
     color: rgba(255, 0, 0, 0.6);
 }
 
-.welcome {
-/*
-    background-image: url(../images/coffee_cup.png);
-    background-repeat: no-repeat;
-    background-position: center;
-*/
-}
-
-.jumbotron {
-    
-}
-
 .hero-unit {
     background-image: url(../images/coffee_cup.png);
     background-repeat: no-repeat;
     background-position: right;
-}
-
-
-
-.sidebar-nav {
-    
 }
 
 .meeting-header {

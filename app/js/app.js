@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var app = angular.module('standup', ['standupFilters']).
+var app = angular.module('lean-coffee', ['filters','services']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       //Removed temporarily while focusing on single meeting principle.

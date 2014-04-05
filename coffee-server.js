@@ -3,8 +3,7 @@
  * Module dependencies.
  */
 
-var express = require('express'),
-  routes = require('./server');
+var express = require('express');
 
 var app = module.exports = express.createServer();
 

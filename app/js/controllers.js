@@ -22,25 +22,20 @@ function TimerCtrl($scope, timerService){
     $scope.duration = moment.duration(0);
     $scope.timer = timerService($scope);
     $scope.start = function(){
-        $scope.timer.start(180000);
-//        $scope.timer.start(20000);
+//        $scope.timer.start(180000);
+        $scope.timer.start(20000);
     };
-    
+    console.log($scope.duration);
     $scope.stop = function(){
         $scope.timer.stop();
     }
 }
 
-//PhoneListCtrl.$inject = ['$scope', '$http'];
 function SnapshotCtrl($scope, snapshot){
 	var meeting = snapshot.get();
     $scope.snapshot = {};
 	$scope.snapshot.comments = meeting;
     $scope.snapshot.commentOrder = '-voters.length';
-}
-
-
-function CreateCtrl($scope){
 }
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
