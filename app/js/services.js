@@ -1,10 +1,10 @@
-'use strict';
 
 /* Services */
 angular.module('services', [])
 .factory('socket', function ($rootScope) {
-  var socket;
-  return {
+    'use strict';
+    var socket;
+    return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  
         var args = arguments;
@@ -14,18 +14,18 @@ angular.module('services', [])
       });
     },
     emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
+        socket.emit(eventName, data, function () {
+            var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(socket, args);
+                }
+            });
+      });
     },
     connect: function(){
       if(!socket){
-//          socket = io.connect('http://www.ellisande.com:3000/');
+    //          socket = io.connect('http://www.ellisande.com:3000/');
           socket = io.connect('http://localhost:3000/');
       } else {
         //socket.socket.connect();
@@ -34,7 +34,7 @@ angular.module('services', [])
     disconnect: function(){
       socket.disconnect();
     }
-  };
+    };
 }).
 factory('snapshot', function (){
   return {
@@ -65,7 +65,7 @@ factory('timerService', function(socket, $timeout){
                     $scope.duration = timer.currentDuration();
                     currentTimeout = $timeout(onTimeout,1000);
                 }
-            }
+            };
             currentTimeout = $timeout(onTimeout,1000);
         };
         
@@ -99,8 +99,8 @@ factory('timerService', function(socket, $timeout){
 
         socket.on('timer:stop', function(){
             if(!timer.expired){
-                timer.stop()
-            };
+                timer.stop();
+            }
         });
         return timer;   
     };
