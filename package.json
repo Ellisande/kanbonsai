@@ -1,10 +1,19 @@
 {
-    "name": "lean-coffee"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.x"
-    , "socket.io": ">= 0.9.x"
-    , "moment": "2.x"
+  "name": "lean-coffee",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": " 2.5.x",
+    "socket.io": ">= 0.9.x",
+    "moment": ">= 2.x"
+  },
+  "devDependencies": {
+    "gulp-uglify": "^0.2.1",
+    "gulp": "^3.6.0",
+    "gulp-nodemon": "^1.0.2",
+    "gulp-concat": "^2.2.0",
+    "gulp-minify-css": "^0.3.1",
+    "gulp-jshint": "^1.5.3",
+    "gulp-csslint": "^0.1.3"
   }
 }
