@@ -1,24 +1,26 @@
-'use strict';
+
 
 /* Controllers */
 function MeetingListCtrl($scope, socket){
+    'use strict';
     socket.connect();
     socket.on('meetings:update', function(meetings){
        $scope.meetings = meetings.meetings;
     });
     $scope.leave = function(){
         socket.emit('unsubscribe');
-    }
+    };
 }
 
 function HomeCtrl($scope, $location, socket) {
     socket.connect();
     $scope.create = function(){
         $location.url('/meeting/'+$scope.meetingName);
-    }
+    };
 }
 
 function TimerCtrl($scope, timerService){
+    'use strict';
     $scope.duration = moment.duration(0);
     $scope.timer = timerService($scope);
     $scope.start = function(){
@@ -28,10 +30,11 @@ function TimerCtrl($scope, timerService){
     console.log($scope.duration);
     $scope.stop = function(){
         $scope.timer.stop();
-    }
+    };
 }
 
 function SnapshotCtrl($scope, snapshot){
+    'use strict';
 	var meeting = snapshot.get();
     $scope.snapshot = {};
 	$scope.snapshot.comments = meeting;
@@ -39,15 +42,19 @@ function SnapshotCtrl($scope, snapshot){
 }
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
+    'use strict';
 	socket.connect($routeParams.meetingName);
     socket.emit('unsubscribe');
-    socket.emit('subscribe', {name: $routeParams.meetingName});
+    socket.emit('subscribe', {
+        name: $routeParams.meetingName
+    });
+    
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
 	socket.on('init', function (data) 
 	{
-	    $scope.user = data.user;
-	    $scope.meeting = data.meeting;
+        $scope.user = data.user;
+        $scope.meeting = data.meeting;
 	});
 
 	socket.on('user:join', function(data){
@@ -63,45 +70,34 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
         if($scope.meeting === undefined){return;}
 		var userToRemove = data.user;
 		var allUsers = $scope.meeting.participants;
-        allUsers.forEach(function(user){
+        allUsers.forEach(function(user, index){
             if(userToRemove === user){
-                allUsers.splice(allUsers.indexOf(user),1);
+                allUsers.splice(index,1);
             }
         });
-		for(var i = 0; i < allUsers.length; i++){
-			if(allUsers[i] === userToRemove){
-				allUsers.splice(i,1);
-			}
-		}
-
-		var comments = $scope.meeting.comments;
-        var totalComments = $scope.meeting.comments.length;
-		for(var i = 0; i < totalComments; i++){
-			if(comments[i].author == userToRemove){
-				comments.splice(i,1);
-                i--;
-                totalComments--;
-				continue;
-			}
-            
-            var totalVoters = comments[i].voters.length;
-            for(var j = 0; j < totalVoters; j++){
-                if(comments[i].voters[j] === userToRemove){
-                    comments[i].voters.splice(j,1);
-                    j--;
-                    totalVoters--;
-                }
+        
+        $scope.meeting.comments.forEach(function(comment, index){
+            if(comment.author == userToRemove){
+                $scope.meeting.comments.splice(index, 1);
+                return;
             }
-		}
+            
+            comment.voters.forEach(function(voter, index){
+                if(voter == userToRemove){
+                    comment.voters.splice(index, 1);
+                }
+            });
+        });
+
 	});
 
 	socket.on('comment:vote', function(data){
 		var allComments = $scope.meeting.comments;
-		for(var i = 0; i < allComments.length; i++){
-			if(allComments[i].author === data.comment.author && allComments[i].status === data.comment.status){
-                allComments[i] = data.comment;        
+        allComments.forEach(function(comment, index){
+            if(comment.author == data.comment.author && comment.status === data.comment.status){
+                allComments[index] = data.comment;
             }
-		}
+        });
 	});
 
 	$scope.sendComment = function(){
@@ -133,6 +129,8 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 		this.status = '';
 		this.voters = [];
 		this.author = author;
-		this.votes = function(){return this.voters.length};
+		this.votes = function(){
+            return this.voters.length;
+        };
 	}
 } 
