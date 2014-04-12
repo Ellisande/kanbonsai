@@ -6,7 +6,7 @@
 var express = require('express');
 
 var app = module.exports = express.createServer();
-
+//Stuff
 // Hook Socket.io into Express
 var io = require('socket.io').listen(app, {log: false});
 //var io = require('socket.io').listen(app);
@@ -15,6 +15,7 @@ var io = require('socket.io').listen(app, {log: false});
 
 app.configure(function(){
   app.use(express.static(__dirname + '/app'));
+  app.use('/static', express.static(__dirname + '/build'));
 });
 
 app.configure('development', function(){
