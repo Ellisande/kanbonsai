@@ -2,25 +2,25 @@ a {
     cursor: pointer;
 }
 
-div.countdown-menu p{
+.countdown-menu p{
   padding-right: 5px;
 }
 
-div.author {
-  color: dimgrey;
+.author {
+  color: rgb(105, 105, 105);
 }
 
-div.rundown label{
-  color: dimgrey;
+.rundown label{
+  color: rgb(105, 105, 105);
   font-weight: bold;
 }
 
-div.comment {
+.comment {
   border-bottom: 1px solid #AAA;
   margin-bottom: 5px;
 }
 
-img.brand-image{
+.brand-image{
   height: 40px;
   width: 60px;
     float:left;
@@ -36,34 +36,14 @@ img.brand-image{
 	font-size: 20px;
 }
 
-div.by-line{
+.by-line{
 	font-size: x-small;
-	color: dimgrey;
+	color: rgb(105, 105, 105);
 	font-weight: bold;
 }
 
-div.rundown label{
-	display: inline;
-	font-variant: small-caps;
-}
-
-div.rundown span{
-	font-weight: bold;
-}
-
-div.rundown span.roadblocks{
-	color: #bf0f0f;
-}
-
-div.rundown span.today {
-	color: #1e9f11;
-}
-
-div.rundown span.yesterday {
-	color: #1c1cc3;
-}
-a.unavailable {
-    color: dimgrey;
+.unavailable {
+    color: rgb(105, 105, 105);
 }
 
 .timer {
@@ -76,7 +56,8 @@ a.unavailable {
     padding-right: 50%;
 }
 
-.timer.low {
+.low {
+    color: red;
     color: rgba(255, 0, 0, 0.6);
 }
 
@@ -88,7 +69,7 @@ a.unavailable {
 
 .meeting-header {
     font-weight: bold;
-    color: dimgrey;
+    color: rgb(105, 105, 105);
     font-variant: small-caps;
     font-size: 1.3em;
 }
