@@ -3,46 +3,35 @@
 <head>
   <meta charset="utf-8">
   <title>Lean Coffee</title>
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" href="lib/pure/pure.css" />
+  <link rel="stylesheet" href="lib/pure/coffee-skin.css" />
   <link rel="stylesheet" href="static/app.css"/>
   <style type="text/css">
     body {padding-top:40px;}
   </style>
 </head>
 <body>
-<body>
+<body class="pure-g-r pure-skin-coffee">
   <!-- Body Section -->
-  <div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span2 sidebar-nav">
-        <!-- start sidebar -->
-        <div class="well">
-          <ul class="nav nav-list" ng-controller="MeetingListCtrl">
-            <li class="nav-header">Active Meetings</li>
-            <!--change to ng-repeats-->
+  <div class="pure-u-1-8">
+      <div class="meeting-directory">
+          <ul class="meeting-list" ng-controller="MeetingListCtrl">
+            <li class="list-heading">Active Meetings</li>
             <li ng-repeat="meeting in meetings | orderBy:meeting.participants.length"  ng-show="meeting.participants.length>0">
-              <a href="#/meeting/{{meeting.name}}" ng-click="leave()">{{meeting.name}}: {{meeting.participants.length}}</a>
+              <a href="#/meeting/{{meeting.name}}" ng-click="leave()">{{meeting.name | limitTo:limit}}: {{meeting.participants.length}}</a>
             </li>
-            <li class="nav-header">Inactive Meetings</li>
-            <!--change to ng-repeats-->
+            <li class="list-heading">Inactive Meetings</li>
             <li ng-repeat="inactiveMeeting in meetings" ng-show="inactiveMeeting.participants.length<1">
               <a href="#/meeting/{{inactiveMeeting.name}}" class="unavailable" ng-click="leave()">{{inactiveMeeting.name}}</a>
             </li>
           </ul>
-        </div>
-        <!-- End sidebar -->
       </div>
-      <!-- start body section -->
-      <div class="span10">
-        <div ng-view></div>
-      </div>
-      <!-- end body section -->
-    </div>
+    <!-- End sidebar -->
   </div>
+  <!-- start body section -->
+  <div ng-view class="pure-u-7-8"></div>
 
-  <hr>
-  <footer>
+  <footer class="pure-u-1">
     <p>© Justin Dragos 2013</p>
   </footer>
 
