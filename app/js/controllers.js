@@ -3,17 +3,17 @@
 /* Controllers */
 function MeetingListCtrl($scope, socket){
     'use strict';
-    socket.connect();
     socket.on('meetings:update', function(meetings){
        $scope.meetings = meetings.meetings;
     });
     $scope.leave = function(){
         socket.emit('unsubscribe');
     };
+    
+    $scope.limit = 10;
 }
 
 function HomeCtrl($scope, $location, socket) {
-    socket.connect();
     $scope.create = function(){
         $location.url('/meeting/'+$scope.meetingName);
     };
@@ -24,10 +24,22 @@ function TimerCtrl($scope, timerService){
     $scope.duration = moment.duration(0);
     $scope.timer = timerService($scope);
     $scope.start = function(){
-//        $scope.timer.start(180000);
-        $scope.timer.start(20000);
+        $scope.timer.start(180000);
+//        $scope.timer.start(20000);
     };
-    console.log($scope.duration);
+    $scope.stop = function(){
+        $scope.timer.stop();
+    };
+}
+
+function LocalTimerCtrl($scope, localTimer){
+    'use strict';
+    $scope.duration = moment.duration(0);
+    $scope.timer = localTimer($scope);
+    $scope.start = function(){
+        $scope.timer.start(180000);
+//        $scope.timer.start(20000);
+    };
     $scope.stop = function(){
         $scope.timer.stop();
     };
@@ -43,7 +55,7 @@ function SnapshotCtrl($scope, snapshot){
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
     'use strict';
-	socket.connect($routeParams.meetingName);
+//	socket.connect($routeParams.meetingName);
     socket.emit('unsubscribe');
     socket.emit('subscribe', {
         name: $routeParams.meetingName
@@ -62,7 +74,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	});
 
 	socket.on('comment:post', function(data){
-        console.log('Posting a comment');
+        console.log('Got a comment');
 		$scope.meeting.comments.push(data.comment);
 	});
 
@@ -121,7 +133,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	$scope.snapshot = function(){
 		snapshot.grab($scope.meeting.comments);
         socket.emit('unsubscribe');
-        socket.disconnect();
         $location.url('snapshot');
 	};
 
