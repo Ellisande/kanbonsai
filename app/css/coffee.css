@@ -8,16 +8,13 @@ a {
 
 .author {
   color: rgb(105, 105, 105);
+  display:inline;
+  font-size: 1.1em;
 }
 
 .rundown label{
   color: rgb(105, 105, 105);
   font-weight: bold;
-}
-
-.comment {
-  border-bottom: 1px solid #AAA;
-  margin-bottom: 5px;
 }
 
 .brand-image{
@@ -26,29 +23,40 @@ a {
     float:left;
 }
 
+.comment {
+    margin-top: 1.1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid gray;
+    font-size: 1.1em;
+}
+
+.vote {
+    display: inline;
+}
+
 .uparrow{
-	background-image: url('/images/uparrow.png');
-	background-position: left;
+	background-image: url('/images/arrow.png');
+	background-position: right;
 	background-repeat: no-repeat;
 	background-size: 20px 20px;
 	cursor: pointer;
-	padding-left: 20px;
+	padding-right: 20px;
 	font-size: 20px;
 }
 
-.by-line{
+.by-line, footer{
 	font-size: x-small;
 	color: rgb(105, 105, 105);
 	font-weight: bold;
 }
 
-.unavailable {
+.meeting-list .unavailable {
     color: rgb(105, 105, 105);
 }
 
-.timer {
+.timer span{
     color: #AAA;
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
@@ -56,15 +64,18 @@ a {
     padding-right: 50%;
 }
 
-.low {
+.low span {
     color: red;
     color: rgba(255, 0, 0, 0.6);
 }
 
 .hero-unit {
-    background-image: url(../images/coffee_cup.png);
-    background-repeat: no-repeat;
-    background-position: right;
+    background-color: #0E6262;
+    color: white;
+}
+
+.hero-unit div{
+    padding: 10px;
 }
 
 .meeting-header {
@@ -72,4 +83,59 @@ a {
     color: rgb(105, 105, 105);
     font-variant: small-caps;
     font-size: 1.3em;
+}
+
+.meeting-menu{
+    border-radius: 6px;
+    background-color: #EEE;
+    margin: 0.5em;
+}
+
+.meeting-list {
+    list-style: none;
+    padding-left: 10px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    overflow: hidden;
+}
+
+.meeting-list a {
+    text-decoration: none;
+    color: #00b1ff;
+}
+
+.meeting-list li {
+    margin-top: 0.3em;
+    margin-left: 0.3em;
+}
+
+.list-heading {
+    text-transform: uppercase;
+    color: rgb(105, 105, 105);
+    font-weight: bold;
+    padding: 3px 10px;
+    font-size: 0.75em;
+}
+
+footer {
+    border-top: 1px solid gray;
+    margin-left: 0.5em;
+    margin-top: 1em;
+}
+
+.pure-skin-coffee .button-success,
+.pure-skin-coffee .button-error,
+.pure-skin-coffee .button-warning,
+.pure-skin-coffee .button-secondary {
+    color: white;
+/*    border-radius: 4px;*/
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.pure-skin-coffee .button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.pure-skin-coffee .button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
 }
