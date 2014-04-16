@@ -50,8 +50,8 @@ gulp.task('lint', ['js-lint', 'css-lint']);
 gulp.task('minify', ['css-minify','js-minify']);
 
 gulp.task('watch', function(){
-    gulp.watch('app/js/**/*.js', ['minify', 'js-lint']);
-    gulp.watch('app/css/**/*.css', ['css-lint']);
+    gulp.watch('app/js/**/*.js', ['js-minify', 'js-lint']);
+    gulp.watch('app/css/**/*.css', ['css-minify', 'css-lint' ]);
 });
 
 gulp.task('default', ['node','minify', 'lint','watch']);
