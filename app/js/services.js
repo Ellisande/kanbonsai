@@ -1,13 +1,13 @@
 
 /* Services */
 angular.module('services', [])
-.factory('socket', function ($rootScope) {
+.factory('socket', function ($rootScope, $location) {
     'use strict';
     var socket;
     
     var connect = function(){
           if(!socket){
-            socket = io.connect('localhost:5000/');
+            socket = io.connect('http://'+$location.host()+':5000');
           }
     };
     
