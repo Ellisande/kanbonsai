@@ -30,6 +30,6 @@ var socket = require('./server/socket')(io);
 io.on('connection', socket);
 
 app.settings.env = 'production';
-app.listen(3000, function(){
+app.listen(5000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
