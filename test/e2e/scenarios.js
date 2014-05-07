@@ -1,17 +1,45 @@
+function random(min, max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var HomePage = function() {
+    this.meetingName = 'test' + random(1000,2000);
+    
+    this.meetingInput = element(by.model('meetingName')),
+    this.createMeetingButton = element(by.buttonText('Create a Meeting!')),
+    
+    this.get = function() {
+        browser.get('http://localhost:5000/'); 
+    }
+    
+    this.createMeeting = function() {
+        this.meetingInput.sendKeys(this.meetingName);
+        this.createMeetingButton.click();
+    }
+    
+    this.getMeetingName = function() {
+        return this.meetingName;
+    }
+};
+
 describe('lean coffee', function(){
 
+    var homePage = new HomePage();
+    homePage.get();
+    homePage.createMeeting();
+
     describe('meeting', function(){
-        
+
         xit('should display my user name', function(){
-        
         });
         
         xit('should display the meeting particpants', function(){
         
         });
         
-        xit('should show the name of the meeting', function(){
-            
+        it('should show the name of the meeting', function(){
+            var meetingNameElement = element(by.model('meeting.name'));
+            expect(meetingNameElement.getText()).toBe(homePage.getMeetingName());
         });
         
         xit('should show who the host is', function(){
