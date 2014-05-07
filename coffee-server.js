@@ -6,6 +6,8 @@
 var express = require('express');
 
 var app = module.exports = express.createServer();
+var morgan = require('morgan');
+
 //Stuff
 // Hook Socket.io into Express
 var io = require('socket.io').listen(app, {log: false});
@@ -20,6 +22,7 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(morgan()); // { stream: filestream }
 });
 
 app.configure('production', function(){
