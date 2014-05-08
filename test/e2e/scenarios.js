@@ -3,20 +3,19 @@ var po = require('./page-objects');
 describe('lean coffee', function(){
 
     var homePage = new po.HomePage();
+
     homePage.get();
     homePage.createMeeting(); // TODO: expect meeting page
 
     describe('meeting', function(){
         var meetingPage = new po.MeetingPage();
 
-        it('should display my user name', function(){
+        it('should display my user name', function() {
             expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
         });
 
         xit('should display the meeting particpants', function(){
-          it('should do stuff', function(){
-            return 'and then do other things';
-          })
+
         });
 
         it('should show the name of the meeting', function(){
@@ -53,20 +52,20 @@ describe('lean coffee', function(){
 
         describe('sumbit phase', function(){
 
-            xit('should allow us submit a topic', function(){
-
+            it('should allow us submit a topic', function() {
+              var topic = meetingPage.postTopic();
+              expect(meetingPage.getTopics).toContain(topic);
             });
 
             xit('should show all topics', function(){
-
+              // TODO: how do I know what all the topics are?
             });
 
             xit('should show the remaining time for the phase', function(){
-            x
             });
 
             xit('should show the name of the person who submitted the topic', function(){
-
+              // TODO: how do I know who I am?
             });
 
             describe('timer expires', function(){
@@ -89,7 +88,7 @@ describe('lean coffee', function(){
 
             describe('merge ownership', function(){
 
-                xit('(maybe?) should show a list of owners for a merged topic', function(){
+                xit('should show a list of owners for a merged topic', function(){
 
                 });
             });
@@ -107,8 +106,7 @@ describe('lean coffee', function(){
             });
 
             describe('timer', function(){
-                xit('should do nothing', function(){
-
+                xit('should do nothing', function() {
                 });
             });
         });
@@ -278,7 +276,6 @@ describe('lean coffee', function(){
                     xit('should contain all the topics discussed', function(){
 
                     });
-
 
                     xit('should contain the notes for each topic', function(){
 
