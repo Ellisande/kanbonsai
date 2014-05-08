@@ -50,7 +50,25 @@ factory('snapshot', function (){
       return temp;
     }
   };
-}). 
+}).
+factory('mtgDetails', function (){
+  return {
+    capture: {
+      meeting:'',
+      user:''
+    },
+    captureDetails: function(meeting, user){
+      this.capture.meeting = angular.copy(meeting);
+      this.capture.user = angular.copy(user);
+      
+    },
+    getDetails: function(){
+      var temp = this.capture;
+      this.capture = {};
+      return temp;
+    }
+  };
+}).
 factory('timerService', function(socket, $timeout){
     return function($scope){
         $scope.duration = moment.duration(3, 'minutes');

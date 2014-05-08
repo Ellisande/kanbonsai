@@ -24,8 +24,8 @@ a {
 }
 
 .comment {
-    margin-top: 1.1em;
-    padding-bottom: 1em;
+    margin-top: 1em;
+    padding-bottom: .6em;
     border-bottom: 1px solid gray;
     font-size: 1.1em;
 }
@@ -139,3 +139,7 @@ footer {
 .pure-skin-coffee .button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
 }
+.selected {
+  background-color: rgb(220, 220, 220); /* this is a maroon */
+}
+

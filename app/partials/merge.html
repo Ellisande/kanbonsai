@@ -1,0 +1,39 @@
+<div class="pure-u-20-24">
+	<div class="pure-u-1">
+        <h2>You are: {{user}} </h2>
+        <input type="button"  user="newuser" />
+	</div>
+	
+    <!--Merge Topics Start -->
+    <div id="mergeTopics" ng-show="topicSelected.length" ng-init="newMergeText=newMergeText || ''">
+      <textarea ng-model="newMergeText" rows="5" cols="50"></textarea>
+      <button class="pure-button pure-button-primary" ng-click="mergeTopicsButtonClk()">
+         <span ng-show="topicSelected.length == 1">Edit Topic</span>
+         <span ng-hide="topicSelected.length == 1">Merge Topics</span></button>
+        <button class="pure-button pure-button-primary" ng-click="cancelMerge()">Cancel</button>
+    </div>
+	 <!--Merge Topics End -->
+     <div class="{{comment.selected}}" 
+         ng-repeat="comment in meeting.comments | filter:commentQuery |  orderBy:commentOrder"
+         >
+    <div  class="pure-u-1 comment" >
+   
+         <input type="checkbox" name="mergeCheckBoxes" id="{{$index}}"
+                ng-click="topicsSelectedToMerge(comment)" /><!-- Merge CheckBox -->    
+        
+            <div class="pure-u-4-5"  ng-click="setSelected(comment)" >
+                <h4 class="author">{{comment.status}}</h4>
+                <div class="by-line">By: {{comment.author}}</div>
+            </div>
+	</div>
+         </div>
+   </div>
+<div class="pure-u-1-8 meeting-menu">
+	<ul class="meeting-list">
+		<li class="list-heading">Participants</li>
+		<li ng-repeat="participant in meeting.participants">
+			{{participant}}
+		</li>
+	</ul>
+</div>
+ 
