@@ -63,11 +63,9 @@ describe('lean coffee', function(){
         
 
         
-        describe('sumbit-merge phase', function(){
+        describe('sumbit phase', function(){
             
-            xit('should allow us to merge two topics', function(){
-            
-            });
+
             
             xit('should allow us submit a topic', function(){
             
@@ -84,20 +82,27 @@ describe('lean coffee', function(){
             xit('should show the name of the person who submitted the topic', function(){
             
             });
+                    
+            describe('timer expiration', function(){
+                
+                xit('(maybe?) should advance automatically to the merge phase', function(){
+                
+                });
+                
+                xit('(maybe?) should disable submission, but not automaticallly transition to merge phase', function(){
+                
+                });
+            });
+        });
+        
+        describe('merge phase', function(){
             
             xit('(maybe?) should allow merging of 2+ topics', function(){
             
             });
             
-            describe('timer expiration', function(){
-                
-                xit('(maybe?) should advance automatically to the vote phase', function(){
-                
-                });
-                
-                xit('(maybe?) should disable submission and merging, but not automaticallly transition to voting phase', function(){
-                
-                });
+            xit('should allow us to merge two topics', function(){
+            
             });
             
             describe('merge ownership', function(){
@@ -119,6 +124,17 @@ describe('lean coffee', function(){
                 
                 xit('(maybe?) should show original text when topics are merged', function(){
             
+                });
+            });
+            
+            describe('timer expiration', function(){
+                
+                xit('(maybe?) should advance automatically to the vote phase', function(){
+                
+                });
+                
+                xit('(maybe?) should disable merging, but not automaticallly transition to voting phase', function(){
+                
                 });
             });
         });

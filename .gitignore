@@ -2,3 +2,4 @@ logs/*
 !.gitkeep
 node_modules
 build
+xmloutput

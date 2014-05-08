@@ -5,7 +5,8 @@
   "dependencies": {
     "express": " 2.5.x",
     "moment": ">= 2.x",
-    "socket.io": "^0.9.16"
+    "socket.io": "^0.9.16",
+    "morgan": "~1.0.1"
   },
   "devDependencies": {
     "gulp-uglify": "^0.2.1",
