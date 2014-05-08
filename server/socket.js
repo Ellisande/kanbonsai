@@ -14,7 +14,7 @@ var socket = function(io){
       // send the new user their name and a list of users
       var initialize = function(roomName){
         meeting = meetings[roomName] || function(){
-            meetings[roomName] = new ServerMeeting(roomName); 
+            meetings[roomName] = new ServerMeeting(roomName);
             return meetings[roomName];
         }();
         name = model.getNewName(meeting.participants);
@@ -28,7 +28,7 @@ var socket = function(io){
         io.sockets.emit('meetings:update', {
           meetings: meetings
         });
-          
+
         socket.broadcast.to(roomName).emit('user:join', {
             user: name
         });
@@ -52,6 +52,23 @@ var socket = function(io){
 //        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
       });
 
+      //@Merge, Edit Comments
+      socket.on('update:meeting:comments', function(data){
+        io.sockets.in(roomName).emit('update:meeting:comments', data);
+      });
+
+       //@Highlight selected row
+      socket.on('highlight:selected:row', function(data){
+         //console.log("Called server on(highlight:selected:row) ");
+        io.sockets.in(roomName).emit('highlight:selected:row', data);
+      });
+
+       //@Highlight selected row
+      socket.on('host:toggle', function(data){
+        //console.log("Called server on(host:toggle) "+ data.name);
+        io.sockets.in(roomName).emit('host:toggle', data);
+      });
+
       // event to save and broadcast out when a user votes up a comment.
       socket.on('comment:vote', function(data){
         var poster = data.comment.author;
@@ -68,16 +85,16 @@ var socket = function(io){
                     });
                 }
             }
-        });  
+        });
       });
-      
+
       socket.on('timer:start', function(data){
         meeting.timer.endTime = new Date().getTime()+data.duration;
         io.sockets.in(roomName).emit('timer:start', {
             duration: data.duration
         });
       });
-      
+
       socket.on('timer:stop', function(){
         io.sockets.in(roomName).emit('timer:stop', {});
       });
@@ -110,9 +127,9 @@ var socket = function(io){
 
         roomName = "default";
         meeting = meetings["default"];
-        
+
       }
-      
+
       // clean up when a user leaves, and broadcast it to other users
       socket.on('unsubscribe', unsubscribe);
       socket.on('disconnect', unsubscribe);
@@ -120,4 +137,3 @@ var socket = function(io){
 }
 
 module.exports = socket;
-

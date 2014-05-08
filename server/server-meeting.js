@@ -1,10 +1,24 @@
 'use strict';
+var moment = require('moment');
+
+function Phase(name, next){
+    this.name = name;
+    this.time = moment.duration(3, 'minutes');
+    this.next = next;
+}
 
 module.exports = function ServerMeeting(name) {
-    var moment = require('moment');
+    var phases = {
+        submit: new Phase('submit', this.merge),
+        merge: new Phase('merge', this.voting),
+        voting: new Phase('voting', this.discuss),
+        discuss: new Phase('discuss', this.complete),
+        complete: new Phase('complete')
+    };
     this.name = name;
     this.participants = [];
     this.comments = [];
+    this.phase = phases.start;
     this.startTime = moment(new Date()).add('minutes', 15);
     this.timer = {
         endTime: 0,
@@ -35,5 +49,10 @@ module.exports = function ServerMeeting(name) {
         });
 
         return res;
+    };
+    
+    this.nextPhase = function(){
+        this.phase = this.phase.next;
+        return this.phase;
     };
 };

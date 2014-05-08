@@ -53,9 +53,11 @@ function SnapshotCtrl($scope, snapshot){
     $scope.snapshot.commentOrder = '-voters.length';
 }
 
-function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
+
+function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails) {
     'use strict';
 //	socket.connect($routeParams.meetingName);
+   
     socket.emit('unsubscribe');
     socket.emit('subscribe', {
         name: $routeParams.meetingName
@@ -74,7 +76,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	});
 
 	socket.on('comment:post', function(data){
-        console.log('Got a comment');
+        //console.log('Got a comment');
 		$scope.meeting.comments.push(data.comment);
 	});
 
@@ -144,4 +146,94 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
             return this.voters.length;
         };
 	}
+    
+    
+	$scope.mergeView = function(){
+        console.log("o $scope.user : "+$scope.user);
+		mtgDetails.captureDetails($scope.meeting, $scope.user);
+        $location.url('merge');
+	};
+    
 } 
+
+function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
+    'use strict';
+     var mtg = mtgDetails.getDetails();
+     $scope.meeting = mtg.meeting;
+     $scope.user = mtg.user;
+    //Merge Functionality Starts
+    $scope.topicSelected=[];    
+    $scope.topicsSelectedToMerge= function(comment){
+    var index= $scope.topicSelected.indexOf(comment);
+    if(index==-1){
+      $scope.topicSelected.push(comment);
+    }else{
+      $scope.topicSelected.splice(index, 1);
+    }
+    
+    var text='';
+    angular.forEach($scope.topicSelected, function(value){
+     text = text + value.status +"\n";
+    }); 
+    $scope.newMergeText = text;
+    };
+    
+    $scope.mergeTopicsButtonClk = function(){
+      var copyFirstMatchComment={
+         author:'',
+         status:''
+      };
+      var authorArray=[];
+      for (var i=0; i<$scope.topicSelected.length; i++) {
+       for(var j=0; j<$scope.meeting.comments.length ; j++){
+        if($scope.topicSelected[i].status == $scope.meeting.comments[j].status){
+          
+          if(authorArray.indexOf($scope.meeting.comments[j].author) == -1) {
+           authorArray.push($scope.meeting.comments[j].author);
+          }
+          $scope.meeting.comments.splice(j,1);
+        }
+        }
+      }
+    copyFirstMatchComment.status = $scope.newMergeText;
+    copyFirstMatchComment.author = authorArray.toString();
+    $scope.topicSelected =[];
+    $scope.newMergeText = '';   
+    $scope.meeting.comments.push(copyFirstMatchComment);
+    socket.emit('update:meeting:comments', $scope.meeting.comments);
+   };
+    
+   socket.on('update:meeting:comments', function(data){
+		 $scope.meeting.comments=data;
+    });
+    
+   $scope.cancelMerge = function(){
+    //Uncheck all checked checkboxes
+    var checkboxes = document.getElementsByName('mergeCheckBoxes');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+     checkboxes[i].checked = false;
+    }
+    $scope.topicSelected =[];
+    $scope.newMergeText = '';   
+   };
+  // Merge Fuctionality Ends
+   
+    // Selected row hightlighted
+    socket.on('highlight:selected:row', function(comment){
+    for(var j=0; j<$scope.meeting.comments.length ; j++){
+      if($scope.meeting.comments[j].status == comment.status){
+          $scope.meeting.comments[j] = comment;
+      }else{
+       $scope.meeting.comments[j].selected = '';
+      }
+    }
+    });
+    
+    $scope.setSelected = function(comment) {
+       comment.selected = 'selected';
+       socket.emit('highlight:selected:row', comment);
+    }; 
+  // End
+
+ 
+}

@@ -7,6 +7,7 @@ var express = require('express');
 
 var app = module.exports = express.createServer();
 var morgan = require('morgan');
+var User = require('./server/model.js').User;
 
 //Stuff
 // Hook Socket.io into Express
