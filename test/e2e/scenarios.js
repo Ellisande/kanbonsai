@@ -26,6 +26,10 @@ var MeetingPage = function() {
     this.userGreeting = function() {
         return element(by.binding('user'));
     }
+    
+    this.meetingListText = function() {
+        $('.meeting-list').getText();
+    }
 };
         
 
@@ -49,8 +53,7 @@ describe('lean coffee', function(){
         it('should show the name of the meeting', function(){
             browser.debugger();
             
-            var meetingNameElement = $('.meeting-list'); // element(by.model('meeting.name'));
-            expect(meetingNameElement.getText()).toContain(homePage.getMeetingName());
+            expect(meetingPage.meetingListText()).toContain(homePage.getMeetingName());
         });
         
         xit('should show who the host is', function(){
