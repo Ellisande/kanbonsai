@@ -22,6 +22,13 @@ var HomePage = function() {
     }
 };
 
+var MeetingPage = function() {
+    this.userGreeting = function() {
+        return element(by.binding('user'));
+    }
+};
+        
+
 describe('lean coffee', function(){
 
     var homePage = new HomePage();
@@ -29,10 +36,10 @@ describe('lean coffee', function(){
     homePage.createMeeting();
 
     describe('meeting', function(){
+        var meetingPage = new MeetingPage();
 
         it('should display my user name', function(){
-            var userElement = element(by.binding('user'));
-            expect(userElement.getText()).toMatch(/You are: [\s\w]+/);
+            expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
         });
         
         xit('should display the meeting particpants', function(){
