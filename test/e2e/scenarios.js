@@ -28,7 +28,7 @@ var MeetingPage = function() {
     }
     
     this.meetingListText = function() {
-        $('.meeting-list').getText();
+        return $('.meeting-list').getText();
     }
 };
         
@@ -51,8 +51,6 @@ describe('lean coffee', function(){
         });
         
         it('should show the name of the meeting', function(){
-            browser.debugger();
-            
             expect(meetingPage.meetingListText()).toContain(homePage.getMeetingName());
         });
         
