@@ -1,30 +1,16 @@
-<div class="pure-u-20-24">
-	<div class="pure-u-1">
-		<form class="pure-form pure-form-stacked">
-		    <label>Search Topics</label>
-            <input type="text" ng-model="commentQuery">
-		</form>
-	</div>
+<div class="grid-100">
+    <form class="pure-form pure-form-stacked">
+        <label>Search Topics</label>
+        <input type="text" ng-model="commentQuery">
+    </form>
 
-	<div class="pure-u-1 comment" ng-repeat="comment in snapshot.comments | filter:commentQuery | orderBy:commentOrder">
-            <div class="pure-u-1-5 vote" ng-click="vote(comment)">
-					<span class="uparrow" >+{{comment.voters.length}}</span>
-            </div>
-            <div class="pure-u-4-5">
-                <h4 class="author">{{comment.status}}</h4>
-                <div class="by-line">By: {{comment.author}}</div>
-            </div>
-	</div>
+	<div class="comment" ng-repeat="comment in snapshot.comments | filter:commentQuery | orderBy:commentOrder">
+        <div class="grid-10 vote" ng-click="vote(comment)">
+            <span class="uparrow">+{{comment.voters.length}}</span>
+        </div>
+        <div class="grid-90">
+            <h4 class="author">{{comment.status}}</h4>
+            <div class="by-line">By: {{comment.author}}</div>
+        </div>
+    </div>
 </div>
-<div class="pure-u-1-8 meeting-menu">
-	<ul class="meeting-list">
-		<li class="list-heading">Timer</li>
-        <li ng-controller="LocalTimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
-            <span>{{duration.minutes() | timer}} :</span>
-            <span>{{duration.seconds() | timer}}</span>
-            <button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired">Start</button>
-            <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
-        </li>
-	</ul>
-</div>
-

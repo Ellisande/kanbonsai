@@ -23,11 +23,36 @@ a {
     float:left;
 }
 
-.comment {
+.pure-form input[type=text], .pure-form input[type=password], .pure-form input[type=email], .pure-form input[type=url], .pure-form input[type=date], .pure-form input[type=month], .pure-form input[type=time], .pure-form input[type=datetime], .pure-form input[type=datetime-local], .pure-form input[type=week], .pure-form input[type=number], .pure-form input[type=search], .pure-form input[type=tel], .pure-form input[type=color], .pure-form select, .pure-form textarea {
+    margin-bottom: 1em;
+}
+
+form + form {
     margin-top: 1em;
-    padding-bottom: .6em;
+}
+
+input[name="meeting-name"] {
+    width: 90%;
+}
+
+.comment {
+    margin-top: 1.1em;
+    padding-bottom: 1em;
     border-bottom: 1px solid gray;
     font-size: 1.1em;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.comment .grid-90, .comment .grid-10 {
+    float: none;
+}
+
+.comment .grid-90 {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .vote {
@@ -72,10 +97,7 @@ a {
 .hero-unit {
     background-color: #0E6262;
     color: white;
-}
-
-.hero-unit div{
-    padding: 10px;
+    padding: .25em .8em;
 }
 
 .meeting-header {
@@ -119,7 +141,6 @@ a {
 
 footer {
     border-top: 1px solid gray;
-    margin-left: 0.5em;
     margin-top: 1em;
 }
 
@@ -139,7 +160,3 @@ footer {
 .pure-skin-coffee .button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
 }
-.selected {
-  background-color: rgb(220, 220, 220); /* this is a maroon */
-}
-

@@ -2,18 +2,19 @@
 <html lang="en" ng-app="lean-coffee">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
   <title>Lean Coffee</title>
+  <link rel="stylesheet" href="lib/unsemantic-grid.css" />
   <link rel="stylesheet" href="lib/pure/pure.css" />
   <link rel="stylesheet" href="lib/pure/coffee-skin.css" />
   <link rel="stylesheet" href="static/app.css"/>
   <style type="text/css">
-    body {padding-top:40px;}
+    body {padding-top:10px;}
   </style>
 </head>
-<body>
-<body class="pure-g-r pure-skin-coffee">
+<body class="grid-container">
   <!-- Body Section -->
-  <div class="pure-u-1-8">
+  <div class="grid-15">
       <div class="meeting-directory">
           <ul class="meeting-list" ng-controller="MeetingListCtrl">
             <li class="list-heading">Active Meetings</li>
@@ -29,9 +30,9 @@
     <!-- End sidebar -->
   </div>
   <!-- start body section -->
-  <div ng-view class="pure-u-7-8"></div>
+  <div ng-view class="grid-85 mobile-grid-100"></div>
 
-  <footer class="pure-u-1">
+  <footer class="grid-100">
     <p>Lean Coffee is a community project. Visit us at <a href="http://github.com/Ellisande/lean-coffee">github.com/Ellisande</a></p>
   </footer>
 
