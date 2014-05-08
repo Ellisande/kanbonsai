@@ -9,13 +9,9 @@
 				<input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
 
 		</form>
-		<form class="pure-form pure-form-stacked">
-		    <label>Search Topics</label>
-            <input type="text" ng-model="commentQuery">
-		</form>
 	</div>
 
-	<div class="pure-u-1 comment" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
+	<div class="pure-u-1 comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
             <div class="pure-u-1-5 vote" ng-click="vote(comment)">
 					<span class="uparrow" >+{{comment.voters.length}}</span>
             </div>
@@ -43,4 +39,3 @@
 		</li>
 	</ul>
 </div>
-
