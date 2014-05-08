@@ -1,79 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-<testsuite name="lean coffee" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting" errors="0" tests="1" failures="1" time="2.229" timestamp="2014-05-07T08:51:29">
-  <testcase classname="lean coffee.meeting" name="should show the name of the meeting" time="2.227"><failure type="expect" message="Error: No element found using locator: by.model(&amp;quot;meeting.name&amp;quot;)">Error: No element found using locator: by.model(&amp;quot;meeting.name&amp;quot;)
-    at /usr/local/lib/node_modules/protractor/lib/protractor.js:1062:17
-    at /usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/goog/base.js:1178:15
-    at webdriver.promise.ControlFlow.runInNewFrame_ (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1598:20)
-    at notify (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:428:12)
-    at notifyAll (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:397:7)
-    at resolve (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:375:7)
-    at fulfill (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:493:5)
-    at Object.webdriver.promise.asap (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:732:5)
-    at webdriver.promise.ControlFlow.runInNewFrame_ (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1609:25)
-    at notify (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:428:12)
-==== async task ====
-WebDriver.call(function)
-    at webdriver.WebDriver.call (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/webdriver.js:511:15)
-    at webdriver.WebDriver.findElementsInternal_ (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/webdriver.js:832:15)
-    at webdriver.WebDriver.findElements (/usr/local/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/webdriver.js:812:17)
-    at Object.findElementsOverride (/usr/local/lib/node_modules/protractor/lib/locators.js:173:21)
-    at Protractor.findElementsOverrideHelper_ (/usr/local/lib/node_modules/protractor/lib/protractor.js:1060:15)
-    at Protractor.findElement (/usr/local/lib/node_modules/protractor/lib/protractor.js:765:18)
-    at Object.elementFinder.(anonymous function) [as getText] (/usr/local/lib/node_modules/protractor/lib/protractor.js:115:24)
-    at null.&amp;lt;anonymous&amp;gt; (/Users/kskj/Projects/lean-coffee/test/e2e/scenarios.js:42:39)
-    at flow.execute.then.e.stack (/usr/local/lib/node_modules/protractor/jasminewd/index.js:43:14)
-==== async task ====
-Asynchronous test function: it(&amp;quot;should show the name of the meeting&amp;quot;)
-    at null.&amp;lt;anonymous&amp;gt; (/usr/local/lib/node_modules/protractor/jasminewd/index.js:42:14)
-    at null.&amp;lt;anonymous&amp;gt; (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/async-callback.js:45:37)
-    at jasmine.Block.execute (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:1174:17)
-    at jasmine.Queue.next_ (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:2209:31)
-    at null._onTimeout (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:2199:18)
-    at Timer.listOnTimeout [as ontimeout] (timers.js:110:15)==== async task ====
-Error
-    at null.&amp;lt;anonymous&amp;gt; (/Users/kskj/Projects/lean-coffee/test/e2e/scenarios.js:40:9)
-    at jasmine.Env.describe_ (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:913:21)
-    at jasmine.Env.describe (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:898:15)
-    at describe (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:658:27)
-    at null.&amp;lt;anonymous&amp;gt; (/Users/kskj/Projects/lean-coffee/test/e2e/scenarios.js:31:5)
-    at jasmine.Env.describe_ (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:913:21)
-    at jasmine.Env.describe (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:898:15)
-    at describe (/usr/local/lib/node_modules/protractor/node_modules/minijasminenode/lib/jasmine-1.3.1.js:658:27)
-    at Object.&amp;lt;anonymous&amp;gt; (/Users/kskj/Projects/lean-coffee/test/e2e/scenarios.js:25:1)</failure></testcase>
+<testsuite name="lean coffee.meeting" errors="0" tests="1" failures="0" time="2.402" timestamp="2014-05-07T20:43:01">
+  <testcase classname="lean coffee.meeting" name="should show the name of the meeting" time="2.4"></testcase>
 </testsuite>
-<testsuite name="lean coffee.meeting.sumbit-merge phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.sumbit-merge phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.sumbit-merge phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.sumbit-merge phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.sumbit-merge phase.merge ownership" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.sumbit-merge phase.merge ownership" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.sumbit-merge phase.merge text" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.sumbit-merge phase.merge text" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.voting phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.voting phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.voting phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.voting phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.all topics discussed" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.all topics discussed" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.timer expiration" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.timer expiration.vote is to stop talking about the current topic" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.timer expiration.vote is to stop talking about the current topic" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.timer expiration.vote is to continue talking" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.timer expiration.vote is to continue talking" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.timer expiration.the vote to continue is tied or no one votes" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.timer expiration.the vote to continue is tied or no one votes" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.tie breakers" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.tie breakers" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.(maybe?) notes" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.(maybe?) notes" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.email" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.email" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
-<testsuite name="lean coffee.meeting.discuss phase.email.body" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T08:51:32">
+<testsuite name="lean coffee.meeting.discuss phase.email.body" errors="0" tests="0" failures="0" time="0" timestamp="2014-05-07T20:43:04">
 </testsuite>
 </testsuites>

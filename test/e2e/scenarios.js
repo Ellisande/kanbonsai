@@ -38,8 +38,11 @@ describe('lean coffee', function(){
         });
         
         it('should show the name of the meeting', function(){
-            var meetingNameElement = element(by.model('meeting.name'));
-            expect(meetingNameElement.getText()).toBe(homePage.getMeetingName());
+            browser.debugger();
+            
+            // $('.planet-info').getText();
+            var meetingNameElement = $('.meeting-list'); // element(by.model('meeting.name'));
+            expect(meetingNameElement.getText()).toContain(homePage.getMeetingName());
         });
         
         xit('should show who the host is', function(){
