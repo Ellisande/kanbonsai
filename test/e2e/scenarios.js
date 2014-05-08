@@ -1,36 +1,16 @@
-function random(min, max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
-
-var HomePage = function() {
-    this.meetingName = 'test' + random(1000,2000);
-    
-    this.meetingInput = element(by.model('meetingName')),
-    this.createMeetingButton = element(by.buttonText('Create a Meeting!')),
-    
-    this.get = function() {
-        browser.get('http://localhost:5000/'); 
-    }
-    
-    this.createMeeting = function() {
-        this.meetingInput.sendKeys(this.meetingName);
-        this.createMeetingButton.click();
-    }
-    
-    this.getMeetingName = function() {
-        return this.meetingName;
-    }
-};
+var po = require('./page-objects');
 
 describe('lean coffee', function(){
 
-    var homePage = new HomePage();
+    var homePage = new po.HomePage();
     homePage.get();
-    homePage.createMeeting();
+    homePage.createMeeting(); // TODO: expect meeting page
 
     describe('meeting', function(){
+        var meetingPage = new po.MeetingPage();
 
-        xit('should display my user name', function(){
+        it('should display my user name', function(){
+            expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
         });
         
         xit('should display the meeting particpants', function(){
@@ -38,8 +18,7 @@ describe('lean coffee', function(){
         });
         
         it('should show the name of the meeting', function(){
-            var meetingNameElement = element(by.model('meeting.name'));
-            expect(meetingNameElement.getText()).toBe(homePage.getMeetingName());
+            expect(meetingPage.meetingListText()).toContain(homePage.getMeetingName());
         });
         
         xit('should show who the host is', function(){
