@@ -30,7 +30,9 @@ describe('lean coffee', function(){
 
     describe('meeting', function(){
 
-        xit('should display my user name', function(){
+        it('should display my user name', function(){
+            var userElement = element(by.binding('user'));
+            expect(userElement.getText()).toMatch(/You are: [\s\w]+/);
         });
         
         xit('should display the meeting particpants', function(){
@@ -40,7 +42,6 @@ describe('lean coffee', function(){
         it('should show the name of the meeting', function(){
             browser.debugger();
             
-            // $('.planet-info').getText();
             var meetingNameElement = $('.meeting-list'); // element(by.model('meeting.name'));
             expect(meetingNameElement.getText()).toContain(homePage.getMeetingName());
         });
