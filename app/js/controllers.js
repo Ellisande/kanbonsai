@@ -3,13 +3,13 @@
 /* Controllers */
 function MeetingListCtrl($scope, socket){
     'use strict';
-    socket.on('meetings:update', function(meetings){
+    socket.global('meetings:update', function(meetings){
        $scope.meetings = meetings.meetings;
     });
     $scope.leave = function(){
         socket.emit('unsubscribe');
     };
-    
+
     $scope.limit = 10;
 }
 
@@ -56,16 +56,17 @@ function SnapshotCtrl($scope, snapshot){
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails) {
     'use strict';
+    socket.cleanup();
 //	socket.connect($routeParams.meetingName);
-   
+
     socket.emit('unsubscribe');
     socket.emit('subscribe', {
         name: $routeParams.meetingName
     });
-    
+
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
-	socket.on('init', function (data) 
+	socket.on('init', function (data)
 	{
         $scope.user = data.user;
         $scope.meeting = data.meeting;
@@ -89,13 +90,13 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
                 allUsers.splice(index,1);
             }
         });
-        
+
         $scope.meeting.comments.forEach(function(comment, index){
             if(comment.author == userToRemove){
                 $scope.meeting.comments.splice(index, 1);
                 return;
             }
-            
+
             comment.voters.forEach(function(voter, index){
                 if(voter == userToRemove){
                     comment.voters.splice(index, 1);
@@ -146,15 +147,15 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
             return this.voters.length;
         };
 	}
-    
-    
+
+
 	$scope.mergeView = function(){
         console.log("o $scope.user : "+$scope.user);
 		mtgDetails.captureDetails($scope.meeting, $scope.user);
         $location.url('merge');
 	};
-    
-} 
+
+}
 
 function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
     'use strict';
@@ -162,7 +163,7 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
      $scope.meeting = mtg.meeting;
      $scope.user = mtg.user;
     //Merge Functionality Starts
-    $scope.topicSelected=[];    
+    $scope.topicSelected=[];
     $scope.topicsSelectedToMerge= function(comment){
     var index= $scope.topicSelected.indexOf(comment);
     if(index==-1){
@@ -170,14 +171,14 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
     }else{
       $scope.topicSelected.splice(index, 1);
     }
-    
+
     var text='';
     angular.forEach($scope.topicSelected, function(value){
      text = text + value.status +"\n";
-    }); 
+    });
     $scope.newMergeText = text;
     };
-    
+
     $scope.mergeTopicsButtonClk = function(){
       var copyFirstMatchComment={
          author:'',
@@ -187,7 +188,7 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
       for (var i=0; i<$scope.topicSelected.length; i++) {
        for(var j=0; j<$scope.meeting.comments.length ; j++){
         if($scope.topicSelected[i].status == $scope.meeting.comments[j].status){
-          
+
           if(authorArray.indexOf($scope.meeting.comments[j].author) == -1) {
            authorArray.push($scope.meeting.comments[j].author);
           }
@@ -198,15 +199,15 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
     copyFirstMatchComment.status = $scope.newMergeText;
     copyFirstMatchComment.author = authorArray.toString();
     $scope.topicSelected =[];
-    $scope.newMergeText = '';   
+    $scope.newMergeText = '';
     $scope.meeting.comments.push(copyFirstMatchComment);
     socket.emit('update:meeting:comments', $scope.meeting.comments);
    };
-    
+
    socket.on('update:meeting:comments', function(data){
 		 $scope.meeting.comments=data;
     });
-    
+
    $scope.cancelMerge = function(){
     //Uncheck all checked checkboxes
     var checkboxes = document.getElementsByName('mergeCheckBoxes');
@@ -214,10 +215,10 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
      checkboxes[i].checked = false;
     }
     $scope.topicSelected =[];
-    $scope.newMergeText = '';   
+    $scope.newMergeText = '';
    };
   // Merge Fuctionality Ends
-   
+
     // Selected row hightlighted
     socket.on('highlight:selected:row', function(comment){
     for(var j=0; j<$scope.meeting.comments.length ; j++){
@@ -228,12 +229,12 @@ function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
       }
     }
     });
-    
+
     $scope.setSelected = function(comment) {
        comment.selected = 'selected';
        socket.emit('highlight:selected:row', comment);
-    }; 
+    };
   // End
 
- 
+
 }
