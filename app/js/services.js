@@ -4,23 +4,37 @@ angular.module('services', [])
 .factory('socket', function ($rootScope, $location) {
     'use strict';
     var socket;
-    
+    var registeredEvents = [];
+
     var connect = function(){
           if(!socket){
             socket = io.connect('http://'+$location.host()+':5000');
           }
     };
-    
+
     connect();
-    
+
     return {
-        on: function (eventName, callback) {
-          socket.on(eventName, function () {  
+        global: function(eventName, callback){
+          socket.on(eventName, function () {
             var args = arguments;
             $rootScope.$apply(function () {
               callback.apply(socket, args);
             });
           });
+        },
+        on: function (eventName, callback) {
+          var proxyFunction = function () {
+            var args = arguments;
+            $rootScope.$apply(function () {
+              callback.apply(socket, args);
+            });
+          };
+          registeredEvents.push({
+            eventName: eventName,
+            callback: proxyFunction
+          });
+          socket.on(eventName, proxyFunction);
         },
         emit: function (eventName, data, callback) {
             socket.emit(eventName, data, function () {
@@ -32,8 +46,10 @@ angular.module('services', [])
                 });
           });
         },
-        disconnect: function(){
-          socket.disconnect();
+        cleanup: function(){
+          registeredEvents.forEach(function(event, index){
+            socket.removeListener(event.eventName, event.callback);
+          });
         }
     };
 }).
@@ -60,7 +76,7 @@ factory('mtgDetails', function (){
     captureDetails: function(meeting, user){
       this.capture.meeting = angular.copy(meeting);
       this.capture.user = angular.copy(user);
-      
+
     },
     getDetails: function(){
       var temp = this.capture;
@@ -73,7 +89,7 @@ factory('timerService', function(socket, $timeout){
     return function($scope){
         $scope.duration = moment.duration(3, 'minutes');
         var currentTimeout = {};
-        
+
         var startTimeout = function(timer){
             var onTimeout = function(){
                 timer.expired = moment().isAfter(timer.endTime);
@@ -86,11 +102,11 @@ factory('timerService', function(socket, $timeout){
             };
             currentTimeout = $timeout(onTimeout,1000);
         };
-        
+
         var timer = {
             endTime: moment(),
             currentDuration: function(){
-              return moment.duration(this.endTime.diff(moment()));  
+              return moment.duration(this.endTime.diff(moment()));
             },
             start: function(duration){
                 socket.emit('timer:start',{
@@ -120,13 +136,13 @@ factory('timerService', function(socket, $timeout){
                 timer.stop();
             }
         });
-        return timer;   
+        return timer;
     };
 }).factory('localTimer', function($timeout){
     return function($scope){
         $scope.duration = moment.duration(3, 'minutes');
         var currentTimeout = {};
-        
+
         var startTimeout = function(timer){
             var onTimeout = function(){
                 timer.expired = moment().isAfter(timer.endTime);
@@ -139,11 +155,11 @@ factory('timerService', function(socket, $timeout){
             };
             currentTimeout = $timeout(onTimeout,1000);
         };
-        
+
         var timer = {
             endTime: moment(),
             currentDuration: function(){
-              return moment.duration(this.endTime.diff(moment()));  
+              return moment.duration(this.endTime.diff(moment()));
             },
             start: function(duration){
                 $timeout.cancel(currentTimeout);
@@ -161,8 +177,8 @@ factory('timerService', function(socket, $timeout){
 
             expired: true
         };
-        
-        return timer; 
+
+        return timer;
 }});
 
 function Meeting(name, startTime){
