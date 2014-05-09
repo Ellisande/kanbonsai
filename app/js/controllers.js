@@ -57,7 +57,6 @@ function SnapshotCtrl($scope, snapshot){
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails) {
     'use strict';
     socket.cleanup();
-//	socket.connect($routeParams.meetingName);
 
     socket.emit('unsubscribe');
     socket.emit('subscribe', {
@@ -155,6 +154,17 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
         $location.url('merge');
 	};
 
+  var phaseMap = {
+    submit: 'partials/meeting.html',
+    merge: 'partials/merge.html',
+    voting: 'partials/voting.html'
+  };
+
+  $scope.meetingPhase = phaseMap.submit;
+  $scope.changePhase = function(){
+    console.log($scope.meeting);
+    // $scope.meetingPhase = phaseMap[$scope.meeting.phase];
+  };
 }
 
 function MergeCtrl($scope, $routeParams, socket, mtgDetails) {

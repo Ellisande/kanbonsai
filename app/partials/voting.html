@@ -1,20 +1,21 @@
 <div class="grid-70">
     <h2>You are: {{user}}</h2>
 
-    <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
-        <label for="status">Post New Topic</label>
+    <div class="pure-form pure-form-stacked">
+        <label for="status">Search Topics</label>
         <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
-        <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
-    </form>
-
+    </div>
     <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
+        <div class="grid-10 vote" ng-click="vote(comment)">
+            <span class="uparrow">+{{comment.voters.length}}</span>
+        </div>
         <div class="grid-90">
             <h4 class="author">{{comment.status}}</h4>
             <div class="by-line">By: {{comment.author}}</div>
         </div>
     </div>
-		</form>
-	</div>
+    </form>
+  </div>
 
 </div>
 <div class="grid-25 push-5 meeting-menu">

@@ -9,16 +9,16 @@ function Phase(name, next){
 
 module.exports = function ServerMeeting(name) {
     var phases = {
-        submit: new Phase('submit', this.merge),
-        merge: new Phase('merge', this.voting),
-        voting: new Phase('voting', this.discuss),
-        discuss: new Phase('discuss', this.complete),
+        submit: new Phase('submit', 'merge'),
+        merge: new Phase('merge', 'voting'),
+        voting: new Phase('voting', 'discuss'),
+        discuss: new Phase('discuss', 'complete'),
         complete: new Phase('complete')
     };
     this.name = name;
     this.participants = [];
     this.comments = [];
-    this.phase = phases.start;
+    this.phase = phases.sumbit;
     this.startTime = moment(new Date()).add('minutes', 15);
     this.timer = {
         endTime: 0,
@@ -44,15 +44,15 @@ module.exports = function ServerMeeting(name) {
 
     this.getAllComments = function () {
         var res = [];
-        this.comments.forEach(function (comment) { 
-            res.push(comment); 
+        this.comments.forEach(function (comment) {
+            res.push(comment);
         });
 
         return res;
     };
-    
+
     this.nextPhase = function(){
-        this.phase = this.phase.next;
+        this.phase = phases[this.phase.next];
         return this.phase;
     };
 };
