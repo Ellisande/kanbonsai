@@ -72,7 +72,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 	});
 
 	socket.on('user:join', function(data){
-		$scope.meeting.participants.push(data.user);
+		$scope.meeting.participants.push(data.user.name);
 	});
 
 	socket.on('comment:post', function(data){
@@ -116,7 +116,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
 	$scope.sendComment = function(){
 		var commentToPost = $scope.userComment;
-		commentToPost.author = $scope.user;
+		commentToPost.author = $scope.user.name;
 		commentToPost.voters = [];
 		socket.emit('comment:post',{
 			comment: commentToPost

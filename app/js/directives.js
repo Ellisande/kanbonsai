@@ -4,20 +4,21 @@ angular.module('directives', [])
         restrict: 'E',
         controller: function($scope, socket){
             $scope.becomeHost = function(){
-                //console.log("it's called "+ $scope.user);
-                socket.emit('host:toggle', {
-                    name: $scope.user
-                });
+                console.log("it's called previous : "+ $scope.user.isHost);
+                //$scope.user.isHost=!$scope.user.isHost;
+                $scope.user.isHost =!$scope.user.isHost;
+                socket.emit('host:toggle', $scope.user);
             };
 
-         socket.on('host:toggle', function(data){
-         console.log(" > Called host:toggle : "+$scope.meeting.participants.length);
-          for(var k=0; k <$scope.meeting.participants.length; k++){
-               console.log($scope.meeting.participants[k]);
-          }
+         socket.on('host:toggled', function(userData){
+
+         console.log(" > Called host:toggled now : "+ $scope.user.name +" host : "+$scope.user.isHost);
+          // for(var k=0; k <$scope.meeting.participants.length; k++){
+          //      console.log($scope.meeting.participants[k]);
+          // }
 
          });
         },
         templateUrl: 'partials/be-the-host.html',
     };
-   });
+  });

@@ -1,39 +1,46 @@
-<div class="pure-u-20-24">
-	<div class="pure-u-1">
-        <h2>You are: {{user}} </h2>
-        <input type="button"  user="newuser" />
-	</div>
-	
-    <!--Merge Topics Start -->
-    <div id="mergeTopics" ng-show="topicSelected.length" ng-init="newMergeText=newMergeText || ''">
-      <textarea ng-model="newMergeText" rows="5" cols="50"></textarea>
-      <button class="pure-button pure-button-primary" ng-click="mergeTopicsButtonClk()">
-         <span ng-show="topicSelected.length == 1">Edit Topic</span>
-         <span ng-hide="topicSelected.length == 1">Merge Topics</span></button>
-        <button class="pure-button pure-button-primary" ng-click="cancelMerge()">Cancel</button>
-    </div>
-	 <!--Merge Topics End -->
-     <div class="{{comment.selected}}" 
-         ng-repeat="comment in meeting.comments | filter:commentQuery |  orderBy:commentOrder"
-         >
-    <div  class="pure-u-1 comment" >
-   
-         <input type="checkbox" name="mergeCheckBoxes" id="{{$index}}"
-                ng-click="topicsSelectedToMerge(comment)" /><!-- Merge CheckBox -->    
-        
-            <div class="pure-u-4-5"  ng-click="setSelected(comment)" >
-                <h4 class="author">{{comment.status}}</h4>
-                <div class="by-line">By: {{comment.author}}</div>
-            </div>
-	</div>
-         </div>
-   </div>
-<div class="pure-u-1-8 meeting-menu">
-	<ul class="meeting-list">
-		<li class="list-heading">Participants</li>
-		<li ng-repeat="participant in meeting.participants">
-			{{participant}}
-		</li>
-	</ul>
+
+
+<div class="grid-70">
+	<h2>You are: {{user.name}}
+</h2>
+
+<h3>Merge Phase</h3>
+<!--Merge Topics Start -->
+<div id="mergeTopics" ng-show="topicSelected.length" ng-init="newMergeText=newMergeText || ''">
+	<textarea ng-model="newMergeText" rows="6" cols="45"></textarea>
+	<button class="button pure-button-primary"  ng-click="mergeTopicsButtonClk()">
+		<span ng-show="topicSelected.length == 1">Edit Topic</span>
+		<span ng-hide="topicSelected.length == 1">Merge Topics</span></button>
+		<button class="button pure-button-primary" style="padding: 2px 2px 2px 2px;" ng-click="cancelMerge()">Cancel</button>
 </div>
- 
+<!--Merge Topics End -->
+		<div class="comment  {{comment.selected}}" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
+				<input type="checkbox" name="mergeCheckBoxes" id="{{$index}}"
+							ng-click="topicsSelectedToMerge(comment)" /><!-- Merge CheckBox -->
+				<div class="grid-90"  ng-click="setSelected(comment)" >
+						<h4 class="author">{{comment.status}}</h4>
+						<div class="by-line">By: {{comment.author}}</div>
+				</div>
+		</div>
+		</form>
+	</div>
+
+</div>
+<div class="grid-25 push-5 meeting-menu">
+		<ul class="meeting-list">
+				<li class="list-heading">Timer</li>
+				<li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
+						<span>{{duration.minutes() | timer}} :</span>
+						<span>{{duration.seconds() | timer}}</span>
+						<button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired">Start</button>
+						<button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
+				</li>
+				<li class="list-heading">Participants</li>
+				<li ng-repeat="participant in meeting.participants">
+						{{participant}}<span ng-show="user.isHost && user.name == participant">(H)</span>
+				</li>
+				<li>
+						<a ng-click="snapshot(meeting)">Take a Snapshot</a>
+				</li>
+		</ul>
+</div>

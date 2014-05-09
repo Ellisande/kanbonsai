@@ -5,7 +5,7 @@ var meetings = {default: new ServerMeeting('default')};
 var socket = function(io){
   return function (socket) {
       var meeting = meetings.default;
-      var name = "";
+      var user = "";
       var roomName = "default";
 
       socket.emit('meetings:update',{
@@ -17,11 +17,11 @@ var socket = function(io){
             meetings[roomName] = new ServerMeeting(roomName);
             return meetings[roomName];
         }();
-        name = model.getNewName(meeting.participants);
-        meeting.participants.push(name);
+        user = model.getNewName(meeting);
+        meeting.participants.push(user.name);
 //        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
         socket.emit('init', {
-            user: name,
+            user: user,
             meeting: meeting
         });
 
@@ -30,7 +30,7 @@ var socket = function(io){
         });
 
         socket.broadcast.to(roomName).emit('user:join', {
-            user: name
+            user: user
         });
       };
 
@@ -59,14 +59,12 @@ var socket = function(io){
 
        //@Highlight selected row
       socket.on('highlight:selected:row', function(data){
-         //console.log("Called server on(highlight:selected:row) ");
         io.sockets.in(roomName).emit('highlight:selected:row', data);
       });
 
        //@Highlight selected row
-      socket.on('host:toggle', function(data){
-        //console.log("Called server on(host:toggle) "+ data.name);
-        io.sockets.in(roomName).emit('host:toggle', data);
+      socket.on('host:toggle', function(userData){
+        io.sockets.in(roomName).emit('host:toggled', userData);
       });
 
       // event to save and broadcast out when a user votes up a comment.
@@ -103,26 +101,26 @@ var socket = function(io){
         socket.leave(roomName);
 
         var allUsers = meeting.participants || [];
-        allUsers.splice(allUsers.indexOf(name), 1);
+        allUsers.splice(allUsers.indexOf(user.name), 1);
 
         var comments = meeting.comments;
         var totalComments = comments.length;
         for(var i = 0; i < totalComments; i++){
-          if(comments[i].author === name){
+          if(comments[i].author === user.name){
             comments.splice(i,1);
             i--;
             totalComments--;
             continue;
           }
 
-          var containingIndex = comments[i].voters.indexOf(name);
+          var containingIndex = comments[i].voters.indexOf(user.name);
           if(containingIndex !== -1){
             comments[i].voters.splice(containingIndex,1);
           }
         }
 
         io.sockets.in(roomName).emit('user:left', {
-          user: name
+          user: user
         });
 
         roomName = "default";

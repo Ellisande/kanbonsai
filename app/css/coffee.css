@@ -160,3 +160,7 @@ footer {
 .pure-skin-coffee .button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
 }
+
+.selected{
+  background: rgb(224, 224, 224); /* this is a maroon */
+}
