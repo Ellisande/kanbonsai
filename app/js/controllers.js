@@ -62,7 +62,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     socket.emit('subscribe', {
         name: $routeParams.meetingName
     });
-
+  $scope.meeting = {phase: 'submit'};
 	$scope.commentOrder = '-voters.length';
 	$scope.userComment = new Comment();
 	socket.on('init', function (data)
@@ -155,16 +155,21 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 	};
 
   var phaseMap = {
-    submit: 'partials/meeting.html',
+    submit: 'partials/submit.html',
     merge: 'partials/merge.html',
     voting: 'partials/voting.html'
   };
 
-  $scope.meetingPhase = phaseMap.submit;
+  $scope.meetingPhase = phaseMap[$scope.meeting.phase];
   $scope.changePhase = function(){
-    console.log($scope.meeting);
-    // $scope.meetingPhase = phaseMap[$scope.meeting.phase];
+    socket.emit('update:phase');
   };
+
+  socket.on('update:phase', function(data){
+    console.log('phase updated');
+    console.log($scope.meeting.phase);
+    $scope.meeting.phase = data.phase;
+  });
 }
 
 function MergeCtrl($scope, $routeParams, socket, mtgDetails) {

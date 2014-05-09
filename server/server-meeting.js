@@ -18,7 +18,7 @@ module.exports = function ServerMeeting(name) {
     this.name = name;
     this.participants = [];
     this.comments = [];
-    this.phase = phases.sumbit;
+    this.phase = phases.submit;
     this.startTime = moment(new Date()).add('minutes', 15);
     this.timer = {
         endTime: 0,

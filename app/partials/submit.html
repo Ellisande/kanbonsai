@@ -1,8 +1,8 @@
-<div class="grid-70">
+<div class="grid-70 post">
   <h2>You are: {{user.name}}
 		<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
 	<!--	<toggle-host></toggle-host> --> &nbsp; &nbsp;
-		<button  ng-click="mergeView()" class="button pure-button-primary" > Next ></button>
+		<button  ng-click="changePhase()" class="button pure-button-primary" > Next ></button>
 				</span>
 		</h2>
 
@@ -19,7 +19,7 @@
         </div>
     </div>
 		</form>
-	</div>
+</div>
 
 </div>
 <div class="grid-25 push-5 meeting-menu">
@@ -34,9 +34,6 @@
         <li class="list-heading">Participants</li>
         <li ng-repeat="participant in meeting.participants">
           {{participant}}&nbsp;<span ng-show="user.isHost && user.name == participant">(H)</span>
-        </li>
-        <li>
-            <a ng-click="snapshot(meeting)">Take a Snapshot</a>
         </li>
     </ul>
 </div>

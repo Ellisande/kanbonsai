@@ -131,6 +131,13 @@ var socket = function(io){
       // clean up when a user leaves, and broadcast it to other users
       socket.on('unsubscribe', unsubscribe);
       socket.on('disconnect', unsubscribe);
+
+      socket.on('update:phase', function(){
+        meeting.nextPhase();
+        io.sockets.in(roomName).emit('update:phase', {
+          phase: meeting.phase
+        });
+      });
     };
 }
 

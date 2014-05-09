@@ -28,19 +28,9 @@
 </div>
 <div class="grid-25 push-5 meeting-menu">
 		<ul class="meeting-list">
-				<li class="list-heading">Timer</li>
-				<li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
-						<span>{{duration.minutes() | timer}} :</span>
-						<span>{{duration.seconds() | timer}}</span>
-						<button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired">Start</button>
-						<button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
-				</li>
 				<li class="list-heading">Participants</li>
 				<li ng-repeat="participant in meeting.participants">
 						{{participant}}<span ng-show="user.isHost && user.name == participant">(H)</span>
-				</li>
-				<li>
-						<a ng-click="snapshot(meeting)">Take a Snapshot</a>
 				</li>
 		</ul>
 </div>
