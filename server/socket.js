@@ -59,13 +59,11 @@ var socket = function(io){
 
        //@Highlight selected row
       socket.on('highlight:selected:row', function(data){
-         //console.log("Called server on(highlight:selected:row) ");
         io.sockets.in(roomName).emit('highlight:selected:row', data);
       });
 
        //@Highlight selected row
       socket.on('host:toggle', function(userData){
-        //console.log("Called server on(host:toggle) "+ userData.name);
         io.sockets.in(roomName).emit('host:toggled', userData);
       });
 
