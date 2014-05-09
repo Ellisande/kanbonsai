@@ -16,12 +16,6 @@
       <input type="text" ng-model="commentQuery">
   </form>
 
-  <ng-pluralize count="user.votesRemaining"
-    when="{'0': 'You have no votes remaining.',
-         '1': 'You have 1 vote remaining.',
-         'other': 'You have {} votes remaining.'}">
-  </ng-pluralize>
-
   <div class="comment" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
       <div class="grid-10 vote" ng-click="vote(comment)">
           <span class="uparrow">+{{comment.voters.length}}</span>
