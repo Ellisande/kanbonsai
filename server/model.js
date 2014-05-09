@@ -14,13 +14,13 @@ function isNameFree(name, participants){
   return participants.indexOf(name) == -1;
 }
 
-function getNewName(participants){
+function getNewName(meeting){
   var name;
   do{
     name = randomName(allNames);
-  } while (!isNameFree(name, participants))
+  } while (!isNameFree(name, meeting.participants))
 
-  return name;
+  return new User(name, meeting, "HardCodedId");
 }
 
 function User(name, meeting, socketId){

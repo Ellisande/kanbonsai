@@ -1,5 +1,10 @@
 <div class="grid-70">
-    <h2>You are: {{user}}</h2>
+  <h2>You are: {{user.name}}
+		<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
+		<toggle-host></toggle-host>&nbsp; &nbsp;
+		<button  ng-click="mergeView()" class="pure-button pure-button-primary" > Next ></button>
+				</span>
+		</h2>
 
     <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
         <label for="status">Post New Topic</label>
@@ -35,8 +40,8 @@
             <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
         </li>
         <li class="list-heading">Participants</li>
-        <li ng-repeat="user in meeting.participants">
-            {{user}}
+        <li ng-repeat="participant in meeting.participants">
+          {{participant}}&nbsp;<span ng-show="user.isHost && user.name == participant">(H)</span>
         </li>
         <li>
             <a ng-click="snapshot(meeting)">Take a Snapshot</a>
