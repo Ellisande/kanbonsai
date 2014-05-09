@@ -21,4 +21,16 @@ angular.module('directives', [])
         },
         templateUrl: 'partials/be-the-host.html',
     };
+  })
+  .directive('currentUser', function() {
+    return {
+      restrict: 'E',
+      template: '<h2>You are: {{user.name}}</h2>'
+    };
+  })
+  .directive('meetingMenu', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'partials/meeting-menu.html'
+    };
   });

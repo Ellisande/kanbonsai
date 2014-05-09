@@ -1,16 +1,15 @@
-<div class="grid-70 post">
-  <h2>You are: {{user.name}}
-		<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
+<div class="grid-70">
+  <current-user></current-user>
+	<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
 	<!--	<toggle-host></toggle-host> --> &nbsp; &nbsp;
-		<button  ng-click="changePhase()" class="button pure-button-primary" > Next ></button>
-				</span>
-		</h2>
+		<button  ng-click="changePhase()" class="pure-button pure-button-primary" > Next &rarr;</button>
+	</span>
 
-    <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
-        <label for="status">Post New Topic</label>
-        <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
-        <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
-    </form>
+  <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
+      <label for="status">Post New Topic</label>
+      <input name="status" type="text" required class="block span12" ng-model="userComment.status" />
+      <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
+  </form>
 
     <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
         <div class="grid-90">
@@ -21,19 +20,4 @@
 		</form>
 </div>
 
-</div>
-<div class="grid-25 push-5 meeting-menu">
-    <ul class="meeting-list">
-        <li class="list-heading">Timer</li>
-        <li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
-            <span>{{duration.minutes() | timer}} :</span>
-            <span>{{duration.seconds() | timer}}</span>
-            <button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired">Start</button>
-            <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
-        </li>
-        <li class="list-heading">Participants</li>
-        <li ng-repeat="participant in meeting.participants">
-          {{participant}}&nbsp;<span ng-show="user.isHost && user.name == participant">(H)</span>
-        </li>
-    </ul>
-</div>
+<meeting-menu></meeting-menu>
