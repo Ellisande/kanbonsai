@@ -1,33 +1,36 @@
 <div class="grid-70">
-  <h2>You are: {{user.name}}
-		<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
+  <current-user></current-user>
+	<span style="font-size:.7em; align:right; float:right;marig-right:10em;">
 	<!--	<toggle-host></toggle-host> --> &nbsp; &nbsp;
-		<button  ng-click="mergeView()" class="button pure-button-primary" > Next ></button>
-				</span>
-		</h2>
+		<button  ng-click="mergeView()" class="pure-button pure-button-primary" > Next &rarr;</button>
+	</span>
 
-    <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
-        <label for="status">Post New Topic</label>
-        <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
-        <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
-    </form>
+  <form class="pure-form pure-form-stacked" ng-submit="sendComment()">
+      <label for="status">Post New Topic</label>
+      <input name="status" type="text" required class="block span12" ng-model="userComment.status" />
+      <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
+  </form>
 
-    <form class="pure-form pure-form-stacked">
-        <label>Search Topics</label>
-        <input type="text" ng-model="commentQuery">
-    </form>
+  <form class="pure-form pure-form-stacked">
+      <label>Search Topics</label>
+      <input type="text" ng-model="commentQuery">
+  </form>
 
-    <div class="comment" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
-        <div class="grid-10 vote" ng-click="vote(comment)">
-            <span class="uparrow">+{{comment.voters.length}}</span>
-        </div>
-        <div class="grid-90">
-            <h4 class="author">{{comment.status}}</h4>
-            <div class="by-line">By: {{comment.author}}</div>
-        </div>
-    </div>
-		</form>
-	</div>
+  <ng-pluralize count="user.votesRemaining"
+    when="{'0': 'You have no votes remaining.',
+         '1': 'You have 1 vote remaining.',
+         'other': 'You have {} votes remaining.'}">
+  </ng-pluralize>
+
+  <div class="comment" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
+      <div class="grid-10 vote" ng-click="vote(comment)">
+          <span class="uparrow">+{{comment.voters.length}}</span>
+      </div>
+      <div class="grid-90">
+          <h4 class="author">{{comment.status}}</h4>
+          <div class="by-line">By: {{comment.author}}</div>
+      </div>
+  </div>
 
 </div>
 <div class="grid-25 push-5 meeting-menu">
