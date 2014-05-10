@@ -1,0 +1,19 @@
+<div class="grid-70">
+    <h1>Discuss phase goes here</h1>
+    <current-user></current-user>
+
+    <div class="pure-form pure-form-stacked">
+        <label for="status">Search Topics</label>
+        <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
+    </div>
+    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
+        <div class="grid-90">
+            <h4 class="author">{{comment.status}}</h4>
+            <div class="by-line">By: {{comment.author}}</div>
+        </div>
+    </div>
+    </form>
+  </div>
+
+</div>
+<meeting-menu></meeting-menu>
