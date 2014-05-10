@@ -6,8 +6,6 @@ var app = angular.module('lean-coffee', ['filters','services','directives']).
   'use strict';
   $routeProvider.
       when('/home', {templateUrl: 'partials/home.html',   controller: HomeCtrl}).
-      when('/meeting/:meetingName', {templateUrl: 'partials/meeting-new.html', controller: MeetingCtrl}).
-      when('/merge', {templateUrl: 'partials/merge.html', controller: MergeCtrl}).
-      when('/snapshot', {templateUrl: "partials/snapshot.html", controller: SnapshotCtrl}).
+      when('/meeting/:meetingName', {templateUrl: 'partials/meeting-main.html', controller: MeetingCtrl}).
       otherwise({redirectTo: '/home'});
 });
