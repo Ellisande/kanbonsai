@@ -157,99 +157,103 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
   var phaseMap = {
     submit: 'partials/submit.html',
     merge: 'partials/merge.html',
-    voting: 'partials/voting.html'
+    voting: 'partials/voting.html',
+    discuss: 'partials/discuss.html',
+    complete: 'partials/email.html'
   };
 
-  $scope.meetingPhase = phaseMap[$scope.meeting.phase];
+  $scope.meetingPhase = phaseMap.submit;
+  $scope.$watch('meeting.phase', function(){
+    $scope.meethingPhase = phaseMap[$scope.meeting.phase];
+  });
   $scope.changePhase = function(){
     socket.emit('update:phase');
   };
 
   socket.on('update:phase', function(data){
-    console.log('phase updated');
-    console.log($scope.meeting.phase);
     $scope.meeting.phase = data.phase;
+    $scope.meetingPhase = phaseMap[data.phase.name];
   });
+
+  //Merge Functionality Starts
+  $scope.topicSelected=[];
+  $scope.topicsSelectedToMerge= function(comment){
+  var index= $scope.topicSelected.indexOf(comment);
+  if(index==-1){
+    $scope.topicSelected.push(comment);
+  }else{
+    $scope.topicSelected.splice(index, 1);
+  }
+
+  var text='';
+  angular.forEach($scope.topicSelected, function(value){
+   text = text + value.status +"\n";
+  });
+  $scope.newMergeText = text;
+  };
+
+  $scope.mergeTopicsButtonClk = function(){
+    var copyFirstMatchComment={
+       author:'',
+       status:''
+    };
+    var authorArray=[];
+    for (var i=0; i<$scope.topicSelected.length; i++) {
+     for(var j=0; j<$scope.meeting.comments.length ; j++){
+      if($scope.topicSelected[i].status == $scope.meeting.comments[j].status){
+
+        if(authorArray.indexOf($scope.meeting.comments[j].author) == -1) {
+         authorArray.push($scope.meeting.comments[j].author);
+        }
+        $scope.meeting.comments.splice(j,1);
+      }
+      }
+    }
+  copyFirstMatchComment.status = $scope.newMergeText;
+  copyFirstMatchComment.author = authorArray.toString();
+  $scope.topicSelected =[];
+  $scope.newMergeText = '';
+  $scope.meeting.comments.push(copyFirstMatchComment);
+  //thread safety issue. This would clobber other people's changes.
+  socket.emit('update:meeting:comments', $scope.meeting.comments);
+ };
+
+ socket.on('update:meeting:comments', function(data){
+   $scope.meeting.comments=data;
+  });
+
+ $scope.cancelMerge = function(){
+  //Uncheck all checked checkboxes
+  var checkboxes = document.getElementsByName('mergeCheckBoxes');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+   checkboxes[i].checked = false;
+  }
+  $scope.topicSelected =[];
+  $scope.newMergeText = '';
+ };
+// Merge Fuctionality Ends
+
+  // Selected row hightlighted
+  socket.on('highlight:selected:row', function(comment){
+  for(var j=0; j<$scope.meeting.comments.length ; j++){
+    if($scope.meeting.comments[j].status == comment.status){
+        $scope.meeting.comments[j] = comment;
+    }else{
+     $scope.meeting.comments[j].selected = '';
+    }
+  }
+  });
+
+  $scope.setSelected = function(comment) {
+     comment.selected = 'selected';
+     socket.emit('highlight:selected:row', comment);
+  };
+// End
 }
 
 function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
     'use strict';
-     var mtg = mtgDetails.getDetails();
-     $scope.meeting = mtg.meeting;
-     $scope.user = mtg.user;
-    //Merge Functionality Starts
-    $scope.topicSelected=[];
-    $scope.topicsSelectedToMerge= function(comment){
-    var index= $scope.topicSelected.indexOf(comment);
-    if(index==-1){
-      $scope.topicSelected.push(comment);
-    }else{
-      $scope.topicSelected.splice(index, 1);
-    }
 
-    var text='';
-    angular.forEach($scope.topicSelected, function(value){
-     text = text + value.status +"\n";
-    });
-    $scope.newMergeText = text;
-    };
-
-    $scope.mergeTopicsButtonClk = function(){
-      var copyFirstMatchComment={
-         author:'',
-         status:''
-      };
-      var authorArray=[];
-      for (var i=0; i<$scope.topicSelected.length; i++) {
-       for(var j=0; j<$scope.meeting.comments.length ; j++){
-        if($scope.topicSelected[i].status == $scope.meeting.comments[j].status){
-
-          if(authorArray.indexOf($scope.meeting.comments[j].author) == -1) {
-           authorArray.push($scope.meeting.comments[j].author);
-          }
-          $scope.meeting.comments.splice(j,1);
-        }
-        }
-      }
-    copyFirstMatchComment.status = $scope.newMergeText;
-    copyFirstMatchComment.author = authorArray.toString();
-    $scope.topicSelected =[];
-    $scope.newMergeText = '';
-    $scope.meeting.comments.push(copyFirstMatchComment);
-    socket.emit('update:meeting:comments', $scope.meeting.comments);
-   };
-
-   socket.on('update:meeting:comments', function(data){
-		 $scope.meeting.comments=data;
-    });
-
-   $scope.cancelMerge = function(){
-    //Uncheck all checked checkboxes
-    var checkboxes = document.getElementsByName('mergeCheckBoxes');
-    for(var i=0, n=checkboxes.length;i<n;i++) {
-     checkboxes[i].checked = false;
-    }
-    $scope.topicSelected =[];
-    $scope.newMergeText = '';
-   };
-  // Merge Fuctionality Ends
-
-    // Selected row hightlighted
-    socket.on('highlight:selected:row', function(comment){
-    for(var j=0; j<$scope.meeting.comments.length ; j++){
-      if($scope.meeting.comments[j].status == comment.status){
-          $scope.meeting.comments[j] = comment;
-      }else{
-       $scope.meeting.comments[j].selected = '';
-      }
-    }
-    });
-
-    $scope.setSelected = function(comment) {
-       comment.selected = 'selected';
-       socket.emit('highlight:selected:row', comment);
-    };
-  // End
 
 
 }
