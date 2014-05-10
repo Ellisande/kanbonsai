@@ -13,7 +13,7 @@ module.exports = function ServerMeeting(name) {
         merge: new Phase('merge', 'voting'),
         voting: new Phase('voting', 'discuss'),
         discuss: new Phase('discuss', 'complete'),
-        complete: new Phase('complete')
+        complete: new Phase('complete', 'complete')
     };
     this.name = name;
     this.participants = [];
