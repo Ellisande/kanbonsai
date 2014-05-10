@@ -25,7 +25,6 @@ function TimerCtrl($scope, timerService){
     $scope.timer = timerService($scope);
     $scope.start = function(){
         $scope.timer.start(180000);
-//        $scope.timer.start(20000);
     };
     $scope.stop = function(){
         $scope.timer.stop();
@@ -38,33 +37,24 @@ function LocalTimerCtrl($scope, localTimer){
     $scope.timer = localTimer($scope);
     $scope.start = function(){
         $scope.timer.start(180000);
-//        $scope.timer.start(20000);
     };
     $scope.stop = function(){
         $scope.timer.stop();
     };
 }
 
-function SnapshotCtrl($scope, snapshot){
-    'use strict';
-	var meeting = snapshot.get();
-    $scope.snapshot = {};
-	$scope.snapshot.comments = meeting;
-    $scope.snapshot.commentOrder = '-voters.length';
-}
-
-
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails) {
-    'use strict';
-    socket.cleanup();
+  'use strict';
+  socket.cleanup();
 
-    socket.emit('unsubscribe');
-    socket.emit('subscribe', {
-        name: $routeParams.meetingName
-    });
+  socket.emit('unsubscribe');
+  socket.emit('subscribe', {
+      name: $routeParams.meetingName
+  });
+
   $scope.meeting = {phase: 'submit'};
-	$scope.commentOrder = '-voters.length';
-	$scope.userComment = new Comment();
+	$scope.topicOrder = '-voters.length';
+	$scope.userTopic = new Topic();
 	socket.on('init', function (data)
 	{
         $scope.user = data.user;
@@ -75,13 +65,12 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 		$scope.meeting.participants.push(data.user.name);
 	});
 
-	socket.on('comment:post', function(data){
-        //console.log('Got a comment');
-		$scope.meeting.comments.push(data.comment);
+	socket.on('topic:post', function(data){
+		$scope.meeting.topics.push(data.topic);
 	});
 
 	socket.on('user:left', function(data){
-        if($scope.meeting === undefined){return;}
+    if($scope.meeting === undefined){return;}
 		var userToRemove = data.user;
 		var allUsers = $scope.meeting.participants;
         allUsers.forEach(function(user, index){
@@ -90,69 +79,55 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
             }
         });
 
-        $scope.meeting.comments.forEach(function(comment, index){
-            if(comment.author == userToRemove){
-                $scope.meeting.comments.splice(index, 1);
+        $scope.meeting.topics.forEach(function(topic, index){
+            if(topic.author == userToRemove){
+                $scope.meeting.topics.splice(index, 1);
                 return;
             }
 
-            comment.voters.forEach(function(voter, index){
+            topic.voters.forEach(function(voter, index){
                 if(voter == userToRemove){
-                    comment.voters.splice(index, 1);
+                    topic.voters.splice(index, 1);
                 }
             });
         });
 
 	});
 
-	socket.on('comment:vote', function(data){
-		var allComments = $scope.meeting.comments;
-        allComments.forEach(function(comment, index){
-            if(comment.author == data.comment.author && comment.status === data.comment.status){
-                allComments[index] = data.comment;
+	socket.on('topic:vote', function(data){
+		var allTopics = $scope.meeting.topics;
+        allTopics.forEach(function(topic, index){
+            if(topic.author == data.topic.author && topic.body === data.topic.body){
+                allTopics[index] = data.topic;
             }
         });
 	});
 
-	$scope.sendComment = function(){
-		var commentToPost = $scope.userComment;
-		commentToPost.author = $scope.user.name;
-		commentToPost.voters = [];
-		socket.emit('comment:post',{
-			comment: commentToPost
+	$scope.sendTopic = function(){
+    var topicToPost = new Topic($scope.user.name);
+    topicToPost.body = $scope.userTopic.body;
+		socket.emit('topic:post',{
+			topic: topicToPost
 		});
-		$scope.userComment = {};
+		$scope.userTopic = {};
 	};
 
-	$scope.vote = function(comment){
+	$scope.vote = function(topic){
 		var voter = $scope.user;
-		socket.emit('comment:vote', {
-			comment: comment,
+		socket.emit('topic:vote', {
+			topic: topic,
 			voter: voter
 		});
 	};
 
-	$scope.snapshot = function(){
-		snapshot.grab($scope.meeting.comments);
-        socket.emit('unsubscribe');
-        $location.url('snapshot');
-	};
-
-	function Comment(author){
-		this.status = '';
+	function Topic(author){
+		this.body = '';
 		this.voters = [];
 		this.author = author;
 		this.votes = function(){
             return this.voters.length;
         };
 	}
-
-
-	$scope.mergeView = function(){
-        console.log("o $scope.user : "+$scope.user);
-		mtgDetails.captureDetails($scope.meeting, $scope.user);
-        $location.url('merge');
-	};
 
   var phaseMap = {
     submit: 'partials/submit.html',
@@ -162,10 +137,8 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     complete: 'partials/email.html'
   };
 
-  $scope.meetingPhase = phaseMap.submit;
-  $scope.$watch('meeting.phase', function(){
-    $scope.meethingPhase = phaseMap[$scope.meeting.phase];
-  });
+  $scope.meetingPhase = phaseMap[$scope.meeting.phase];
+
   $scope.changePhase = function(){
     socket.emit('update:phase');
   };
@@ -177,49 +150,50 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
   //Merge Functionality Starts
   $scope.topicSelected=[];
-  $scope.topicsSelectedToMerge= function(comment){
-  var index= $scope.topicSelected.indexOf(comment);
-  if(index==-1){
-    $scope.topicSelected.push(comment);
-  }else{
-    $scope.topicSelected.splice(index, 1);
-  }
+  $scope.topicsSelectedToMerge= function(topic){
+    var index= $scope.topicSelected.indexOf(topic);
+    if(index==-1){
+      $scope.topicSelected.push(topic);
+    }else{
+      $scope.topicSelected.splice(index, 1);
+    }
 
-  var text='';
-  angular.forEach($scope.topicSelected, function(value){
-   text = text + value.status +"\n";
-  });
-  $scope.newMergeText = text;
+    var text='';
+    angular.forEach($scope.topicSelected, function(value){
+     text += value.body +"\n";
+    });
+
+    $scope.newMergeText = text;
   };
 
   $scope.mergeTopicsButtonClk = function(){
-    var copyFirstMatchComment={
+    var copyFirstMatchTopic={
        author:'',
-       status:''
+       body:''
     };
     var authorArray=[];
     for (var i=0; i<$scope.topicSelected.length; i++) {
-     for(var j=0; j<$scope.meeting.comments.length ; j++){
-      if($scope.topicSelected[i].status == $scope.meeting.comments[j].status){
+     for(var j=0; j<$scope.meeting.topics.length ; j++){
+      if($scope.topicSelected[i].body == $scope.meeting.topics[j].body){
 
-        if(authorArray.indexOf($scope.meeting.comments[j].author) == -1) {
-         authorArray.push($scope.meeting.comments[j].author);
+        if(authorArray.indexOf($scope.meeting.topics[j].author) == -1) {
+         authorArray.push($scope.meeting.topics[j].author);
         }
-        $scope.meeting.comments.splice(j,1);
+        $scope.meeting.topics.splice(j,1);
       }
       }
     }
-  copyFirstMatchComment.status = $scope.newMergeText;
-  copyFirstMatchComment.author = authorArray.toString();
+  copyFirstMatchTopic.body = $scope.newMergeText;
+  copyFirstMatchTopic.author = authorArray.toString();
   $scope.topicSelected =[];
   $scope.newMergeText = '';
-  $scope.meeting.comments.push(copyFirstMatchComment);
+  $scope.meeting.topics.push(copyFirstMatchTopic);
   //thread safety issue. This would clobber other people's changes.
-  socket.emit('update:meeting:comments', $scope.meeting.comments);
+  socket.emit('update:meeting:topics', $scope.meeting.topics);
  };
 
- socket.on('update:meeting:comments', function(data){
-   $scope.meeting.comments=data;
+ socket.on('update:meeting:topics', function(data){
+   $scope.meeting.topics=data;
   });
 
  $scope.cancelMerge = function(){
@@ -234,19 +208,19 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 // Merge Fuctionality Ends
 
   // Selected row hightlighted
-  socket.on('highlight:selected:row', function(comment){
-  for(var j=0; j<$scope.meeting.comments.length ; j++){
-    if($scope.meeting.comments[j].status == comment.status){
-        $scope.meeting.comments[j] = comment;
+  socket.on('highlight:selected:row', function(topic){
+  for(var j=0; j<$scope.meeting.topics.length ; j++){
+    if($scope.meeting.topics[j].body == topic.body){
+        $scope.meeting.topics[j] = topic;
     }else{
-     $scope.meeting.comments[j].selected = '';
+     $scope.meeting.topics[j].selected = '';
     }
   }
   });
 
-  $scope.setSelected = function(comment) {
-     comment.selected = 'selected';
-     socket.emit('highlight:selected:row', comment);
+  $scope.setSelected = function(topic) {
+     topic.selected = 'selected';
+     socket.emit('highlight:selected:row', topic);
   };
 // End
 }

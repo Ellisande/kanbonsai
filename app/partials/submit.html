@@ -1,16 +1,16 @@
 <div class="grid-70">
   <current-user></current-user>
 
-  <form class="pure-form pure-form-stacked post" ng-submit="sendComment()">
+  <form class="pure-form pure-form-stacked post" ng-submit="sendTopic()">
       <label for="status">Post New Topic</label>
-      <input name="status" type="text" required class="block" ng-model="userComment.status" />
+      <input name="status" type="text" required class="block" ng-model="userTopic.body" />
       <input type="submit" tabindex="1" title="Speak Up!" value="Speak Up!" class="pure-button pure-button-primary" />
   </form>
 
-    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
+    <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.body">
         <div class="grid-90">
-            <h4 class="author">{{comment.status}}</h4>
-            <div class="by-line">By: {{comment.author}}</div>
+            <h4 class="author">{{topic.body}}</h4>
+            <div class="by-line">By: {{topic.author}}</div>
         </div>
     </div>
 		</form>

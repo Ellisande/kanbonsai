@@ -1,25 +1,23 @@
-
-
 <div class="grid-70">
 	<current-user></current-user>
 
-<h3>Merge Phase</h3>
+<h3>Merge Phase {{newMergeText}}</h3>
 <!--Merge Topics Start -->
-<div id="mergeTopics" ng-show="topicSelected.length" ng-init="newMergeText=newMergeText || ''">
+<div id="mergeTopics" ng-show="topicSelected.length">
 	<textarea ng-model="newMergeText" rows="6" cols="45"></textarea>
 	<button class="button pure-button-primary"  ng-click="mergeTopicsButtonClk()">
 		<span ng-show="topicSelected.length == 1">Edit Topic</span>
 		<span ng-hide="topicSelected.length == 1">Merge Topics</span>
 	</button>
-	<button class="button pure-button-primary" style="padding: 2px 2px 2px 2px;" ng-click="cancelMerge()">Cancel</button>
+	<button class="button pure-button-primary" style="padding: 2px;" ng-click="cancelMerge()">Cancel</button>
 </div>
 <!--Merge Topics End -->
-		<div class="comment  {{comment.selected}}" ng-repeat="comment in meeting.comments | filter:commentQuery | orderBy:commentOrder">
+		<div class="topic  {{topic.selected}}" ng-repeat="topic in meeting.topics">
 				<input type="checkbox" name="mergeCheckBoxes" id="{{$index}}"
-							ng-click="topicsSelectedToMerge(comment)" /><!-- Merge CheckBox -->
-				<div class="grid-90"  ng-click="setSelected(comment)" >
-						<h4 class="author">{{comment.status}}</h4>
-						<div class="by-line">By: {{comment.author}}</div>
+							ng-click="topicsSelectedToMerge(topic)" /><!-- Merge CheckBox -->
+				<div class="grid-90"  ng-click="setSelected(topic)" >
+						<h4 class="author">{{topic.body}}</h4>
+						<div class="by-line">By: {{topic.author}}</div>
 				</div>
 		</div>
 		</form>

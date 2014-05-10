@@ -3,15 +3,15 @@
 
     <div class="pure-form pure-form-stacked">
         <label for="status">Search Topics</label>
-        <input name="status" type="text" required="true" class="block" ng-model="userComment.status" />
+        <input name="status" type="text" required="true" class="block" ng-model="userTopic.status" />
     </div>
-    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status">
-        <div class="grid-10 vote" ng-click="vote(comment)">
-            <span class="uparrow">+{{comment.voters.length}}</span>
+    <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.status">
+        <div class="grid-10 vote" ng-click="vote(topic)">
+            <span class="uparrow">+{{topic.voters.length}}</span>
         </div>
         <div class="grid-90">
-            <h4 class="author">{{comment.status}}</h4>
-            <div class="by-line">By: {{comment.author}}</div>
+            <h4 class="author">{{topic.body}}</h4>
+            <div class="by-line">By: {{topic.author}}</div>
         </div>
     </div>
     </form>

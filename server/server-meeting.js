@@ -17,7 +17,7 @@ module.exports = function ServerMeeting(name) {
     };
     this.name = name;
     this.participants = [];
-    this.comments = [];
+    this.topics = [];
     this.phase = phases.submit;
     this.startTime = moment(new Date()).add('minutes', 15);
     this.timer = {
@@ -34,15 +34,15 @@ module.exports = function ServerMeeting(name) {
         return this.participants;
     };
 
-    this.addComment = function (comment) {
+    this.addTopic = function (comment) {
         this.comments.push(comment);
     };
 
-    this.removeComment = function (comment) {
+    this.removeTopic = function (comment) {
         delete this.comments[comment];
     };
 
-    this.getAllComments = function () {
+    this.getAllTopics = function () {
         var res = [];
         this.comments.forEach(function (comment) {
             res.push(comment);

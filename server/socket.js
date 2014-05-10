@@ -19,7 +19,6 @@ var socket = function(io){
         }();
         user = model.getNewName(meeting);
         meeting.participants.push(user.name);
-//        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
         socket.emit('init', {
             user: user,
             meeting: meeting
@@ -42,19 +41,18 @@ var socket = function(io){
       });
 
       // event to save and broadcast out when a user adds a comment.
-      socket.on('comment:post', function(data){
-        var newComment = data.comment;
-        newComment.voters = [];
-        meeting.comments.push(newComment);
-        io.sockets.in(roomName).emit('comment:post', {
-            comment: newComment
+      socket.on('topic:post', function(data){
+        var newTopic = data.topic;
+        newTopic.voters = [];
+        meeting.topics.push(newTopic);
+        io.sockets.in(roomName).emit('topic:post', {
+            topic: newTopic
         });
-//        io.of('').clients('unit').forEach(function(client){console.log(client.id)});
       });
 
       //@Merge, Edit Comments
-      socket.on('update:meeting:comments', function(data){
-        io.sockets.in(roomName).emit('update:meeting:comments', data);
+      socket.on('update:meeting:topics', function(data){
+        io.sockets.in(roomName).emit('update:meeting:topics', data);
       });
 
        //@Highlight selected row
@@ -68,17 +66,17 @@ var socket = function(io){
       });
 
       // event to save and broadcast out when a user votes up a comment.
-      socket.on('comment:vote', function(data){
-        var poster = data.comment.author;
+      socket.on('topic:vote', function(data){
+        var poster = data.topic.author;
         var voter = data.voter;
-        var comments = meeting.comments;
+        var topics = meeting.topics;
 
-        comments.forEach(function(comment){
-            if(comment.author === poster && comment.status === data.comment.status){
-                if(comment.voters.indexOf(voter) == -1){
-                    comment.voters.push(voter);
-                    io.sockets.in(roomName).emit('comment:vote', {
-                      comment: comment,
+        topics.forEach(function(topic){
+            if(topic.author === poster && topic.status === data.topic.status){
+                if(topic.voters.indexOf(voter) == -1){
+                    topic.voters.push(voter);
+                    io.sockets.in(roomName).emit('topic:vote', {
+                      topic: topic,
                       voter: voter
                     });
                 }
@@ -103,19 +101,19 @@ var socket = function(io){
         var allUsers = meeting.participants || [];
         allUsers.splice(allUsers.indexOf(user.name), 1);
 
-        var comments = meeting.comments;
-        var totalComments = comments.length;
-        for(var i = 0; i < totalComments; i++){
-          if(comments[i].author === user.name){
-            comments.splice(i,1);
+        var topics = meeting.topics;
+        var totalTopics = topics.length;
+        for(var i = 0; i < totalTopics; i++){
+          if(topics[i].author === user.name){
+            topics.splice(i,1);
             i--;
-            totalComments--;
+            totalTopics--;
             continue;
           }
 
-          var containingIndex = comments[i].voters.indexOf(user.name);
+          var containingIndex = topics[i].voters.indexOf(user.name);
           if(containingIndex !== -1){
-            comments[i].voters.splice(containingIndex,1);
+            topics[i].voters.splice(containingIndex,1);
           }
         }
 

@@ -4,12 +4,12 @@
 
     <div class="pure-form pure-form-stacked">
         <label for="status">Search Topics</label>
-        <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
+        <input name="status" type="text" required="true" class="block span12" ng-model="userTopic.status" />
     </div>
-    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
+    <div class="topic" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
         <div class="grid-90">
-            <h4 class="author">{{comment.status}}</h4>
-            <div class="by-line">By: {{comment.author}}</div>
+            <h4 class="author">{{topic.body}}</h4>
+            <div class="by-line">By: {{topic.author}}</div>
         </div>
     </div>
     </form>
