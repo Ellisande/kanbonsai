@@ -3,9 +3,9 @@
 
     <div class="pure-form pure-form-stacked">
         <label for="status">Search Topics</label>
-        <input name="status" type="text" required="true" class="block span12" ng-model="userComment.status" />
+        <input name="status" type="text" required="true" class="block" ng-model="userComment.status" />
     </div>
-    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status | orderBy:commentOrder">
+    <div class="comment" ng-repeat="comment in meeting.comments | filter:userComment.status">
         <div class="grid-10 vote" ng-click="vote(comment)">
             <span class="uparrow">+{{comment.voters.length}}</span>
         </div>
