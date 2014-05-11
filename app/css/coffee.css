@@ -168,3 +168,15 @@ footer {
 .selected{
   background: rgb(224, 224, 224); /* this is a maroon */
 }
+
+.headlineUser h2, .headlineUser p {
+    display: inline;
+    vertical-align: top;
+    line-height: 28px;
+}
+.headlineUser h2 {
+    font-weight: bold;
+}
+.headlineUser p {
+    padding-left: 60px;
+}

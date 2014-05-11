@@ -62,7 +62,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 	});
 
 	socket.on('user:join', function(data){
-		$scope.meeting.participants.push(data.user.name);
+		$scope.meeting.participants.push(data.user);
 	});
 
 	socket.on('topic:post', function(data){
@@ -160,7 +160,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
     var text='';
     angular.forEach($scope.topicSelected, function(value){
-     text += value.body +"\n";
+     text+=value.body+'\n';
     });
 
     $scope.newMergeText = text;

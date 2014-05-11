@@ -11,6 +11,7 @@ var randomName = function(allNames){
 };
 
 function isNameFree(name, participants){
+  console.log(participants);
   return participants.indexOf(name) == -1;
 }
 
@@ -18,18 +19,26 @@ function getNewName(meeting){
   var name;
   do{
     name = randomName(allNames);
+
   } while (!isNameFree(name, meeting.participants))
 
-  return new User(name, meeting, "HardCodedId");
+  return name;
 }
-
-function User(name, meeting, socketId){
+function User(name, meetingName, socketId){
     this.name = name;
-    this.meeting = meeting;
+    this.meetingName = meetingName;
     this.socketId = socketId || "";
     this.isHost = false;
     this.votesRemaining = 3;
     this.votedOn = [];
+}
+
+function participantIndexOf(searchTerm, myArray) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i].name === searchTerm)
+        return false;
+    }
+    return true;
 }
 
 module.exports = {

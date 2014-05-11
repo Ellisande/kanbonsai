@@ -1,6 +1,7 @@
 var ServerMeeting = require('./server-meeting');
 var model = require('./model');
 var meetings = {default: new ServerMeeting('default')};
+var User = model.User;
 
 var socket = function(io){
   return function (socket) {
@@ -17,8 +18,9 @@ var socket = function(io){
             meetings[roomName] = new ServerMeeting(roomName);
             return meetings[roomName];
         }();
-        user = model.getNewName(meeting);
-        meeting.participants.push(user.name);
+         user = new User(model.getNewName(meeting), meeting.name, socket.id);
+
+        meeting.participants.push(user);
         socket.emit('init', {
             user: user,
             meeting: meeting
@@ -60,7 +62,7 @@ var socket = function(io){
         io.sockets.in(roomName).emit('highlight:selected:row', data);
       });
 
-       //@Highlight selected row
+       //@Toggle Host
       socket.on('host:toggle', function(userData){
         io.sockets.in(roomName).emit('host:toggled', userData);
       });
@@ -98,9 +100,10 @@ var socket = function(io){
       var unsubscribe = function () {
         socket.leave(roomName);
 
-        var allUsers = meeting.participants || [];
-        allUsers.splice(allUsers.indexOf(user.name), 1);
-
+      //   var allUsers = meeting.participants || [];
+      //  for(var i = 0; i < allUsers.length; i++){
+      //    allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
+      //   }
         var topics = meeting.topics;
         var totalTopics = topics.length;
         for(var i = 0; i < totalTopics; i++){

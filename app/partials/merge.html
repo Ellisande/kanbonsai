@@ -1,5 +1,8 @@
 <div class="grid-70">
+	<div class="headlineUser">
 	<current-user></current-user>
+	<toggle-host></toggle-host>
+</div>
 
 <h3>Merge Phase</h3>
 <!--Merge Topics Start -->
@@ -13,7 +16,7 @@
 </div>
 <!--Merge Topics End -->
 		<div class="topic  {{topic.selected}}" ng-repeat="topic in meeting.topics">
-				<input type="checkbox" name="mergeCheckBoxes" id="{{$index}}"
+				<input type="checkbox" name="mergeCheckBoxes" id="mergeCheckBoxes{{$index}}"
 							ng-click="topicsSelectedToMerge(topic)" /><!-- Merge CheckBox -->
 				<div class="grid-90"  ng-click="setSelected(topic)" >
 						<h4 class="author">{{topic.body}}</h4>

@@ -8,11 +8,12 @@
             <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
         </li>
         <li class="list-heading">Participants</li>
-        <li ng-repeat="participant in meeting.participants">
-          {{participant}}&nbsp;<span ng-show="user.isHost && user.name == participant">(H)</span>
+      <li ng-repeat="participant in meeting.participants | orderBy:'isHost'">
+          {{participant.name}}&nbsp;<span ng-show="participant.isHost">(H)</span>
         </li>
-        <li>
-          <button  ng-click="changePhase()" class="pure-button pure-button-primary"> Next Phase &rarr;</button>
+
+        <li ng-show="user.isHost">
+          <button  ng-click="changePhase()" id="nextPhase1" class="pure-button pure-button-primary">Next Phase &rarr;</button>
         </li>
     </ul>
 </div>

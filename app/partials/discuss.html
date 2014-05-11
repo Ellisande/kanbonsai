@@ -6,8 +6,8 @@
         <label for="status">Search Topics</label>
         <input name="status" type="text" required="true" class="block span12" ng-model="userTopic.status" />
     </div>
-    <div class="topic" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
-        <div class="grid-90">
+    <div class="topic {{topic.selected}}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
+        <div class="grid-90" ng-click="setSelected(topic)" >
             <h4 class="author">{{topic.body}}</h4>
             <div class="by-line">By: {{topic.author}}</div>
         </div>
