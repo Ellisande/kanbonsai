@@ -23,7 +23,7 @@ angular.module('directives', [])
   .directive('currentUser', function() {
     return {
       restrict: 'E',
-      template: '<h2>You are: {{user.name}}</h2>'
+      template: '<span>You are: {{user.name}}</span>'
     };
   })
   .directive('meetingMenu', function() {

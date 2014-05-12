@@ -100,10 +100,10 @@ var socket = function(io){
       var unsubscribe = function () {
         socket.leave(roomName);
 
-      //   var allUsers = meeting.participants || [];
-      //  for(var i = 0; i < allUsers.length; i++){
-      //    allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
-      //   }
+        var allUsers = meeting.participants || [];
+        for(var i = 0; i < allUsers.length; i++){
+          allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
+        }
         var topics = meeting.topics;
         var totalTopics = topics.length;
         for(var i = 0; i < totalTopics; i++){
