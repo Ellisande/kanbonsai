@@ -38,8 +38,9 @@ describe('lean coffee', function(){
 
         });
 
-        xit('should show a timer', function(){
-
+        it('should show a timer', function(){
+          expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+          expect(meetingPage.timerSeconds().getText()).not.toBeNull();
         });
 
         xit('should allow the host to start the timer', function(){
@@ -52,20 +53,38 @@ describe('lean coffee', function(){
 
         describe('sumbit phase', function(){
 
+            var topics = [];
+            var author = /You are: ([\s\w]+)/.exec(meetingPage.userGreeting().getText())[0];
+
+
             it('should allow us submit a topic', function() {
-              var topic = meetingPage.postTopic();
-              expect(meetingPage.getTopics).toContain(topic);
+              var allTopics;
+              topics.push(meetingPage.postTopic());
+              topics.push(meetingPage.postTopic());
+              topics.push(meetingPage.postTopic());
+
+              allTopics = meetingPage.getTopics();
+
+              expect(allTopics.count()).toBe(3);
             });
 
-            xit('should show all topics', function(){
-              // TODO: how do I know what all the topics are?
+            it('should show all topics', function(){
+                var allTopics = meetingPage.getTopics();
+                expect(allTopics.get(0).getText()).toBe(topics[0]);
+                expect(allTopics.get(1).getText()).toBe(topics[1]);
+                expect(allTopics.get(2).getText()).toBe(topics[2]);
             });
 
-            xit('should show the remaining time for the phase', function(){
+            it('should show the remaining time for the phase', function(){
+              expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+              expect(meetingPage.timerSeconds().getText()).not.toBeNull();
             });
 
-            xit('should show the name of the person who submitted the topic', function(){
-              // TODO: how do I know who I am?
+            it('should show the name of the person who submitted the topic', function(){
+              var allAuthors = meetingPage.getAuthors();
+              expect(allAuthors.get(0).getText()).toBe(author);
+              expect(allAuthors.get(1).getText()).toBe(author);
+              expect(allAuthors.get(2).getText()).toBe(author);
             });
 
             describe('timer expires', function(){

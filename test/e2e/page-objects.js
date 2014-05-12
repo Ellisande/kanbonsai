@@ -31,16 +31,35 @@ module.exports.MeetingPage = function() {
         return $('.meeting-list').getText();
     };
 
+    this.timerMinutes = function() {
+      return element(by.binding('duration.minutes() | timer'));
+    };
+
+    this.timerSeconds = function() {
+      return element(by.binding('duration.seconds() | timer'));
+    };
+
     this.postTopic = function() {
       var topic = "test topic " + random(10000, 90000);
-      // TODO: get input, press button
+      element(by.model('userTopic.body')).sendKeys(topic);
+      element(by.buttonText('Speak Up!')).click();
 
       return topic;
     };
 
+    // returns a promise of an array of WebElements (see: https://github.com/angular/protractor/blob/master/docs/api.md#elementall)
     this.getTopics = function() {
-      var topics = [];
+      return element.all(
+        by.repeater('topic in meeting.topics')
+        .column('{{topic.body}}')
+      );
+    };
 
-      return topics;
+    // returns a promise of an array of WebElements (see: https://github.com/angular/protractor/blob/master/docs/api.md#elementall)
+    this.getAuthors = function() {
+      return element.all(
+        by.repeater('topic in meeting.topics')
+        .column('{{topic.author}}')
+      );
     };
 };
