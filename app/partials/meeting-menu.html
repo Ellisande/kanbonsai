@@ -8,7 +8,7 @@
             <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired">Stop</button>
         </li>
         <li class="list-heading">Participants</li>
-      <li ng-repeat="participant in meeting.participants | orderBy:'isHost'">
+      <li ng-repeat="participant in meeting.participants | orderBy:'!isHost'">
           {{participant.name}}&nbsp;<span ng-show="participant.isHost">(H)</span>
         </li>
 

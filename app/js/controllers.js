@@ -163,7 +163,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
      text+=value.body+'\n';
     });
 
-    $scope.newMergeText = text;
+    $scope.newMergeText = text.trim();
   };
 
   $scope.mergeTopicsButtonClk = function(){
