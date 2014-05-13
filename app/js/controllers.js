@@ -217,6 +217,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     }
   copyFirstMatchTopic.body = $scope.newMergeText;
   copyFirstMatchTopic.author = authorArray.toString();
+  copyFirstMatchTopic.voters =[];
   $scope.topicSelected =[];
   $scope.newMergeText = '';
   $scope.meeting.topics.push(copyFirstMatchTopic);
