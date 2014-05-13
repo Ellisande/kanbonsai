@@ -59,7 +59,8 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 	{
         $scope.user = data.user;
         $scope.meeting = data.meeting;
-        $scope.meetingPhase = data.meeting.phase;
+        $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
+        console.log(data.meeting);
 	});
 
 	socket.on('user:join', function(data){
@@ -169,8 +170,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     discuss: 'partials/discuss.html',
     complete: 'partials/email.html'
   };
-
-  $scope.meetingPhase = phaseMap[$scope.meeting.phase];
 
   $scope.changePhase = function(){
     socket.emit('update:phase');
