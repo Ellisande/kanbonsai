@@ -45,7 +45,11 @@ module.exports.MeetingPage = function() {
       element(by.buttonText('Speak Up!')).click();
 
       return topic;
-    };
+   };
+
+  this.goToMergePhase = function() {
+    element(by.buttonText('Next Phase →')).click();
+  };
 
     // returns a promise of an array of WebElements (see: https://github.com/angular/protractor/blob/master/docs/api.md#elementall)
     this.getTopics = function() {
@@ -62,4 +66,36 @@ module.exports.MeetingPage = function() {
         .column('{{topic.author}}')
       );
     };
+};
+module.exports.MergePage = function() {
+
+ };
+
+ module.exports.GlobalFunction = function() {
+
+  this.allTopics = element.all(by.repeater('topic in meeting.topics'));
+  this.getTopicElem = function(rowNum, columnNum){
+   return element(by.repeater('topic in meeting.topics').row(rowNum).column(columnNum));
+ };
+
+   this.getElementById = function(idValue){
+    return element( by.css('[id='+idValue+']'));
+  };
+
+  this.clickElemById = function(id){
+    this.getElementById(id).click();
+  };
+
+  this.getElemByButtonText = function(buttonText){
+    return element(by.buttonText(buttonText));
+  };
+
+  this.clickElemByButtonText= function(buttonText){
+    this.getElemByButtonText(buttonText).click();
+  };
+
+  this.getElementByModel = function(modelValue){
+    return element(by.model(modelValue));
+  };
+
 };

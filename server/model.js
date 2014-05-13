@@ -10,11 +10,6 @@ var randomName = function(allNames){
   return allNames[Math.floor((Math.random()*allNames.length))];
 };
 
-function isNameFree(name, participants){
-  console.log(participants);
-  return participants.indexOf(name) == -1;
-}
-
 function getNewName(meeting){
   var name;
   do{
@@ -33,13 +28,15 @@ function User(name, meetingName, socketId){
     this.votedOn = [];
 }
 
-function participantIndexOf(searchTerm, myArray) {
+function isNameFree(searchTerm, myArray) {
     for(var i = 0, len = myArray.length; i < len; i++) {
-        if (myArray[i].name === searchTerm)
+      if (myArray[i].name === searchTerm){
         return false;
+      }
     }
-    return true;
+  return true;
 }
+
 
 module.exports = {
     getNewName: getNewName,

@@ -60,7 +60,6 @@ factory('snapshot', function (){
       this.capture = angular.copy(meeting);
     },
     get: function(){
-      console.log(this.capture);
       var temp = this.capture;
       this.capture = {};
       return temp;

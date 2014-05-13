@@ -2,12 +2,15 @@ var po = require('./page-objects');
 
 describe('lean coffee', function(){
 
-    var homePage = new po.HomePage();
-
-    homePage.get();
-    homePage.createMeeting(); // TODO: expect meeting page
+    var global   = new po.GlobalFunction();
 
     describe('meeting', function(){
+      var homePage = new po.HomePage();
+
+
+      homePage.get();
+      homePage.createMeeting(); // TODO: expect meeting page
+
         var meetingPage = new po.MeetingPage();
 
         it('should display my user name', function() {
@@ -30,7 +33,18 @@ describe('lean coffee', function(){
 
         });
 
-        xit('should allow a user to become a host', function(){
+        it('should allow a user to become a host', function(){
+            var nextPhase = global.getElemByButtonText('Next Phase →');
+            var becomeHost = global.getElemByButtonText('Become a Host');
+            var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+
+            expect(nextPhase.isDisplayed()).toEqual(false);
+            expect(becomeHost.isDisplayed()).toEqual(true);
+            becomeHost.click();
+
+            expect(nextPhase.isDisplayed()).toEqual(true);
+            expect(becomeHost.isDisplayed()).toEqual(false);
+            expect(backToNormalUser.isDisplayed()).toEqual(true);
 
         })
 
@@ -51,11 +65,12 @@ describe('lean coffee', function(){
 
         });
 
-        describe('sumbit phase', function(){
+        meetingPage.userGreeting().getText().then(function(userGreeting) {
+          var author = userGreeting.substring(9);
+
+          describe('sumbit phase', function() {
 
             var topics = [];
-            var author = /You are: ([\s\w]+)/.exec(meetingPage.userGreeting().getText())[0];
-
 
             it('should allow us submit a topic', function() {
               var allTopics;
@@ -66,6 +81,12 @@ describe('lean coffee', function(){
               allTopics = meetingPage.getTopics();
 
               expect(allTopics.count()).toBe(3);
+
+//               meetingPage.postTopic();
+//               expect(global.allTopics.count()).toEqual(9);
+//               expect(global.getTopicElem(0,'body').getText()).toEqual('Hello1');
+//               meetingPage.goToMergePhase();
+
             });
 
             it('should show all topics', function(){
@@ -82,9 +103,17 @@ describe('lean coffee', function(){
 
             it('should show the name of the person who submitted the topic', function(){
               var allAuthors = meetingPage.getAuthors();
-              expect(allAuthors.get(0).getText()).toBe(author);
-              expect(allAuthors.get(1).getText()).toBe(author);
-              expect(allAuthors.get(2).getText()).toBe(author);
+
+              allAuthors.get(0).getText().then(function(byline) {
+                expect(byline.substring(4)).toBe(author);
+              });
+              allAuthors.get(1).getText().then(function(byline) {
+                expect(byline.substring(4)).toBe(author);
+              });
+              allAuthors.get(2).getText().then(function(byline) {
+                expect(byline.substring(4)).toBe(author);
+              });
+
             });
 
             describe('timer expires', function(){
@@ -93,34 +122,55 @@ describe('lean coffee', function(){
 
                 });
             });
+
         });
+      })
+    });
 
-        describe('merge phase', function(){
+        xdescribe('merge phase', function(){
 
-            xit('should allow merging of 2+ topics', function(){
+          var mergePage = new po.MergePage();
 
+          it('should allow merging of 2+ topics', function(){
+            expect(global.allTopics.count()).toEqual(9);
+            expect(global.getTopicElem(0,'body').getText()).toEqual('Hello1');
+             global.clickElemById("mergeCheckBoxes1");
+             global.clickElemById("mergeCheckBoxes2");
+
+            expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('Hello2\nHello3');
+             global.clickElemByButtonText('Merge Topics');
+            expect(global.allTopics.count()).toEqual(8);
+
+          });
+
+           describe('merge ownership', function(){
+
+            it('should show a list of owners for a merged topic', function(){
+               expect(global.getTopicElem(2, 'author').getText()).toMatch(/[\s\w]+/);
             });
-
-            xit('should allow us to merge two topics', function(){
-
-            });
-
-            describe('merge ownership', function(){
-
-                xit('should show a list of owners for a merged topic', function(){
-
-                });
-            });
+           });
 
             describe('merge text', function(){
 
-                xit('should merge text when topics are merged', function(){
+              it('should merge text when topics are merged', function(){
+                 global.clickElemById("mergeCheckBoxes1");
+                 global.clickElemById("mergeCheckBoxes7");
 
-                });
+                expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('Hello4\nHello2\nHello3');
+                 global.clickElemByButtonText('Merge Topics');
+                expect(global.allTopics.count()).toEqual(7);
 
-                xit('should allow editing of the merged text', function(){
+              });
 
-                });
+              it('should allow editing of the merged text', function(){
+                  global.clickElemById("mergeCheckBoxes2");
+                  var newMergeText=global.getElementByModel('newMergeText');
+                  newMergeText.clear();
+                  newMergeText.sendKeys('New Text Added');
+                  expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('New Text Added');
+                  expect(global.allTopics.count()).toEqual(7);
+
+              });
 
             });
 
@@ -301,7 +351,7 @@ describe('lean coffee', function(){
                     });
                 });
             });
-        });
+
     });
 
 });
