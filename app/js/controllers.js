@@ -60,7 +60,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
         $scope.user = data.user;
         $scope.meeting = data.meeting;
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
-        console.log(data.meeting);
 	});
 
 	socket.on('user:join', function(data){
