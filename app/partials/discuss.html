@@ -1,18 +1,15 @@
-<div class="grid-70">
-      <div class="headlineUser">
-       <current-user></current-user>
-      </div>
-
-    <h3>Discuss Phase</h3>
-
-    <div class="pure-form pure-form-stacked">
-        <label for="status">Search Topics</label>
-        <input name="status" type="text" required="true" class="block span12" ng-model="userTopic.status" />
+<div class="grid-70 discuss">
+    <div class="headlineUser">
+     <current-user></current-user>
     </div>
-    <div class="topic {{topic.selected}}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
+    <div class="topic {{topic.selected}}" ng-class="{current: $first}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
+        <div class="grid-10">+{{topic.voters.length}}</div>
         <div class="grid-90" ng-click="setSelected(topic)" >
             <h4 class="author">{{topic.body}}</h4>
             <div class="by-line">By: {{topic.author}}</div>
+        </div>
+        <div class="notes grid-100 pure-form">
+          <textarea ng-model="topic.notes" ng-class="{show: topic.selected}" placeholder="Topic Notes"></textarea>
         </div>
     </div>
     </form>
