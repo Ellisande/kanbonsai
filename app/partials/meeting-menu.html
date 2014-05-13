@@ -1,5 +1,10 @@
 <div class="grid-25 push-5 meeting-menu">
     <ul class="meeting-list">
+        <li class="list-heading">Phase: {{meeting.phase.name}}</li>
+        <li><toggle-host></toggle-host></li>
+        <li ng-show="user.isHost">
+          <button  ng-click="changePhase()" id="nextPhase1" class="pure-button pure-button-primary">Next Phase &rarr;</button>
+        </li>
         <li class="list-heading">Timer</li>
         <li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
             <span>{{duration.minutes() | timer}} :</span>
@@ -12,8 +17,5 @@
           {{participant.name}}&nbsp;<span ng-show="participant.isHost">(H)</span>
         </li>
 
-        <li ng-show="user.isHost">
-          <button  ng-click="changePhase()" id="nextPhase1" class="pure-button pure-button-primary">Next Phase &rarr;</button>
-        </li>
     </ul>
 </div>
