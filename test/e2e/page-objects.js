@@ -2,6 +2,12 @@ var random = function (min, max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 };
 
+module.exports.waitForText(webElement) {
+  return webElement.getText(function(text){
+    return text;
+  });
+};
+
 module.exports.HomePage = function() {
     this.meetingName = 'test' + random(1000,2000);
 
