@@ -101,6 +101,9 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
                 allTopics[index] = data.topic;
             }
         });
+    if ($scope.user.name === data.voter.name) {
+      $scope.user.votesRemaining = data.voter.votesRemaining;
+    }
 	});
 
 	$scope.sendTopic = function(){
@@ -112,13 +115,42 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 		$scope.userTopic = {};
 	};
 
+  socket.on('topic:downvote', function(data) {
+    var allTopics = $scope.meeting.topics;
+    allTopics.forEach(function(topic, index){
+        if(topic.author == data.topic.author && topic.body === data.topic.body){
+            allTopics[index] = data.topic;
+            if (data.voter.name == $scope.user.name) {
+              $scope.user.votesRemaining = data.voter.votesRemaining;
+            }
+            return;
+        }
+    });
+  });
+
 	$scope.vote = function(topic){
-		var voter = $scope.user;
 		socket.emit('topic:vote', {
 			topic: topic,
-			voter: voter
+			voter: $scope.user
 		});
 	};
+
+  $scope.unvote = function(topic, index) {
+    socket.emit('topic:downvote', {
+      topic: topic,
+      voter: $scope.user
+    });
+  };
+
+  $scope.userVotedForThisTopic = function(topic, userName) {
+    var userVotedForThisTopic = false;
+    topic.voters.forEach(function(voter, user) {
+      if (userName === voter.name) {
+        userVotedForThisTopic = true;
+      }
+    });
+    return userVotedForThisTopic;
+  };
 
 	function Topic(author){
 		this.body = '';
