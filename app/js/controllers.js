@@ -69,6 +69,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
 	socket.on('topic:post', function(data){
 		$scope.meeting.topics.push(data.topic);
+    console.log("1234 = "+$scope.meeting.topics.length);
 	});
 
 	socket.on('user:left', function(data){
@@ -217,15 +218,19 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
       }
     }
 
-  newMergeTopic.body = $scope.newMergeText.value;
-  newMergeTopic.author = authorArray.toString();
-  $scope.meeting.topics.push(newMergeTopic);
+   //thread safety issue. This would clobber other people's changes.
+   socket.emit('update:meeting:topics', $scope.meeting.topics);
+
+   newMergeTopic.body = $scope.newMergeText.value;
+   newMergeTopic.author = authorArray.toString();
+
+   socket.emit('topic:post',{
+    topic: newMergeTopic
+   });
 
   $scope.topicSelected =[];
   $scope.newMergeText = '';
 
-  //thread safety issue. This would clobber other people's changes.
-  socket.emit('update:meeting:topics', $scope.meeting.topics);
  };
 
  socket.on('update:meeting:topics', function(data){
