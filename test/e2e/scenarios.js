@@ -74,50 +74,45 @@ describe('lean coffee', function(){
           describe('sumbit phase', function() {
 
                 var author='';
-                    it('should allow us submit a topic', function() {
-                      meetingPage.userGreeting().getText().then(function(userGreeting) {
+                it('should allow us submit a topic', function() {
+                    meetingPage.userGreeting().getText().then(function(userGreeting) {
                       author = userGreeting.substring(9);
-
-
                       var allTopics;
                       for(var k=1; k< 10;k++){
                         topics.push(meetingPage.postTopic());
                       }
-
                       allTopics = meetingPage.getTopics();
-
                       expect(allTopics.count()).toBe(9);
-
                     });
-                   });
+                });
 
-                    it('should show all topics', function(){
-                        var allTopics = meetingPage.getTopics();
-                        expect(allTopics.get(0).getText()).toBe(topics[0]);
-                        expect(allTopics.get(1).getText()).toBe(topics[1]);
-                        expect(allTopics.get(2).getText()).toBe(topics[2]);
-                    });
+                it('should show all topics', function(){
+                  var allTopics = meetingPage.getTopics();
+                  expect(allTopics.get(0).getText()).toBe(topics[0]);
+                  expect(allTopics.get(1).getText()).toBe(topics[1]);
+                  expect(allTopics.get(2).getText()).toBe(topics[2]);
+                });
 
-                    it('should show the remaining time for the phase', function(){
-                      expect(meetingPage.timerMinutes().getText()).not.toBeNull();
-                      expect(meetingPage.timerSeconds().getText()).not.toBeNull();
-                    });
+                it('should show the remaining time for the phase', function(){
+                  expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+                  expect(meetingPage.timerSeconds().getText()).not.toBeNull();
+                });
 
-                    it('should show the name of the person who submitted the topic', function(){
-                      var allAuthors = meetingPage.getAuthors();
+                it('should show the name of the person who submitted the topic', function(){
+                  var allAuthors = meetingPage.getAuthors();
 
-                      allAuthors.get(0).getText().then(function(byline) {
-                         expect(byline.substring(4)).toBe(author);
-                      });
-                      allAuthors.get(1).getText().then(function(byline) {
-                        expect(byline.substring(4)).toBe(author);
-                      });
-                      allAuthors.get(2).getText().then(function(byline) {
-                        expect(byline.substring(4)).toBe(author);
-                      });
+                  allAuthors.get(0).getText().then(function(byline) {
+                     expect(byline.substring(4)).toBe(author);
+                  });
+                  allAuthors.get(1).getText().then(function(byline) {
+                    expect(byline.substring(4)).toBe(author);
+                  });
+                  allAuthors.get(2).getText().then(function(byline) {
+                    expect(byline.substring(4)).toBe(author);
+                  });
 
 
-                    });
+                });
 
                     xdescribe('timer expires', function(){
 

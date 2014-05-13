@@ -2,11 +2,16 @@ var random = function (min, max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 };
 
-module.exports.waitForText(webElement) {
-  return webElement.getText(function(text){
-    return text;
-  });
-};
+// var waitForTextGenerator = function*(we) {
+//   we.getText(function(text){
+//     yield text;
+//   });
+// };
+//
+// module.exports.waitForText = function(webElement) {
+//   var gen = waitForTextGenerator(webElement);
+//   return gen.next().value;
+// };
 
 module.exports.HomePage = function() {
     this.meetingName = 'test' + random(1000,2000);
