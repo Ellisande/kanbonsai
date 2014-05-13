@@ -69,8 +69,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
 	socket.on('topic:post', function(data){
 		$scope.meeting.topics.push(data.topic);
-    console.log("1234 = "+$scope.meeting.topics.length);
-	});
+  });
 
 	socket.on('user:left', function(data){
     if($scope.meeting === undefined){return;}
