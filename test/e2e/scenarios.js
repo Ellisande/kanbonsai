@@ -1,9 +1,9 @@
 var po = require('./page-objects');
-
+var ptor = protractor.getInstance();
 describe('lean coffee', function(){
 
     var global   = new po.GlobalFunction();
-
+    var topics = [];
     describe('meeting', function(){
       var homePage = new po.HomePage();
 
@@ -25,30 +25,35 @@ describe('lean coffee', function(){
             expect(meetingPage.meetingListText()).toContain(homePage.getMeetingName());
         });
 
-        xit('should show who the hosts are', function(){
-
-        });
-
-        xit('should show me if I am the host', function(){
-
-        });
 
         it('should allow a user to become a host', function(){
-            var nextPhase = global.getElemByButtonText('Next Phase →');
             var becomeHost = global.getElemByButtonText('Become a Host');
             var backToNormalUser = global.getElemByButtonText('Back to Normal User');
 
-            expect(nextPhase.isDisplayed()).toEqual(false);
             expect(becomeHost.isDisplayed()).toEqual(true);
-            becomeHost.click();
-
-            expect(nextPhase.isDisplayed()).toEqual(true);
+            expect(backToNormalUser.isDisplayed()).toEqual(false);
+              becomeHost.click();
             expect(becomeHost.isDisplayed()).toEqual(false);
             expect(backToNormalUser.isDisplayed()).toEqual(true);
+            backToNormalUser.click();
 
         })
 
-        xit('should allow the host to transition to the next phase', function(){
+        it('should allow the host to transition to the next phase', function(){
+            var becomeHost = global.getElemByButtonText('Become a Host');
+            var nextPhase = global.getElemByButtonText('Next Phase →');
+             expect(nextPhase.isDisplayed()).toEqual(false);
+               becomeHost.click();
+             expect(nextPhase.isDisplayed()).toEqual(true);
+        });
+
+        it('should show me if I am the host', function(){
+           expect(global.allparticipants.count()).toEqual(1);
+          // expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
+          // expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+        });
+
+        xit('should show who the hosts are', function(){
 
         });
 
@@ -65,88 +70,84 @@ describe('lean coffee', function(){
 
         });
 
-        meetingPage.userGreeting().getText().then(function(userGreeting) {
-          var author = userGreeting.substring(9);
 
           describe('sumbit phase', function() {
 
-            var topics = [];
+                var author='';
+                    it('should allow us submit a topic', function() {
+                      meetingPage.userGreeting().getText().then(function(userGreeting) {
+                      author = userGreeting.substring(9);
 
-            it('should allow us submit a topic', function() {
-              var allTopics;
-              topics.push(meetingPage.postTopic());
-              topics.push(meetingPage.postTopic());
-              topics.push(meetingPage.postTopic());
 
-              allTopics = meetingPage.getTopics();
+                      var allTopics;
+                      for(var k=1; k< 10;k++){
+                        topics.push(meetingPage.postTopic());
+                      }
 
-              expect(allTopics.count()).toBe(3);
+                      allTopics = meetingPage.getTopics();
 
-//               meetingPage.postTopic();
-//               expect(global.allTopics.count()).toEqual(9);
-//               expect(global.getTopicElem(0,'body').getText()).toEqual('Hello1');
-//               meetingPage.goToMergePhase();
+                      expect(allTopics.count()).toBe(9);
 
-            });
+                    });
+                   });
 
-            it('should show all topics', function(){
-                var allTopics = meetingPage.getTopics();
-                expect(allTopics.get(0).getText()).toBe(topics[0]);
-                expect(allTopics.get(1).getText()).toBe(topics[1]);
-                expect(allTopics.get(2).getText()).toBe(topics[2]);
-            });
+                    it('should show all topics', function(){
+                        var allTopics = meetingPage.getTopics();
+                        expect(allTopics.get(0).getText()).toBe(topics[0]);
+                        expect(allTopics.get(1).getText()).toBe(topics[1]);
+                        expect(allTopics.get(2).getText()).toBe(topics[2]);
+                    });
 
-            it('should show the remaining time for the phase', function(){
-              expect(meetingPage.timerMinutes().getText()).not.toBeNull();
-              expect(meetingPage.timerSeconds().getText()).not.toBeNull();
-            });
+                    it('should show the remaining time for the phase', function(){
+                      expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+                      expect(meetingPage.timerSeconds().getText()).not.toBeNull();
+                    });
 
-            it('should show the name of the person who submitted the topic', function(){
-              var allAuthors = meetingPage.getAuthors();
+                    it('should show the name of the person who submitted the topic', function(){
+                      var allAuthors = meetingPage.getAuthors();
 
-              allAuthors.get(0).getText().then(function(byline) {
-                expect(byline.substring(4)).toBe(author);
-              });
-              allAuthors.get(1).getText().then(function(byline) {
-                expect(byline.substring(4)).toBe(author);
-              });
-              allAuthors.get(2).getText().then(function(byline) {
-                expect(byline.substring(4)).toBe(author);
-              });
+                      allAuthors.get(0).getText().then(function(byline) {
+                         expect(byline.substring(4)).toBe(author);
+                      });
+                      allAuthors.get(1).getText().then(function(byline) {
+                        expect(byline.substring(4)).toBe(author);
+                      });
+                      allAuthors.get(2).getText().then(function(byline) {
+                        expect(byline.substring(4)).toBe(author);
+                      });
 
-            });
 
-            describe('timer expires', function(){
+                    });
 
-                xit('should stop the timer at 0:00, and do nothing else', function(){
+                    xdescribe('timer expires', function(){
 
-                });
-            });
+                        xit('should stop the timer at 0:00, and do nothing else', function(){
 
-        });
-      })
+                        });
+                    });
+               });
     });
 
-        xdescribe('merge phase', function(){
-
-          var mergePage = new po.MergePage();
+        describe('merge phase', function(){
+           var mergePage = new po.MergePage();
 
           it('should allow merging of 2+ topics', function(){
-            expect(global.allTopics.count()).toEqual(9);
-            expect(global.getTopicElem(0,'body').getText()).toEqual('Hello1');
+           mergePage.goToMergePhase();
+            expect(global.allSubmitTopics.count()).toEqual(9);
+             expect(global.getTopicElem(0,'body').getText()).toEqual(topics[0]);
+             global.clickElemById("mergeCheckBoxes0");
              global.clickElemById("mergeCheckBoxes1");
-             global.clickElemById("mergeCheckBoxes2");
 
-            expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('Hello2\nHello3');
+            expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual(topics[0]+'\n'+topics[1]);
              global.clickElemByButtonText('Merge Topics');
-            expect(global.allTopics.count()).toEqual(8);
+            expect(global.allSubmitTopics.count()).toEqual(8);
 
           });
 
            describe('merge ownership', function(){
 
             it('should show a list of owners for a merged topic', function(){
-               expect(global.getTopicElem(2, 'author').getText()).toMatch(/[\s\w]+/);
+               expect(global.getTopicElem(0, 'author').getText()).toMatch(/[\s\w]+/);
             });
            });
 
@@ -155,10 +156,9 @@ describe('lean coffee', function(){
               it('should merge text when topics are merged', function(){
                  global.clickElemById("mergeCheckBoxes1");
                  global.clickElemById("mergeCheckBoxes7");
-
-                expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('Hello4\nHello2\nHello3');
+                expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
                  global.clickElemByButtonText('Merge Topics');
-                expect(global.allTopics.count()).toEqual(7);
+                expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 
@@ -168,7 +168,7 @@ describe('lean coffee', function(){
                   newMergeText.clear();
                   newMergeText.sendKeys('New Text Added');
                   expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('New Text Added');
-                  expect(global.allTopics.count()).toEqual(7);
+                  expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 
