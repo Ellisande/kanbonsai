@@ -52,8 +52,9 @@ var socket = function(io){
         });
       });
 
-      //@Merge, Edit Comments
+      //@REMOVE EDITTED OR MERGE TOPIC
       socket.on('update:meeting:topics', function(data){
+        meeting.topics=data;
         io.sockets.in(roomName).emit('update:meeting:topics', data);
       });
 

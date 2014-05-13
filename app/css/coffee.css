@@ -55,6 +55,14 @@ input[name="meeting-name"] {
     display: inline;
 }
 
+.noVotesRemain {
+    color: red;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
 .uparrow{
 	background-image: url('/images/arrow.png');
 	background-position: right;

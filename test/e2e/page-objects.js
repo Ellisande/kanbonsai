@@ -2,6 +2,17 @@ var random = function (min, max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 };
 
+// var waitForTextGenerator = function*(we) {
+//   we.getText(function(text){
+//     yield text;
+//   });
+// };
+//
+// module.exports.waitForText = function(webElement) {
+//   var gen = waitForTextGenerator(webElement);
+//   return gen.next().value;
+// };
+
 module.exports.HomePage = function() {
     this.meetingName = 'test' + random(1000,2000);
 
@@ -69,16 +80,25 @@ module.exports.MeetingPage = function() {
 };
 module.exports.MergePage = function() {
 
+     this.goToMergePhase = function() {
+       element(by.buttonText('Next Phase →')).click();
+     };
+
  };
 
  module.exports.GlobalFunction = function() {
 
-  this.allTopics = element.all(by.repeater('topic in meeting.topics'));
+  this.allSubmitTopics = element.all(by.repeater('topic in meeting.topics'));
   this.getTopicElem = function(rowNum, columnNum){
    return element(by.repeater('topic in meeting.topics').row(rowNum).column(columnNum));
  };
 
-   this.getElementById = function(idValue){
+  this.allparticipants = element.all(by.repeater('participant in meeting.participants'));
+  this.getParticipantElem = function(rowNum, columnNum){
+   return element(by.repeater('participant in meeting.participants').row(rowNum).column(columnNum));
+  }
+
+  this.getElementById = function(idValue){
     return element( by.css('[id='+idValue+']'));
   };
 

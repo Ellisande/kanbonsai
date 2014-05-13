@@ -68,7 +68,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
 	socket.on('topic:post', function(data){
 		$scope.meeting.topics.push(data.topic);
-	});
+  });
 
 	socket.on('user:left', function(data){
     if($scope.meeting === undefined){return;}
@@ -181,6 +181,8 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
   //Merge Functionality Starts
   $scope.topicSelected=[];
+  $scope.newMergeText = {value:""};
+
   $scope.topicsSelectedToMerge= function(topic){
     var index= $scope.topicSelected.indexOf(topic);
     if(index==-1){
@@ -191,17 +193,16 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
     var text='';
     angular.forEach($scope.topicSelected, function(value){
-     text+=value.body+'\n';
+     text += value.body+'\n';
     });
-
-    $scope.newMergeText = text.trim();
+    $scope.newMergeText = {
+      value:text.trim()
+    }
   };
 
   $scope.mergeTopicsButtonClk = function(){
-    var copyFirstMatchTopic={
-       author:'',
-       body:''
-    };
+    var newMergeTopic = new Topic();
+
     var authorArray=[];
     for (var i=0; i<$scope.topicSelected.length; i++) {
      for(var j=0; j<$scope.meeting.topics.length ; j++){
@@ -214,13 +215,20 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
       }
       }
     }
-  copyFirstMatchTopic.body = $scope.newMergeText;
-  copyFirstMatchTopic.author = authorArray.toString();
+
+   //thread safety issue. This would clobber other people's changes.
+   socket.emit('update:meeting:topics', $scope.meeting.topics);
+
+   newMergeTopic.body = $scope.newMergeText.value;
+   newMergeTopic.author = authorArray.toString();
+
+   socket.emit('topic:post',{
+    topic: newMergeTopic
+   });
+
   $scope.topicSelected =[];
   $scope.newMergeText = '';
-  $scope.meeting.topics.push(copyFirstMatchTopic);
-  //thread safety issue. This would clobber other people's changes.
-  socket.emit('update:meeting:topics', $scope.meeting.topics);
+
  };
 
  socket.on('update:meeting:topics', function(data){
@@ -254,11 +262,4 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
      socket.emit('highlight:selected:row', topic);
   };
 // End
-}
-
-function MergeCtrl($scope, $routeParams, socket, mtgDetails) {
-    'use strict';
-
-
-
 }
