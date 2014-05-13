@@ -178,7 +178,8 @@ factory('timerService', function(socket, $timeout){
         };
 
         return timer;
-}});
+      };
+});
 
 function Meeting(name, startTime){
 	this.name = name;

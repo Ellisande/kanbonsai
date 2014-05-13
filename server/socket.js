@@ -69,14 +69,14 @@ var socket = function(io){
 
       // event to save and broadcast out when a user votes up a comment.
       socket.on('topic:vote', function(data){
-        var poster = data.topic.author;
         var voter = data.voter;
         var topics = meeting.topics;
 
         topics.forEach(function(topic){
-            if(topic.author === poster && topic.status === data.topic.status){
+            if(isTopicSame(topic, data.topic)){
                 if(topic.voters.indexOf(voter) == -1){
                     topic.voters.push(voter);
+                    voter.votesRemaining--;
                     io.sockets.in(roomName).emit('topic:vote', {
                       topic: topic,
                       voter: voter
@@ -85,6 +85,31 @@ var socket = function(io){
             }
         });
       });
+
+      // event to save and broadcast when a user down votes a comment.
+      socket.on('topic:downvote', function(data) {
+        var thisVoter = data.voter;
+        var thisTopic = data.topic;
+        meeting.topics.forEach(function(topic) {
+          if (isTopicSame(thisTopic, topic)) {
+            topic.voters.some(function(currentVoter, index) {
+              if (thisVoter.name === currentVoter.name) {
+                topic.voters.splice(index, 1);
+                thisVoter.votesRemaining++;
+                io.sockets.in(roomName).emit('topic:downvote', {
+                  topic: topic,
+                  voter: thisVoter
+                });
+                return true;
+              }
+            });
+          }
+        });
+      });
+
+      function isTopicSame(firstTopic, secondTopic) {
+        return firstTopic.body === secondTopic.body && firstTopic.author === secondTopic.author;
+      }
 
       socket.on('timer:start', function(data){
         meeting.timer.endTime = new Date().getTime()+data.duration;
