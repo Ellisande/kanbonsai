@@ -158,7 +158,7 @@ footer {
 }
 
 .selected{
-  background: rgb(224, 224, 224); /* this is a maroon */
+  /*background: rgb(224, 224, 224); /* this is not a maroon */*/
 }
 
 .headlineUser span {
@@ -174,4 +174,26 @@ footer {
   vertical-align: top;
   line-height: 28px;
   padding-left: 60px;
+}
+
+.discuss .topic {
+  cursor: pointer;
+}
+
+.notes textarea {
+  opacity: 0;
+  transition: 0.4s ease-in-out;
+  display: none;
+  width: 100%;
+  height: 20em;
+  margin: 1em 0 1em 0;
+}
+
+.notes textarea.show{
+  opacity: 1;
+  display: block;
+}
+
+.current, .current .author{
+  color: rgb(0, 120, 231);
 }
