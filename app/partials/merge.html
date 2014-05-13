@@ -6,7 +6,7 @@
 <h3>Merge Phase</h3>
 <!--Merge Topics Start -->
 <div id="mergeTopics" ng-show="topicSelected.length">
-	<textarea ng-model="newMergeText" rows="6" cols="45"></textarea>
+	<textarea ng-model="newMergeText.value" rows="6" cols="45"></textarea>
 	<button class="button pure-button-primary"  ng-click="mergeTopicsButtonClk()">
 		<span ng-show="topicSelected.length == 1">Edit Topic</span>
 		<span ng-hide="topicSelected.length == 1">Merge Topics</span>

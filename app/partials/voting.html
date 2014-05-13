@@ -3,22 +3,25 @@
      <current-user></current-user>
     </div>
 
-    <ng-pluralize count="user.votesRemaining"
-      when="{'0': 'You have no votes remaining.',
-           '1': 'You have 1 vote remaining.',
-           'other': 'You have {} votes remaining.'}">
-    </ng-pluralize>
-
     <div class="pure-form pure-form-stacked">
         <label for="status">Search Topics</label>
         <input name="status" type="text" required="true" class="block" ng-model="userTopic.status" />
     </div>
 
+
+    <span ng-class="{noVotesRemain: user.votesRemaining == 0}">
+      <ng-pluralize count="user.votesRemaining"
+        when="{'0': 'You have no votes remaining.',
+             '1': 'You have 1 vote remaining.',
+             'other': 'You have {} votes remaining.'}">
+      </ng-pluralize>
+    </span>
+
     <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.status">
         <div class="grid-15 vote">
             +{{topic.voters.length}}
-            <a ng-click="vote(topic)" style="color: green" ng-hide="user.votesRemaining == 0">&uarr;</a>
-            <a ng-click="unvote(topic)" style="color: red" ng-show="userVotedForThisTopic(topic, user.name)">&darr;</a>
+            <a ng-click="vote(topic)" style="color: green" ng-class="{hidden: user.votesRemaining == 0}">&uarr;</a>
+            <a ng-click="unvote(topic)" style="color: red" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}">&darr;</a>
         </div>
         <div class="grid-85">
             <h4 class="author">{{topic.body}}</h4>

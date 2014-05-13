@@ -133,7 +133,7 @@ describe('lean coffee', function(){
              global.clickElemById("mergeCheckBoxes0");
              global.clickElemById("mergeCheckBoxes1");
 
-            expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual(topics[0]+'\n'+topics[1]);
+            expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[0]+'\n'+topics[1]);
              global.clickElemByButtonText('Merge Topics');
             expect(global.allSubmitTopics.count()).toEqual(8);
 
@@ -151,7 +151,7 @@ describe('lean coffee', function(){
               it('should merge text when topics are merged', function(){
                  global.clickElemById("mergeCheckBoxes1");
                  global.clickElemById("mergeCheckBoxes7");
-                expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
+                expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
                  global.clickElemByButtonText('Merge Topics');
                 expect(global.allSubmitTopics.count()).toEqual(7);
 
@@ -159,10 +159,10 @@ describe('lean coffee', function(){
 
               it('should allow editing of the merged text', function(){
                   global.clickElemById("mergeCheckBoxes2");
-                  var newMergeText=global.getElementByModel('newMergeText');
+                  var newMergeText=global.getElementByModel('newMergeText.value');
                   newMergeText.clear();
                   newMergeText.sendKeys('New Text Added');
-                  expect(global.getElementByModel('newMergeText').getAttribute('value')).toEqual('New Text Added');
+                  expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
                   expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
