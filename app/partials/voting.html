@@ -21,7 +21,7 @@
         <div class="grid-15 vote">
             +{{topic.voters.length}}
             <a ng-click="vote(topic)" style="color: green" ng-class="{hidden: user.votesRemaining == 0}" class="voteUp">&uarr;</a>
-            <a ng-click="unvote(topic)" style="color: red" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}" class="voteDown">&darr;</a>
+            <a ng-click="downvote(topic)" style="color: red" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}" class="voteDown">&darr;</a>
         </div>
         <div class="grid-85">
             <h4 class="author">{{topic.body}}</h4>
