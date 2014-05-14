@@ -208,15 +208,22 @@ describe('lean coffee', function(){
             });
 
             it('should allow a user to vote', function(){
-              votingPage.voteUp();
+              votingPage.voteUp(0);
               expect(global.getElementById('votesRemaining').getText()).toContain('2');
             });
 
             it('should allow a user to vote up to 3 times', function(){
-              votingPage.voteUp();
+              votingPage.voteUp(1);
               expect(global.getElementById('votesRemaining').getText()).toContain('1');
-              votingPage.voteUp();
+              votingPage.voteUp(1);
               expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+            });
+
+            it('should allow a user to change their votes', function(){
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
             });
 
             xit('should allow the host to manually start the phase timer', function(){
@@ -244,10 +251,6 @@ describe('lean coffee', function(){
             });
 
             xit('should display total number of remaining votes across all users to the host', function(){
-
-            });
-
-            xit('should allow a user to change their votes', function(){
 
             });
 

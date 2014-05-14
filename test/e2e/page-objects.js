@@ -87,8 +87,12 @@ module.exports.MergePage = function() {
  };
 
  module.exports.VotingPage = function() {
-   this.voteUp = function() {
-     element(by.repeater('topic in meeting.topics')).$('#voteUp').click();
+   this.voteUp = function(rowNum) {
+     element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteUp').click();
+   };
+
+   this.voteDown = function(rowNum) {
+     element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteDown').click();
    };
  };
 
