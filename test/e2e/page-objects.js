@@ -78,11 +78,7 @@ module.exports.MeetingPage = function() {
       );
     };
 };
-module.exports.MergePage = function() {
-
-     this.goToMergePhase = function() {
-       element(by.buttonText('Next Phase →')).click();
-     };
+ module.exports.MergePage = function() {
 
  };
 

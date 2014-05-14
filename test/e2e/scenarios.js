@@ -145,7 +145,14 @@ describe('lean coffee', function(){
     });
 
         describe('merge phase', function(){
-           var mergePage = new po.MergePage();
+           //var mergePage = new po.MergePage();
+
+           it('should allow you to navigate to the merge phase', function() {
+             global.becomeHost();
+             global.goToNextPhase();
+             expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
+           });
+
 
           it('should allow merging of 2+ topics', function(){
            mergePage.goToMergePhase();
