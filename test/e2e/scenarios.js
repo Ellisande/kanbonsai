@@ -189,7 +189,7 @@ describe('lean coffee', function(){
                   var newMergeText=global.getElementByModel('newMergeText.value');
                   newMergeText.clear();
                   newMergeText.sendKeys('New Text Added');
-                  
+
                   expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
                   global.clickElemByButtonText('Edit Topic');
                   expect(global.allSubmitTopics.count()).toEqual(7);
@@ -276,8 +276,15 @@ describe('lean coffee', function(){
 
             });
 
-            xit('should not allow a user to vote 4 or more times', function(){
-
+            it('should not allow a user to vote 4 or more times', function(){
+              votingPage.voteUp(0);
+              votingPage.voteUp(0);
+              votingPage.voteUp(0);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+              expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
+              // expect(element(by.id('recaptcha_image')).isPresent()).toBe(true);
+              var voteUpElement = element(by.repeater('topic in meeting.topics').row(0)).$('.vote').$('.voteUp');
+              expect(voteUpElement.getAttribute('class')).toContain('hidden');
             });
 
             xit('should allow the host to manually start the phase timer', function(){
