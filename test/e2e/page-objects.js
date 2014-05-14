@@ -90,6 +90,10 @@ module.exports.MeetingPage = function() {
    this.voteDown = function(rowNum) {
      element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteDown').click();
    };
+
+   this.getNumberOfVotesForTopic = function(rowNum) {
+     return element(by.repeater('topic in meeting.topics').row(rowNum)).$('.vote').getText();
+   };
  };
 
  module.exports.GlobalFunction = function() {
