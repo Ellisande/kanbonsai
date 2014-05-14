@@ -153,6 +153,17 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     return userVotedForThisTopic;
   };
 
+  $scope.calculateVotesRemainingForRoom = function() {
+    var currentNumberOfVotesOnTopics = 0;
+    var currentNumberOfUsersVotesAvailable = $scope.meeting.participants.length * 3;
+    $scope.meeting.topics.forEach(function(topic) {
+      if (topic.voters.length > 0) {
+        currentNumberOfVotesOnTopics += topic.voters.length;
+      }
+    });
+    return currentNumberOfUsersVotesAvailable - currentNumberOfVotesOnTopics;
+  };
+
 	function Topic(author){
 		this.body = '';
 		this.voters = [];

@@ -263,6 +263,17 @@ describe('lean coffee', function(){
               expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
             });
 
+            it('should display total number of remaining votes across all users to the host', function(){
+              expect(global.getElementById('roomVotesRemaining').getText()).toBe('There are no votes remaining in the room.');
+              votingPage.voteDown(0);
+              expect(global.getElementById('roomVotesRemaining').getText()).toBe('There is 1 vote remaining in the room.');
+              votingPage.voteDown(0);
+              expect(global.getElementById('roomVotesRemaining').getText()).toBe('There are 2 votes remaining in the room.');
+              votingPage.voteDown(0);
+              expect(global.getElementById('roomVotesRemaining').getText()).toBe('There are 3 votes remaining in the room.');
+
+            });
+
             xit('should not allow a user to vote 4 or more times', function(){
 
             });
@@ -272,10 +283,6 @@ describe('lean coffee', function(){
             });
 
             xit('should show the remaining time for the phase', function(){
-
-            });
-
-            xit('should display total number of remaining votes across all users to the host', function(){
 
             });
 
