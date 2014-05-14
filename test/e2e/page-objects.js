@@ -98,6 +98,10 @@ module.exports.MergePage = function() {
      return element(by.buttonText('Next Phase →')).click();
    };
 
+   this.getPhaseText = function() {
+     return element(by.binding('meeting.phase')).getText();
+   };
+
   this.allSubmitTopics = element.all(by.repeater('topic in meeting.topics'));
 
   this.getTopicElem = function(rowNum, columnNum){

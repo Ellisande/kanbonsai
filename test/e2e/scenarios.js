@@ -200,6 +200,7 @@ describe('lean coffee', function(){
 
             it('should allow you to navigate to the voting phase', function() {
               global.goToNextPhase();
+              expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
             });
 
 
