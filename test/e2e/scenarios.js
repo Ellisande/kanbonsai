@@ -154,7 +154,7 @@ describe('lean coffee', function(){
 
 
           it('should allow merging of 2+ topics', function(){
-      
+
             expect(global.allSubmitTopics.count()).toEqual(9);
              expect(global.getTopicElem(0,'body').getText()).toEqual(topics[0]);
              global.clickElemById("mergeCheckBoxes0");
@@ -211,8 +211,12 @@ describe('lean coffee', function(){
               expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
             });
 
-            xit('should display an icon to vote with', function(){
+            it('should display an icon to vote with', function(){
+              expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp').getText()).toBe('↑');
+            });
 
+            it('should display the number of votes the user has remaining', function(){
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have 3 votes remaining.');
             });
 
             it('should allow a user to vote', function(){
@@ -251,10 +255,6 @@ describe('lean coffee', function(){
             });
 
             xit('should not allow a user to vote 4 or more times', function(){
-
-            });
-
-            xit('should display the number of votes the user has remaining', function(){
 
             });
 
