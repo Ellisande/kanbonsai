@@ -212,27 +212,27 @@ describe('lean coffee', function(){
               expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
             });
 
-
-            xit('should allow the host to manually start the phase timer', function(){
-
-            });
-
-            xit('should show the remaining time for the phase', function(){
-
-            });
-
             xit('should display an icon to vote with', function(){
 
             });
 
             it('should allow a user to vote', function(){
               votingPage.voteUp();
-              browser.debugger();
               expect(global.getElementById('votesRemaining').getText()).toContain('2');
-              // expect(votingPage.votes()).toBe("1");
             });
 
-            xit('should allow a user to vote up to 3 times', function(){
+            it('should allow a user to vote up to 3 times', function(){
+              votingPage.voteUp();
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteUp();
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+            });
+
+            xit('should allow the host to manually start the phase timer', function(){
+
+            });
+
+            xit('should show the remaining time for the phase', function(){
 
             });
 
