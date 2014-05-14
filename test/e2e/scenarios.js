@@ -199,7 +199,9 @@ describe('lean coffee', function(){
             });
 
             describe('timer', function(){
-                xit('should do nothing', function() {
+                it('should do nothing', function() {
+                  var start = global.getElemByButtonText('Start');
+                  expect(start.isDisplayed()).toEqual(false);
                 });
             });
         });
