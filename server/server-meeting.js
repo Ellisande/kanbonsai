@@ -51,6 +51,16 @@ module.exports = function ServerMeeting(name) {
         return res;
     };
 
+    this.getTopic = function(topic){
+      var foundTopic;
+      topics.some(function(currentTopic){
+        if(topic.body == currentTopic.body && topic.author == currentTopic.author){
+          foundTopic = currentTopic;
+          return true;
+        }
+      });
+    }
+
     this.nextPhase = function(){
         this.phase = phases[this.phase.next];
         return this.phase;
