@@ -17,8 +17,8 @@ describe('lean coffee', function(){
             expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
         });
 
-        xit('should display the meeting particpants', function(){
-
+        it('should display the meeting particpants', function(){
+          expect(global.allparticipants.count()).toEqual(1);
         });
 
         it('should show the name of the meeting', function(){
@@ -49,11 +49,13 @@ describe('lean coffee', function(){
 
         it('should show me if I am the host', function(){
            expect(global.allparticipants.count()).toEqual(1);
-          // expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
-          // expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+           expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
+           expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+
         });
 
-        xit('should show who the hosts are', function(){
+        it('should show who the hosts are', function(){
+          expect(global.getParticipantElem(0, 'name').getText()).toContain('(H)');
 
         });
 
@@ -91,18 +93,18 @@ describe('lean coffee', function(){
 
 
           describe('sumbit phase', function() {
-
-                var author='';
+           var author='';
                 it('should allow us submit a topic', function() {
                     meetingPage.userGreeting().getText().then(function(userGreeting) {
                       author = userGreeting.substring(9);
+                    });
                       var allTopics;
                       for(var k=1; k< 10;k++){
                         topics.push(meetingPage.postTopic());
                       }
                       allTopics = meetingPage.getTopics();
                       expect(allTopics.count()).toBe(9);
-                    });
+
                 });
 
                 it('should show all topics', function(){
@@ -143,10 +145,16 @@ describe('lean coffee', function(){
     });
 
         describe('merge phase', function(){
-           var mergePage = new po.MergePage();
+           //var mergePage = new po.MergePage();
+
+           it('should allow you to navigate to the merge phase', function() {
+             global.goToNextPhase();
+             expect(global.getPhaseText()).toMatch(/PHASE: MERGE/);
+           });
+
 
           it('should allow merging of 2+ topics', function(){
-           mergePage.goToMergePhase();
+      
             expect(global.allSubmitTopics.count()).toEqual(9);
              expect(global.getTopicElem(0,'body').getText()).toEqual(topics[0]);
              global.clickElemById("mergeCheckBoxes0");

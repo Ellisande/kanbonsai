@@ -17,7 +17,7 @@
         </li>
         <li class="list-heading">Participants</li>
       <li ng-repeat="participant in meeting.participants | orderBy:'!isHost'">
-          {{participant.name}}&nbsp;<span ng-show="participant.isHost">(H)</span>
+          {{participant.name}}&nbsp;<span id="participantIsHost" ng-show="participant.isHost">(H)</span>
         </li>
 
     </ul>
