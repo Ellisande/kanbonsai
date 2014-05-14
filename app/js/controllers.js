@@ -136,7 +136,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 		});
 	};
 
-  $scope.unvote = function(topic, index) {
+  $scope.downvote = function(topic, index) {
     socket.emit('topic:downvote', {
       topic: topic,
       voter: $scope.user
