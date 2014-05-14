@@ -278,6 +278,18 @@ describe('lean coffee', function(){
 
             });
 
+            it('should not display total number of remaining votes across all users to the normal users', function(){
+              var becomeHost = global.getElemByButtonText('Become a Host');
+              var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+
+              expect(becomeHost.isDisplayed()).toEqual(false);
+              backToNormalUser.click();
+              expect(becomeHost.isDisplayed()).toEqual(true);
+              expect(backToNormalUser.isDisplayed()).toEqual(false);
+              expect(global.getElementById('roomVotesRemaining').isDisplayed()).toBe(false);
+              becomeHost.click();
+            });
+
             it('should not allow a user to vote 4 or more times', function(){
               votingPage.voteUp(0);
               votingPage.voteUp(0);
