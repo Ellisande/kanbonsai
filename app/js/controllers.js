@@ -190,8 +190,10 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     });
 
     if(!foundOne) {
-      $scope.meeting.topics[0].current = true;
-      $scope.meeting.topics.slice(-1)[0].current = false;
+      var first = $scope.meeting.topics[0];
+      var last = $scope.meeting.topics.slice(-1)[0];
+      first.current = true;
+      if(first != last) last.current = false;
     }
   }
 
