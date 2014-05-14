@@ -6,7 +6,7 @@
           <button  ng-click="changePhase()" id="nextPhase1" class="pure-button pure-button-primary">Next Phase &rarr;</button>
         </li>
         <li ng-show="user.isHost && meeting.phase.name == 'discuss'">
-          <button ng-click="changeTopic()" id="nextTopic" class="pure-button pure-button-primary">Next Topic &rarr;</button>
+          <button ng-click="nextTopic()" id="nextTopic" class="pure-button pure-button-primary">Next Topic &rarr;</button>
         </li>
         <li class="list-heading">Timer</li>
         <li ng-controller="TimerCtrl" class="timer" ng-class="{low: duration.asSeconds() < 10}">
