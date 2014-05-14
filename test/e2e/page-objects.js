@@ -78,17 +78,32 @@ module.exports.MeetingPage = function() {
       );
     };
 };
-module.exports.MergePage = function() {
+ module.exports.MergePage = function() {
 
-     this.goToMergePhase = function() {
-       element(by.buttonText('Next Phase →')).click();
-     };
+ };
 
+ module.exports.VotingPage = function() {
+   this.voteUp = function(rowNum) {
+     element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteUp').click();
+   };
+
+   this.voteDown = function(rowNum) {
+     element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteDown').click();
+   };
  };
 
  module.exports.GlobalFunction = function() {
 
+   this.goToNextPhase = function() {
+     return element(by.buttonText('Next Phase →')).click();
+   };
+
+   this.getPhaseText = function() {
+     return element(by.binding('meeting.phase')).getText();
+   };
+
   this.allSubmitTopics = element.all(by.repeater('topic in meeting.topics'));
+
   this.getTopicElem = function(rowNum, columnNum){
    return element(by.repeater('topic in meeting.topics').row(rowNum).column(columnNum));
  };
@@ -96,7 +111,7 @@ module.exports.MergePage = function() {
   this.allparticipants = element.all(by.repeater('participant in meeting.participants'));
   this.getParticipantElem = function(rowNum, columnNum){
    return element(by.repeater('participant in meeting.participants').row(rowNum).column(columnNum));
-  }
+ };
 
   this.getElementById = function(idValue){
     return element( by.css('[id='+idValue+']'));
@@ -116,6 +131,23 @@ module.exports.MergePage = function() {
 
   this.getElementByModel = function(modelValue){
     return element(by.model(modelValue));
+  };
+
+  this.becomeHost = function() {
+    var becomeHostButton = element(by.buttonText('Become a Host'));
+    if (becomeHostButton) {
+      return becomeHostButton.click();
+    } else {
+      return null;
+    }
+  };
+
+  this.startTimer = function() {
+    return element(by.buttonText('Start')).click();
+  };
+
+  this.stopTimer = function() {
+    return element(by.buttonText('Stop')).click();
   };
 
 };
