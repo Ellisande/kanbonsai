@@ -50,7 +50,7 @@ describe('lean coffee', function(){
         it('should show me if I am the host', function(){
            expect(global.allparticipants.count()).toEqual(1);
            expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
-           expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+           expect(global.getElementById('participantIsHost').getText()).toBe(' (H)');
 
         });
 
@@ -189,7 +189,9 @@ describe('lean coffee', function(){
                   var newMergeText=global.getElementByModel('newMergeText.value');
                   newMergeText.clear();
                   newMergeText.sendKeys('New Text Added');
+                  
                   expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
+                  global.clickElemByButtonText('Edit Topic');
                   expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
