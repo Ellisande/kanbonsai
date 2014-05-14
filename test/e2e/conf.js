@@ -1,4 +1,6 @@
-// An example configuration file.
+var HtmlReporter = require('protractor-html-screenshot-reporter');
+
+
 exports.config = {
   // The address of a running selenium server.
   seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -7,12 +9,14 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome'
   },
-    
+
     onPrepare: function() {
         require('jasmine-reporters');
-        jasmine.getEnv().addReporter(
-            new jasmine.JUnitXmlReporter('xmloutput', true, true));
-    },
+        jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter('xmloutput', true, true));
+        jasmine.getEnv().addReporter(new HtmlReporter({
+           baseDirectory: 'test/screenshots'
+        }));
+      },
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
