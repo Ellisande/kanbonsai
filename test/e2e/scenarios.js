@@ -148,14 +148,13 @@ describe('lean coffee', function(){
            //var mergePage = new po.MergePage();
 
            it('should allow you to navigate to the merge phase', function() {
-             global.becomeHost();
              global.goToNextPhase();
-             expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
+             expect(global.getPhaseText()).toMatch(/PHASE: MERGE/);
            });
 
 
           it('should allow merging of 2+ topics', function(){
-           mergePage.goToMergePhase();
+      
             expect(global.allSubmitTopics.count()).toEqual(9);
              expect(global.getTopicElem(0,'body').getText()).toEqual(topics[0]);
              global.clickElemById("mergeCheckBoxes0");
