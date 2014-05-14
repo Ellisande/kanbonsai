@@ -28,6 +28,53 @@ function User(name, meetingName, socketId){
     this.votedOn = [];
 }
 
+function Vote(type, user){
+  this.type = type || 'stop';
+  this.user = user;
+}
+
+function Topic(topic){
+  this.body = topic.body || '';
+  this.voters = topic.voters || [];
+  this.author = topic.author;
+  this.continue = topic.continue || [];
+  this.votes = function(){
+    return this.voters.length;
+  };
+
+  this.goVotes = function(){
+    var sum = 0;
+    this.continue.forEach(function(vote){
+      if(vote.type == 'go') sum++;
+    });
+    return sum;
+  };
+
+  this.stopVotes = function(){
+    var sum = 0;
+    this.continue.forEach(function(vote){
+      if(vote.type == 'stop') sum++;
+    });
+    return sum;
+  };
+
+  this.shouldContinue = function(){
+    var stopVotes = this.stopVotes();
+    var goVotes = this.goVotes();
+    return {
+      decision: stopVotes >= goVotes ? 'stop' : 'go',
+      stopVotes: stopVotes,
+      goVotes: goVotes
+    }
+  }
+
+  this.hasContinueVoted = function(user){
+    return this.continue.some(function(vote){
+      if(vote.user == user) return true;
+    });
+  }
+}
+
 function isNameFree(searchTerm, myArray) {
     for(var i = 0, len = myArray.length; i < len; i++) {
       if (myArray[i].name === searchTerm){
