@@ -5,6 +5,19 @@ var concat = require('gulp-concat');
 var minify = require('gulp-minify-css');
 var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
+var protractor = require('gulp-protractor').protractor;
+
+gulp.task('e2e-test', function() {
+
+    gulp.src('./test/e2e/*.js')
+    .pipe(
+      protractor(
+        {
+          configFile: "./test/e2e/conf.js"
+        }
+      ));
+
+});
 
 gulp.task('js-minify', function(){
     return gulp.src('app/js/**/*.js')
@@ -35,9 +48,9 @@ gulp.task('css-lint', function(){
 
 
 gulp.task('node', function(){
-  nodemon({ 
-      script: 'coffee-server.js', 
-      ext: 'js', 
+  nodemon({
+      script: 'coffee-server.js',
+      ext: 'js',
       ignore: ['app/**/*.js','config/**/*.js','test/**/*.js'] }
     )
     .on('restart', function () {

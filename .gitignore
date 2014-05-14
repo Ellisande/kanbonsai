@@ -3,3 +3,4 @@ logs/*
 node_modules
 build
 xmloutput
+test/screenshots

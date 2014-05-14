@@ -96,6 +96,25 @@ module.exports.MeetingPage = function() {
    };
  };
 
+ module.exports.DiscussPage = function(){
+  this.nextTopic = function(){
+    element(by.buttonText('Next Topic →')).click();
+  };
+
+  this.getTopics = function() {
+    return element.all(
+      by.repeater('topic in meeting.topics')
+    );
+  };
+
+  this.getTopicVotes = function() {
+    return element.all(
+      by.repeater('topic in meeting.topics')
+      .column('{{topic.voters.length}}')
+    );
+  };
+ }
+
  module.exports.GlobalFunction = function() {
 
    this.goToNextPhase = function() {

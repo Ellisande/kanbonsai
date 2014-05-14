@@ -294,54 +294,50 @@ describe('lean coffee', function(){
             });
         });
 
-        xdescribe('discuss phase', function(){
+        describe('discuss phase', function(){
 
-            xit('should allow the host to end the meeting', function(){
+            var discussPage = new po.DiscussPage();
 
+            it('should allow navigation to the discuss phase', function(){
+              global.goToNextPhase();
+              expect(global.getPhaseText()).toMatch(/PHASE: DISCUSS/);
             });
 
-            xit('should order the topics by number of votes', function(){
-
+            it('should order the topics by number of votes', function(){
+              var topics = discussPage.getTopicVotes();
+              topics.each(function(topic){
+                var lastNumVotes = Number.MAX_VALUE;
+                topic.getText().then(function(numVotes){
+                  var votes = numVotes.substring(1);
+                  expect(lastNumVotes >= votes).toEqual(true);
+                  lastNumVotes = votes;
+                });
+              });
             });
 
-            xit('should show the active topic', function(){
-
+            it('should show the active topic', function(){
+              discussPage.nextTopic();
+              var topics = discussPage.getTopics();
+              topics.get(0).getAttribute('class').then(function(classes){
+                expect(classes).toContain('current');
+              });
             });
 
             xit('should show the remaining time to discuss the active topic', function(){
 
             });
 
-            xit('should allow the host to advance to the topic forcibly', function(){
+            it('should allow the host to advance to the topic forcibly', function(){
+              discussPage.nextTopic();
+              var topics = discussPage.getTopics();
+              topics.get(0).getAttribute('class').then(function(classes){
+                expect(classes).not.toContain('current');
+              });
+              topics.get(1).getAttribute('class').then(function(classes){
+                expect(classes).toContain('current');
+              });
 
             });
-
-            describe('all topics discussed', function(){
-                xit('should show star guy', function(){
-
-                });
-
-                xit('should have no active topic', function(){
-
-                });
-
-                xit('should hide any remaining timers', function(){
-
-                });
-
-                xit('should prompt for email', function(){
-
-                });
-
-                xit('should move the participants to the landing page', function(){
-
-                });
-
-                xit('should delete the meeting', function(){
-
-                });
-            });
-
 
             describe('timer expires', function(){
 
@@ -390,28 +386,46 @@ describe('lean coffee', function(){
                 });
 
             });
-
-            describe('email', function(){
-
-                xit('should populate an email subject and body', function(){
-
-                });
-
-                xit('should be optional', function(){
-
-                });
-
-                describe('body', function(){
-                    xit('should contain all the topics discussed', function(){
-
-                    });
-
-                    xit('should contain the notes for each topic', function(){
-
-                    });
-                });
-            });
-
     });
+
+    xdescribe('complete', function(){
+
+      xit('should show star guy', function(){
+
+      });
+
+      xit('should prompt for email', function(){
+
+      });
+
+      xit('should move the participants to the landing page', function(){
+
+      });
+
+      xit('should delete the meeting', function(){
+
+      });
+
+      describe('email', function(){
+
+          xit('should populate an email subject and body', function(){
+
+          });
+
+          xit('should be optional', function(){
+
+          });
+
+          describe('body', function(){
+              xit('should contain all the topics discussed', function(){
+
+              });
+
+              xit('should contain the notes for each topic', function(){
+
+              });
+          });
+      });
+    })
 
 });
