@@ -2,6 +2,8 @@ var ServerMeeting = require('./server-meeting');
 var model = require('./model');
 var meetings = {default: new ServerMeeting('default')};
 var User = model.User;
+var Vote = model.Vote;
+var Topic = model.Topic;
 
 var socket = function(io){
   return function (socket) {
@@ -46,10 +48,18 @@ var socket = function(io){
       socket.on('topic:post', function(data){
         var newTopic = data.topic;
         newTopic.voters = [];
+        newTopic.continue = [];
         meeting.topics.push(newTopic);
         io.sockets.in(roomName).emit('topic:post', {
             topic: newTopic
         });
+      });
+
+      socket.on('topic:continue', function(data){
+        var topic = meeting.getTopic(data.topic);
+        if(!topic.hasContinueVoted(user)){
+          topic.continue.push(new Vote(data.vote, user));
+        }
       });
 
       //@REMOVE EDITTED OR MERGE TOPIC
