@@ -174,6 +174,27 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     socket.emit('update:phase');
   };
 
+  $scope.nextTopic = function(){
+    $scope.meeting.topics.sort(function(left, right){
+      if(left.voters.length > right.voters.length) return -1
+      return left.voters.length < right.voters.length ?  1 :  0;
+    });
+
+    var foundOne = $scope.meeting.topics.some(function(topic, index){
+      var previousTopic = $scope.meeting.topics[index - 1] || {};
+      if(previousTopic.current){
+        previousTopic.current = false;
+        topic.current = true;
+        return true;
+      }
+    });
+
+    if(!foundOne) {
+      $scope.meeting.topics[0].current = true;
+      $scope.meeting.topics.slice(-1)[0].current = false;
+    }
+  }
+
   socket.on('update:phase', function(data){
     $scope.meeting.phase = data.phase;
     $scope.meetingPhase = phaseMap[data.phase.name];
@@ -247,19 +268,19 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 // Merge Fuctionality Ends
 
   // Selected row hightlighted
-  socket.on('highlight:selected:row', function(topic){
-  for(var j=0; j<$scope.meeting.topics.length ; j++){
-    if($scope.meeting.topics[j].body == topic.body){
-        $scope.meeting.topics[j] = topic;
-    }else{
-     $scope.meeting.topics[j].selected = '';
-    }
-  }
-  });
+  // socket.on('highlight:selected:row', function(topic){
+  // for(var j=0; j<$scope.meeting.topics.length ; j++){
+  //   if($scope.meeting.topics[j].body == topic.body){
+  //       $scope.meeting.topics[j] = topic;
+  //   }else{
+  //    $scope.meeting.topics[j].selected = '';
+  //   }
+  // }
+  // });
 
-  $scope.setSelected = function(topic) {
-     topic.selected = 'selected';
-     socket.emit('highlight:selected:row', topic);
+  $scope.toggleSelected = function(topic) {
+     topic.selected = !topic.selected;
+    //  socket.emit('highlight:selected:row', topic);
   };
 // End
 }
