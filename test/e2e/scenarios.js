@@ -238,23 +238,32 @@ describe('lean coffee', function(){
               expect(global.getElementById('votesRemaining').getText()).toContain('2');
             });
 
+            it('should allow a user to vote on up to 3 topics', function(){
+              votingPage.voteUp(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteUp(2);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+            });
+
+            it('should allow a user to vote 3 times on a single topic', function(){
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteDown(2);
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
+              votingPage.voteUp(0);
+              votingPage.voteUp(0);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+            });
+
+            xit('should not allow a user to vote 4 or more times', function(){
+
+            });
+
             xit('should allow the host to manually start the phase timer', function(){
 
             });
 
             xit('should show the remaining time for the phase', function(){
-
-            });
-
-            xit('should allow a user to vote on up to 3 topics', function(){
-
-            });
-
-            xit('should allow a user to vote 3 times on a single topic', function(){
-
-            });
-
-            xit('should not allow a user to vote 4 or more times', function(){
 
             });
 
