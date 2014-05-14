@@ -136,7 +136,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 		});
 	};
 
-  $scope.unvote = function(topic, index) {
+  $scope.downvote = function(topic, index) {
     socket.emit('topic:downvote', {
       topic: topic,
       voter: $scope.user
@@ -190,8 +190,10 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     });
 
     if(!foundOne) {
-      $scope.meeting.topics[0].current = true;
-      $scope.meeting.topics.slice(-1)[0].current = false;
+      var first = $scope.meeting.topics[0];
+      var last = $scope.meeting.topics.slice(-1)[0];
+      first.current = true;
+      if(first != last) last.current = false;
     }
   }
 

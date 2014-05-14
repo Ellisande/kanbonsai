@@ -1,9 +1,9 @@
 <div class="grid-25 push-5 meeting-menu">
     <ul class="meeting-list">
-        <li class="list-heading">Phase: {{meeting.phase.name}}</li>
+        <li id="phase" class="list-heading">Phase: {{meeting.phase.name}}</li>
         <li><toggle-host></toggle-host></li>
         <li ng-show="user.isHost">
-          <button  ng-click="changePhase()" id="nextPhase1" class="pure-button pure-button-primary">Next Phase &rarr;</button>
+          <button  ng-click="changePhase()" id="nextPhase" class="pure-button pure-button-primary">Next Phase &rarr;</button>
         </li>
         <li ng-show="user.isHost && meeting.phase.name == 'discuss'">
           <button ng-click="nextTopic()" id="nextTopic" class="pure-button pure-button-primary">Next Topic &rarr;</button>
@@ -17,7 +17,7 @@
         </li>
         <li class="list-heading">Participants</li>
       <li ng-repeat="participant in meeting.participants | orderBy:'!isHost'">
-          {{participant.name}}&nbsp;<span ng-show="participant.isHost">(H)</span>
+          {{participant.name}}&nbsp;<span id="participantIsHost" ng-show="participant.isHost">(H)</span>
         </li>
 
     </ul>

@@ -17,8 +17,8 @@ describe('lean coffee', function(){
             expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
         });
 
-        xit('should display the meeting particpants', function(){
-
+        it('should display the meeting particpants', function(){
+          expect(global.allparticipants.count()).toEqual(1);
         });
 
         it('should show the name of the meeting', function(){
@@ -49,11 +49,13 @@ describe('lean coffee', function(){
 
         it('should show me if I am the host', function(){
            expect(global.allparticipants.count()).toEqual(1);
-          // expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
-          // expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+           expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
+           expect(global.getElementById('participantIsHost').getText()).toBe('(H)');
+
         });
 
-        xit('should show who the hosts are', function(){
+        it('should show who the hosts are', function(){
+          expect(global.getParticipantElem(0, 'name').getText()).toContain('(H)');
 
         });
 
@@ -91,18 +93,18 @@ describe('lean coffee', function(){
 
 
           describe('sumbit phase', function() {
-
-                var author='';
+           var author='';
                 it('should allow us submit a topic', function() {
                     meetingPage.userGreeting().getText().then(function(userGreeting) {
                       author = userGreeting.substring(9);
+                    });
                       var allTopics;
                       for(var k=1; k< 10;k++){
                         topics.push(meetingPage.postTopic());
                       }
                       allTopics = meetingPage.getTopics();
                       expect(allTopics.count()).toBe(9);
-                    });
+
                 });
 
                 it('should show all topics', function(){
@@ -143,10 +145,16 @@ describe('lean coffee', function(){
     });
 
         describe('merge phase', function(){
-           var mergePage = new po.MergePage();
+           //var mergePage = new po.MergePage();
+
+           it('should allow you to navigate to the merge phase', function() {
+             global.goToNextPhase();
+             expect(global.getPhaseText()).toMatch(/PHASE: MERGE/);
+           });
+
 
           it('should allow merging of 2+ topics', function(){
-           mergePage.goToMergePhase();
+
             expect(global.allSubmitTopics.count()).toEqual(9);
              expect(global.getTopicElem(0,'body').getText()).toEqual(topics[0]);
              global.clickElemById("mergeCheckBoxes0");
@@ -200,8 +208,64 @@ describe('lean coffee', function(){
 
             it('should allow you to navigate to the voting phase', function() {
               global.goToNextPhase();
+              expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
             });
 
+            it('should display an icon to vote with', function(){
+              expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp').getText()).toBe('↑');
+            });
+
+            it('should display the number of votes the user has remaining', function(){
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have 3 votes remaining.');
+            });
+
+            it('should allow a user to vote', function(){
+              votingPage.voteUp(0);
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
+              expect(votingPage.getNumberOfVotesForTopic(0)).toContain('1');
+            });
+
+            it('should allow a user to vote up to 3 times', function(){
+              votingPage.voteUp(1);
+              expect(votingPage.getNumberOfVotesForTopic(1)).toContain('1');
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteUp(1);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+            });
+
+            it('should allow a user to change their votes', function(){
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
+            });
+
+            it('should allow a user to vote on up to 3 topics', function(){
+              votingPage.voteUp(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              votingPage.voteUp(2);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+              expect(votingPage.getNumberOfVotesForTopic(0)).toContain('1');
+              expect(votingPage.getNumberOfVotesForTopic(1)).toContain('1');
+              expect(votingPage.getNumberOfVotesForTopic(2)).toContain('1');
+            });
+
+            it('should allow a user to vote 3 times on a single topic', function(){
+              votingPage.voteDown(1);
+              expect(global.getElementById('votesRemaining').getText()).toContain('1');
+              expect(votingPage.getNumberOfVotesForTopic(1)).toContain('0');
+              votingPage.voteDown(2);
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
+              expect(votingPage.getNumberOfVotesForTopic(2)).toContain('0');
+              votingPage.voteUp(0);
+              votingPage.voteUp(0);
+              expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+              expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
+            });
+
+            xit('should not allow a user to vote 4 or more times', function(){
+
+            });
 
             xit('should allow the host to manually start the phase timer', function(){
 
@@ -211,42 +275,7 @@ describe('lean coffee', function(){
 
             });
 
-            xit('should display an icon to vote with', function(){
-
-            });
-
-            it('should allow a user to vote', function(){
-              votingPage.voteUp();
-              browser.debugger();
-              expect(global.getElementById('votesRemaining').getText()).toContain('2');
-              // expect(votingPage.votes()).toBe("1");
-            });
-
-            xit('should allow a user to vote up to 3 times', function(){
-
-            });
-
-            xit('should allow a user to vote on up to 3 topics', function(){
-
-            });
-
-            xit('should allow a user to vote 3 times on a single topic', function(){
-
-            });
-
-            xit('should not allow a user to vote 4 or more times', function(){
-
-            });
-
-            xit('should display the number of votes the user has remaining', function(){
-
-            });
-
             xit('should display total number of remaining votes across all users to the host', function(){
-
-            });
-
-            xit('should allow a user to change their votes', function(){
 
             });
 
