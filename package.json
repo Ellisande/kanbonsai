@@ -20,6 +20,7 @@
     "selenium-server": "~2.38.0",
     "jasmine-reporters": "~0.4.1",
     "protractor-screenshot-reporter": "0.0.5",
-    "protractor-html-screenshot-reporter": "0.0.8"
+    "protractor-html-screenshot-reporter": "0.0.8",
+    "gulp-protractor": "0.0.7"
   }
 }
