@@ -187,7 +187,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
   $scope.nextTopic = function(){
     $scope.meeting.topics.sort(function(left, right){
-      if(left.voters.length > right.voters.length) return -1
+      if(left.voters.length > right.voters.length) return -1;
       return left.voters.length < right.voters.length ?  1 :  0;
     });
 
@@ -206,7 +206,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
       first.current = true;
       if(first != last) last.current = false;
     }
-  }
+  };
 
   socket.on('update:phase', function(data){
     $scope.meeting.phase = data.phase;
@@ -231,7 +231,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     });
     $scope.newMergeText = {
       value:text.trim()
-    }
+    };
   };
 
   $scope.mergeTopicsButtonClk = function(){

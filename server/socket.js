@@ -75,6 +75,9 @@ var socket = function(io){
 
        //@Toggle Host
       socket.on('host:toggle', function(userData){
+        if(user.name === userData.name){
+          user.isHost = userData.isHost;
+        }
         io.sockets.in(roomName).emit('host:toggled', userData);
       });
 

@@ -189,7 +189,7 @@ describe('lean coffee', function(){
                   var newMergeText=global.getElementByModel('newMergeText.value');
                   newMergeText.clear();
                   newMergeText.sendKeys('New Text Added');
-                  
+
                   expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
                   global.clickElemByButtonText('Edit Topic');
                   expect(global.allSubmitTopics.count()).toEqual(7);
@@ -199,7 +199,9 @@ describe('lean coffee', function(){
             });
 
             describe('timer', function(){
-                xit('should do nothing', function() {
+                it('should do nothing', function() {
+                  var start = global.getElemByButtonText('Start');
+                  expect(start.isDisplayed()).toEqual(false);
                 });
             });
         });
