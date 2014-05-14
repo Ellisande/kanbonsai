@@ -65,10 +65,29 @@ describe('lean coffee', function(){
         });
 
         xit('should allow the host to start the timer', function(){
+          var secondsStart;
 
+          meetingPage.timerSeconds().getText()
+            .then(function(seconds){
+              seconds0 = seconds;
+              expect(seconds0).toBe('00');
+              return global.startTimer();
+            })
+            .then(function(){
+              return browser.driver.sleep(5000);
+            })
+            // .then(function() {
+            //   global.stopTimer();
+            // })
+            .then(function(){
+              return meetingPage.timerSeconds().getText();
+            })
+            .then(function(seconds1) {
+              expect(seconds1).not.toBe('00');
+            });
         });
 
-        xit('should allow the host to reset the timer', function(){
+        it('should allow the host to reset the timer', function(){
 
         });
 
@@ -179,6 +198,14 @@ describe('lean coffee', function(){
 
         describe('voting phase', function(){
 
+            var votingPage = new po.VotingPage();
+
+            it('should allow you to navigate to the voting phase', function() {
+              global.goToNextPhase();
+              expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
+            });
+
+
             xit('should allow the host to manually start the phase timer', function(){
 
             });
@@ -191,8 +218,11 @@ describe('lean coffee', function(){
 
             });
 
-            xit('should allow a user to vote', function(){
-
+            it('should allow a user to vote', function(){
+              votingPage.voteUp();
+              browser.debugger();
+              expect(global.getElementById('votesRemaining').getText()).toContain('2');
+              // expect(votingPage.votes()).toBe("1");
             });
 
             xit('should allow a user to vote up to 3 times', function(){
@@ -231,7 +261,7 @@ describe('lean coffee', function(){
             });
         });
 
-        describe('discuss phase', function(){
+        xdescribe('discuss phase', function(){
 
             xit('should allow the host to end the meeting', function(){
 
