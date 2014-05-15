@@ -23,6 +23,10 @@ module.exports.HomePage = function() {
         browser.get('http://localhost:5000/');
     };
 
+    this.setMeetingNameInput = function(name) {
+      this.meetingInput.sendKeys(name);
+    };
+
     this.createMeeting = function() {
         this.meetingInput.sendKeys(this.meetingName);
         this.createMeetingButton.click();
