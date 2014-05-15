@@ -10,6 +10,7 @@ describe('lean coffee', function() {
     it('should display the home page', function() {
       homePage.get();
       expect($('.welcome').getText()).toBe('Welcome to Lean Coffee! ');
+      expect(ptor.getCurrentUrl()).toContain('#/home');
     });
 
     it('should present the user with a default room in the inactive meeting list', function() {
@@ -30,6 +31,7 @@ describe('lean coffee', function() {
     it('should navigate to submit phase when user clicks Create a Meeting! button', function() {
       homePage.createMeeting();
       expect(global.getPhaseText()).toMatch(/PHASE: SUBMIT/);
+      expect(ptor.getCurrentUrl()).toContain('#/meeting');
     });
   });
 });
