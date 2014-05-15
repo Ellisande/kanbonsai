@@ -3,7 +3,7 @@ var allNames = [
   'Master Shake','Grimmace','Sailor Moon','Blue','A Fish Called Wonda','Resivior Dog','Marsellus Wallus','Tony Stark','Justin Beiber',
   'Bubble Puppy','Dora the Explorer','Spongebob Squarepants','Moonpie','Smores','Onyx','Uncle Bob','Godzilla',
   'McLovin','Sparky, the Fire Breathing Chameleon','The Tin Man', 'Magic Mike', 'Squared', 'MD', 'Darth Helemet', 'President Scroob',
-  'Glass Popcorn'
+  'Glass Popcorn', 'Kobe', 'Pierre the Pelican', 'The Dunstan', 'Secret Squirrel', 'Luigi'
 ];
 
 var randomName = function(allNames){
@@ -33,11 +33,14 @@ function Vote(type, user){
   this.user = user;
 }
 
+var numTopics = 0;
 function Topic(topic){
+  this.id = numTopics++;
   this.body = topic.body || '';
   this.voters = topic.voters || [];
   this.author = topic.author;
   this.continue = topic.continue || [];
+  this.current = false;
   this.votes = function(){
     return this.voters.length;
   };
@@ -87,5 +90,7 @@ function isNameFree(searchTerm, myArray) {
 
 module.exports = {
     getNewName: getNewName,
-    User: User
+    User: User,
+    Vote: Vote,
+    Topic: Topic
 }
