@@ -201,3 +201,7 @@ footer {
 .current, .current .author{
   color: rgb(0, 120, 231);
 }
+
+.voting-buttons {
+  font-size: 0.7em;
+}
