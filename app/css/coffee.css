@@ -44,7 +44,6 @@ input[name="meeting-name"] {
     padding-bottom: 1em;
     border-bottom: 1px solid gray;
     font-size: 1.1em;
-    min-height: 1.75em;
 }
 
 .topic:last-child {

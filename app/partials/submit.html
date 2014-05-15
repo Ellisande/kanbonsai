@@ -10,11 +10,10 @@
   </form>
 
     <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.body">
-        <div class="grid-90">
+        <div class="grid-100">
             <h4 class="author">{{topic.body}}</h4>
             <div class="by-line">By: {{topic.author}}</div>
         </div>
-        <br />
     </div>
 </div>
 <meeting-menu></meeting-menu>
