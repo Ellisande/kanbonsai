@@ -4,7 +4,7 @@ var ptor = protractor.getInstance();
 describe('lean coffee', function() {
   var global = new po.GlobalFunction();
 
-  describe('meeting page', function(){
+  describe('submit phase', function(){
     var meetingPage = new po.MeetingPage();
 
     it('should display my user name', function() {

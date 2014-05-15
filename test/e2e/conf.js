@@ -21,8 +21,10 @@ exports.config = {
   // Spec patterns are relative to the current working directly when
   // protractor is called.
   suites: {
-    homepage: 'home-page.js',
-    meetingpage: 'meeting-page.js',
+    home: 'home-page.js',
+    submit: 'submit-phase.js',
+    merge: 'merge-phase.js',
+    vote: 'vote-phase.js',
     everythingelse: 'scenarios.js'
   },
 
