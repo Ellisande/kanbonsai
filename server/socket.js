@@ -46,9 +46,7 @@ var socket = function(io){
 
       // event to save and broadcast out when a user adds a comment.
       socket.on('topic:post', function(data){
-        var newTopic = data.topic;
-        newTopic.voters = [];
-        newTopic.continue = [];
+        var newTopic = new Topic(data.topic);
         meeting.topics.push(newTopic);
         io.sockets.in(roomName).emit('topic:post', {
             topic: newTopic
@@ -56,10 +54,22 @@ var socket = function(io){
       });
 
       socket.on('topic:continue', function(data){
-        var topic = meeting.getTopic(data.topic);
+        var topic = meeting.getCurrentTopic();
+        var vote = new Vote(data.vote, user);
         if(!topic.hasContinueVoted(user)){
-          topic.continue.push(new Vote(data.vote, user));
+          topic.continue.push(vote);
+          io.sockets.in(roomName).emit('topic:continue', {
+            vote: vote,
+            topic: topic
+          });
         }
+      });
+
+      socket.on('topic:current', function(){
+        var newCurrentTopic = meeting.nextTopic();
+        io.sockets.in(roomName).emit('topic:current', {
+          topic: newCurrentTopic
+        });
       });
 
       //@REMOVE EDITTED OR MERGE TOPIC
