@@ -55,11 +55,12 @@ var socket = function(io){
 
       socket.on('topic:continue', function(data){
         var topic = meeting.getCurrentTopic();
+        if(!topic) return;
+        console.log(topic);
         var vote = new Vote(data.vote, user);
         if(!topic.hasContinueVoted(user)){
-          topic.continue.push(vote);
+          topic.addContinueVote(vote);
           io.sockets.in(roomName).emit('topic:continue', {
-            vote: vote,
             topic: topic
           });
         }
@@ -185,6 +186,11 @@ var socket = function(io){
         io.sockets.in(roomName).emit('update:phase', {
           phase: meeting.phase
         });
+        if(meeting.phase.name == 'discuss'){
+          io.sockets.in(roomName).emit('topic:current', {
+            topic: meeting.getCurrentTopic()
+          });
+        }
       });
     };
 }
