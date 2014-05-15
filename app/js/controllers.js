@@ -185,18 +185,23 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
     socket.emit('update:phase');
   };
 
-  //Not DONE DAMMNIT FIX THIS.
-  // socket.on('topic:continue', function(data){
-  //   $scope.meeting.topics.some(function(topic, index){
-  //     if(data.topic.id == topic.id)
-  //       $scope.meeting.topics[index] = data.topic;
-  //   });
-  // });
+  socket.on('topic:continue', function(data){
+    $scope.meeting.topics.some(function(topic, index){
+      if(data.topic.id == topic.id && data.topic.id == $scope.currentTopic.id){
+        $scope.meeting.topics[index] = data.topic;
+        $scope.currentTopic = $scope.meeting.topics[index];
+        return true;
+      }
+    });
+  });
 
   socket.on('topic:current', function(data){
-    $scope.meeting.topics.some(function(topic){
+    $scope.meeting.topics.forEach(function(topic){
       if(topic.current) topic.current = false;
-      if(topic.id == data.topic.id) topic.current = true;
+      if(topic.id == data.topic.id){
+        topic.current = true;
+        $scope.currentTopic = topic;
+      }
     });
   });
 
@@ -204,23 +209,13 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
     socket.emit('topic:current');
   };
 
-  socket.on('topic:continue', function(data){
-    console.log('fired');
-    console.log(data);
-    $scope.meeting.topics.some(function(topic){
-      if(topic.current) topic.continue.push(data.vote);
-    });
-  });
-
   $scope.continueVote = function(){
-    console.log('go');
     socket.emit('topic:continue', {
-      vote: 'go'
+      vote: 'continue'
     });
   };
 
   $scope.stopVote = function(){
-    console.log('stop');
     socket.emit('topic:continue', {
       vote: 'stop'
     });
