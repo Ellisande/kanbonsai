@@ -27,25 +27,75 @@ describe('lean coffee', function() {
 
         expect(becomeHost.isDisplayed()).toEqual(true);
         expect(backToNormalUser.isDisplayed()).toEqual(false);
-          becomeHost.click();
+
+        becomeHost.click();
+
         expect(becomeHost.isDisplayed()).toEqual(false);
         expect(backToNormalUser.isDisplayed()).toEqual(true);
+
         backToNormalUser.click();
+    });
+
+    var author;
+    var topics = [];
+
+    it('should allow us submit a topic', function() {
+        meetingPage.userGreeting().getText().then(function(userGreeting) {
+          author = userGreeting.substring(9);
+        });
+        var allTopics;
+        for(var k=1; k< 10;k++) {
+          topics.push(meetingPage.postTopic());
+        }
+        allTopics = meetingPage.getTopics();
+        expect(allTopics.count()).toBe(9);
+    });
+
+    it('should show all topics', function(){
+      var allTopics = meetingPage.getTopics();
+      expect(allTopics.get(0).getText()).toBe(topics[0]);
+      expect(allTopics.get(1).getText()).toBe(topics[1]);
+      expect(allTopics.get(2).getText()).toBe(topics[2]);
+    });
+
+    it('should show the remaining time for the phase', function(){
+      expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+      expect(meetingPage.timerSeconds().getText()).not.toBeNull();
+    });
+
+    it('should show the name of the person who submitted the topic', function(){
+      var allAuthors = meetingPage.getAuthors();
+
+      allAuthors.get(0).getText().then(function(byline) {
+       expect(byline.substring(4)).toBe(author);
+      });
+      allAuthors.get(1).getText().then(function(byline) {
+        expect(byline.substring(4)).toBe(author);
+      });
+      allAuthors.get(2).getText().then(function(byline) {
+        expect(byline.substring(4)).toBe(author);
+      });
+    });
+
+    xdescribe('timer expires', function(){
+
+        xit('should stop the timer at 0:00, and do nothing else', function(){
+
+        });
     });
 
     it('should allow the host to transition to the next phase', function(){
         var becomeHost = global.getElemByButtonText('Become a Host');
         var nextPhase = global.getElemByButtonText('Next Phase →');
-         expect(nextPhase.isDisplayed()).toEqual(false);
-           becomeHost.click();
-         expect(nextPhase.isDisplayed()).toEqual(true);
+        expect(nextPhase.isDisplayed()).toEqual(false);
+        becomeHost.click();
+        expect(nextPhase.isDisplayed()).toEqual(true);
     });
 
     it('should show me if I am the host', function(){
        expect(global.allparticipants.count()).toEqual(1);
        expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
        expect(global.getElementById('participantIsHost').getText()).toBe(' (H)');
-
     });
 
     it('should show who the hosts are', function(){
@@ -61,24 +111,17 @@ describe('lean coffee', function() {
     xit('should allow the host to start the timer', function(){
       var secondsStart;
 
-      meetingPage.timerSeconds().getText()
-        .then(function(seconds){
-          seconds0 = seconds;
-          expect(seconds0).toBe('00');
-          return global.startTimer();
-        })
-        .then(function(){
-          return browser.driver.sleep(5000);
-        })
-        // .then(function() {
-        //   global.stopTimer();
-        // })
-        .then(function(){
-          return meetingPage.timerSeconds().getText();
-        })
-        .then(function(seconds1) {
-          expect(seconds1).not.toBe('00');
-        });
+      meetingPage.timerSeconds().getText().then(function(seconds){
+        seconds0 = seconds;
+        expect(seconds0).toBe('00');
+        return global.startTimer();
+      }).then(function(){
+        return browser.driver.sleep(5000);
+      }).then(function(){
+        return meetingPage.timerSeconds().getText();
+      }).then(function(seconds1) {
+        expect(seconds1).not.toBe('00');
+      });
     });
 
     it('should allow the host to reset the timer', function(){
