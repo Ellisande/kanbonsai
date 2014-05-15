@@ -25,6 +25,7 @@ exports.config = {
     submit: 'submit-phase.js',
     merge: 'merge-phase.js',
     vote: 'vote-phase.js',
+    discuss: 'discuss-phase.js',
     everythingelse: 'scenarios.js'
   },
 
