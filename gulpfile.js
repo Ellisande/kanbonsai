@@ -20,12 +20,12 @@ gulp.task('protractor', function() {
 
 });
 
-gulp.task('e2e-test-clean', function(){
+gulp.task('e2e-clean', function(){
   gulp.src('test/screenshots', {read: false})
     .pipe(clean());
 });
 
-gulp.task('e2e-test', ['e2e-test-clean', 'protractor']);
+gulp.task('e2e', ['e2e-clean', 'protractor']);
 
 gulp.task('js-minify', function(){
     return gulp.src('app/js/**/*.js')
