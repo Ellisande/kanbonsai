@@ -152,7 +152,7 @@ module.exports.MeetingPage = function() {
     this.getElemByButtonText(buttonText).click();
   };
 
-  this.getElementByModel = function(modelValue){
+  this.getElemByModel = function(modelValue){
     return element(by.model(modelValue));
   };
 

@@ -314,4 +314,29 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
     //  socket.emit('highlight:selected:row', topic);
   };
 // End
+  $scope.email= {
+    to : ''
+  }
+
+$scope.sendEmail = function(){
+    var emailBody='Hi\n';
+    emailBody+='Topics:\n\n';
+
+    for(var p=0;p<$scope.meeting.topics.length;p++){
+      var topic = $scope.meeting.topics[p];
+      emailBody+='Topic: ';
+      emailBody+=topic.body+'\n';
+      if(topic.notes){
+        emailBody+='Notes: ';
+        emailBody+=topic.notes+'\n\n';
+      }
+
+    }
+    emailBody += '\nThanks';
+
+    var link = "mailto:"+$scope.email.to
+             + "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name
+             + "&body="+escape(emailBody);
+    window.location.href = link;
+ };
 }
