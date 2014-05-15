@@ -38,8 +38,16 @@ module.exports.HomePage = function() {
 };
 
 module.exports.MeetingPage = function() {
+    this.meetingName;
     this.userGreeting = function() {
         return element(by.binding('user'));
+    };
+
+    this.bypassEarlierPages = function() {
+      var homePage = new module.exports.HomePage();
+      homePage.get();
+      homePage.createMeeting();
+      this.meetingName = homePage.getMeetingName();
     };
 
     this.meetingListText = function() {

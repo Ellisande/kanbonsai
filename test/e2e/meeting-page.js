@@ -1,0 +1,90 @@
+var po = require('./page-objects');
+var ptor = protractor.getInstance();
+
+describe('lean coffee', function() {
+  var global = new po.GlobalFunction();
+
+  describe('meeting page', function(){
+    var meetingPage = new po.MeetingPage();
+
+    it('should display my user name', function() {
+      meetingPage.bypassEarlierPages();
+      expect(meetingPage.userGreeting().getText()).toMatch(/You are: [\s\w]+/);
+    });
+
+    it('should display the meeting participants', function(){
+      expect(global.allparticipants.count()).toEqual(1);
+      expect(global.getElementById('participantList').isPresent()).toBe(true);
+    });
+
+    it('should show the name of the meeting', function(){
+        expect(meetingPage.meetingListText()).toContain(meetingPage.meetingName);
+    });
+
+    it('should allow a user to become a host', function(){
+        var becomeHost = global.getElemByButtonText('Become a Host');
+        var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+
+        expect(becomeHost.isDisplayed()).toEqual(true);
+        expect(backToNormalUser.isDisplayed()).toEqual(false);
+          becomeHost.click();
+        expect(becomeHost.isDisplayed()).toEqual(false);
+        expect(backToNormalUser.isDisplayed()).toEqual(true);
+        backToNormalUser.click();
+    });
+
+    it('should allow the host to transition to the next phase', function(){
+        var becomeHost = global.getElemByButtonText('Become a Host');
+        var nextPhase = global.getElemByButtonText('Next Phase →');
+         expect(nextPhase.isDisplayed()).toEqual(false);
+           becomeHost.click();
+         expect(nextPhase.isDisplayed()).toEqual(true);
+    });
+
+    it('should show me if I am the host', function(){
+       expect(global.allparticipants.count()).toEqual(1);
+       expect(global.getElementById('participantIsHost').isPresent()).toBe(true);
+       expect(global.getElementById('participantIsHost').getText()).toBe(' (H)');
+
+    });
+
+    it('should show who the hosts are', function(){
+      expect(global.getParticipantElem(0, 'name').getText()).toContain('(H)');
+      expect(global.getElementById('participantList').isPresent()).toBe(true);
+    });
+
+    it('should show a timer', function(){
+      expect(meetingPage.timerMinutes().getText()).not.toBeNull();
+      expect(meetingPage.timerSeconds().getText()).not.toBeNull();
+    });
+
+    xit('should allow the host to start the timer', function(){
+      var secondsStart;
+
+      meetingPage.timerSeconds().getText()
+        .then(function(seconds){
+          seconds0 = seconds;
+          expect(seconds0).toBe('00');
+          return global.startTimer();
+        })
+        .then(function(){
+          return browser.driver.sleep(5000);
+        })
+        // .then(function() {
+        //   global.stopTimer();
+        // })
+        .then(function(){
+          return meetingPage.timerSeconds().getText();
+        })
+        .then(function(seconds1) {
+          expect(seconds1).not.toBe('00');
+        });
+    });
+
+    it('should allow the host to reset the timer', function(){
+      //global.clickElemByButtonText('Start');
+      //expect(global.getElemByButtonText('Start').isDisplayed()).toEqual(false);
+      //expect(global.getElemByButtonText('Stop').isDisplayed()).toEqual(true);
+    });
+  });
+});

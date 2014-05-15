@@ -22,6 +22,7 @@ exports.config = {
   // protractor is called.
   suites: {
     homepage: 'home-page.js',
+    meetingpage: 'meeting-page.js',
     everythingelse: 'scenarios.js'
   },
 
