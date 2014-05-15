@@ -13,8 +13,9 @@ function MeetingListCtrl($scope, socket){
     $scope.limit = 10;
 }
 
-function HomeCtrl($scope, $location, socket) {
+function HomeCtrl($scope, $location, socket, localStorageService) {
     $scope.create = function(){
+        localStorageService.clearAll();
         $location.url('/meeting/'+$scope.meetingName);
     };
 }
@@ -43,22 +44,33 @@ function LocalTimerCtrl($scope, localTimer){
     };
 }
 
-function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails) {
+function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails, localStorageService) {
   'use strict';
-  socket.cleanup();
+  var localStorageMeeting = localStorageService.get('meeting'),
+      localStorageUser = localStorageService.get('user');
 
-  socket.emit('unsubscribe');
-  socket.emit('subscribe', {
-      name: $routeParams.meetingName
-  });
+    console.log("Meeting is " + localStorageMeeting + " user is " + localStorageUser);
 
-  $scope.meeting = {phase: 'submit'};
-	$scope.topicOrder = '-voters.length';
-	$scope.userTopic = new Topic();
+    socket.cleanup();
+
+    if (!localStorageUser) {
+      socket.emit('unsubscribe');
+    }
+    socket.emit('subscribe', {
+        meetingName: localStorageMeeting || $routeParams.meetingName,
+        userName: localStorageUser || ""
+    });
+
+  $scope.meeting = {phase: 'submit'}; // state will be restored on init
+  $scope.topicOrder = '-voters.length';
+  $scope.userTopic = new Topic();
+
 	socket.on('init', function (data)
 	{
         $scope.user = data.user;
         $scope.meeting = data.meeting;
+        localStorageService.add('user', data.user.name);
+        localStorageService.add('meeting', data.meeting.name);
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
 	});
 
@@ -176,7 +188,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
 
   $scope.nextTopic = function(){
     $scope.meeting.topics.sort(function(left, right){
-      if(left.voters.length > right.voters.length) return -1
+      if(left.voters.length > right.voters.length) return -1;
       return left.voters.length < right.voters.length ?  1 :  0;
     });
 
@@ -195,7 +207,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
       first.current = true;
       if(first != last) last.current = false;
     }
-  }
+  };
 
   socket.on('update:phase', function(data){
     $scope.meeting.phase = data.phase;
@@ -220,7 +232,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
     });
     $scope.newMergeText = {
       value:text.trim()
-    }
+    };
   };
 
   $scope.mergeTopicsButtonClk = function(){

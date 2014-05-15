@@ -37,11 +37,34 @@ var socket = function(io){
         });
       };
 
+      var refresh = function(userName, roomName){
+        meeting = meetings[roomName] || function(){
+            meetings[roomName] = new ServerMeeting(roomName);
+            return meetings[roomName];
+        }();
+
+        user = new User(userName, meeting.name, socket.id);
+        meeting.participants.push(user);
+        socket.emit('init', {
+            user: user,
+            meeting: meeting
+        });
+
+        io.sockets.emit('meetings:update', {
+          meetings: meetings
+        });
+
+      };
+
       // join a room.
       socket.on('subscribe', function(data){
-        socket.join(data.name);
-        roomName = data.name;
-        initialize(data.name);
+        socket.join(data.meetingName);
+        roomName = data.meetingName;
+        if (data.userName) {
+          refresh(data.userName, data.meetingName);
+        } else {
+          initialize(data.meetingName);
+        }
       });
 
       // event to save and broadcast out when a user adds a comment.
