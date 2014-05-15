@@ -19,6 +19,7 @@ describe('lean coffee', function(){
 
         it('should display the meeting particpants', function(){
           expect(global.allparticipants.count()).toEqual(1);
+          expect(global.getElementById('participantList').isPresent()).toBe(true);
         });
 
         it('should show the name of the meeting', function(){
@@ -56,7 +57,7 @@ describe('lean coffee', function(){
 
         it('should show who the hosts are', function(){
           expect(global.getParticipantElem(0, 'name').getText()).toContain('(H)');
-
+          expect(global.getElementById('participantList').isPresent()).toBe(true);
         });
 
         it('should show a timer', function(){
@@ -88,7 +89,9 @@ describe('lean coffee', function(){
         });
 
         it('should allow the host to reset the timer', function(){
-
+          //global.clickElemByButtonText('Start');
+          //expect(global.getElemByButtonText('Start').isDisplayed()).toEqual(false);
+          //expect(global.getElemByButtonText('Stop').isDisplayed()).toEqual(true);
         });
 
 
@@ -178,21 +181,30 @@ describe('lean coffee', function(){
               it('should merge text when topics are merged', function(){
                  global.clickElemById("mergeCheckBoxes1");
                  global.clickElemById("mergeCheckBoxes7");
-                expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
+                 expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
                  global.clickElemByButtonText('Merge Topics');
-                expect(global.allSubmitTopics.count()).toEqual(7);
+                 expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 
-              it('should allow editing of the merged text', function(){
-                  global.clickElemById("mergeCheckBoxes2");
-                  var newMergeText=global.getElementByModel('newMergeText.value');
-                  newMergeText.clear();
-                  newMergeText.sendKeys('New Text Added');
+              it('should do nothing on Cancel', function(){
+                 global.clickElemById("mergeCheckBoxes1");
+                 global.clickElemById("mergeCheckBoxes2");
+                 global.clickElemByButtonText('Cancel');
+                 expect(global.allSubmitTopics.count()).toEqual(7);
 
-                  expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
-                  global.clickElemByButtonText('Edit Topic');
-                  expect(global.allSubmitTopics.count()).toEqual(7);
+              });
+
+
+              it('should allow editing of the merged text', function(){
+                global.clickElemById("mergeCheckBoxes2");
+                var newMergeText=global.getElementByModel('newMergeText.value');
+                newMergeText.clear();
+                newMergeText.sendKeys('New Text Added');
+
+                expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
+                global.clickElemByButtonText('Edit Topic');
+                expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 

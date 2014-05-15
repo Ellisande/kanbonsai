@@ -15,7 +15,7 @@
             <button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired && user.isHost">Start</button>
             <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired && user.isHost">Stop</button>
         </li>
-        <li class="list-heading">Participants</li>
+        <li class="list-heading" id="participantList">Participants</li>
       <li ng-repeat="participant in meeting.participants | orderBy:'!isHost'">
           {{participant.name}}<span id="participantIsHost" ng-show="participant.isHost">&nbsp;(H)</span>
         </li>
