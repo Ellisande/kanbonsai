@@ -23,6 +23,10 @@ module.exports.HomePage = function() {
         browser.get('http://localhost:5000/');
     };
 
+    this.setMeetingNameInput = function(name) {
+      this.meetingInput.sendKeys(name);
+    };
+
     this.createMeeting = function() {
         this.meetingInput.sendKeys(this.meetingName);
         this.createMeetingButton.click();
@@ -34,8 +38,16 @@ module.exports.HomePage = function() {
 };
 
 module.exports.MeetingPage = function() {
+    this.meetingName;
     this.userGreeting = function() {
         return element(by.binding('user'));
+    };
+
+    this.bypassEarlierPages = function() {
+      var homePage = new module.exports.HomePage();
+      homePage.get();
+      homePage.createMeeting();
+      this.meetingName = homePage.getMeetingName();
     };
 
     this.meetingListText = function() {
@@ -152,7 +164,7 @@ module.exports.MeetingPage = function() {
     this.getElemByButtonText(buttonText).click();
   };
 
-  this.getElementByModel = function(modelValue){
+  this.getElemByModel = function(modelValue){
     return element(by.model(modelValue));
   };
 

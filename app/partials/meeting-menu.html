@@ -22,7 +22,7 @@
               <span style="color: green;" ng-show="currentTopic.continue.length > currentTopic.stop.length">Vote is to Go</span>
             </div>
         </li>
-        <li class="list-heading">Participants</li>
+        <li class="list-heading" id="participantList">Participants</li>
       <li ng-repeat="participant in meeting.participants | orderBy:'!isHost'">
           {{participant.name}}<span id="participantIsHost" ng-show="participant.isHost">&nbsp;(H)</span>
         </li>

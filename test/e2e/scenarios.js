@@ -19,6 +19,7 @@ describe('lean coffee', function(){
 
         it('should display the meeting particpants', function(){
           expect(global.allparticipants.count()).toEqual(1);
+          expect(global.getElementById('participantList').isPresent()).toBe(true);
         });
 
         it('should show the name of the meeting', function(){
@@ -56,7 +57,7 @@ describe('lean coffee', function(){
 
         it('should show who the hosts are', function(){
           expect(global.getParticipantElem(0, 'name').getText()).toContain('(H)');
-
+          expect(global.getElementById('participantList').isPresent()).toBe(true);
         });
 
         it('should show a timer', function(){
@@ -88,7 +89,9 @@ describe('lean coffee', function(){
         });
 
         it('should allow the host to reset the timer', function(){
-
+          //global.clickElemByButtonText('Start');
+          //expect(global.getElemByButtonText('Start').isDisplayed()).toEqual(false);
+          //expect(global.getElemByButtonText('Stop').isDisplayed()).toEqual(true);
         });
 
 
@@ -160,7 +163,7 @@ describe('lean coffee', function(){
              global.clickElemById("mergeCheckBoxes0");
              global.clickElemById("mergeCheckBoxes1");
 
-            expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[0]+'\n'+topics[1]);
+            expect(global.getElemByModel('newMergeText.value').getAttribute('value')).toEqual(topics[0]+'\n'+topics[1]);
              global.clickElemByButtonText('Merge Topics');
             expect(global.allSubmitTopics.count()).toEqual(8);
 
@@ -178,21 +181,30 @@ describe('lean coffee', function(){
               it('should merge text when topics are merged', function(){
                  global.clickElemById("mergeCheckBoxes1");
                  global.clickElemById("mergeCheckBoxes7");
-                expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
+                 expect(global.getElemByModel('newMergeText.value').getAttribute('value')).toEqual(topics[3]+'\n'+topics[0]+'\n'+topics[1]);
                  global.clickElemByButtonText('Merge Topics');
-                expect(global.allSubmitTopics.count()).toEqual(7);
+                 expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 
-              it('should allow editing of the merged text', function(){
-                  global.clickElemById("mergeCheckBoxes2");
-                  var newMergeText=global.getElementByModel('newMergeText.value');
-                  newMergeText.clear();
-                  newMergeText.sendKeys('New Text Added');
+              it('should do nothing on Cancel', function(){
+                 global.clickElemById("mergeCheckBoxes1");
+                 global.clickElemById("mergeCheckBoxes2");
+                 global.clickElemByButtonText('Cancel');
+                 expect(global.allSubmitTopics.count()).toEqual(7);
 
-                  expect(global.getElementByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
-                  global.clickElemByButtonText('Edit Topic');
-                  expect(global.allSubmitTopics.count()).toEqual(7);
+              });
+
+
+              it('should allow editing of the merged text', function(){
+                global.clickElemById("mergeCheckBoxes2");
+                var newMergeText=global.getElemByModel('newMergeText.value');
+                newMergeText.clear();
+                newMergeText.sendKeys('New Text Added');
+
+                expect(global.getElemByModel('newMergeText.value').getAttribute('value')).toEqual('New Text Added');
+                global.clickElemByButtonText('Edit Topic');
+                expect(global.allSubmitTopics.count()).toEqual(7);
 
               });
 
@@ -411,15 +423,12 @@ describe('lean coffee', function(){
             });
     });
 
-    xdescribe('complete', function(){
+    describe('complete', function(){
 
       xit('should show star guy', function(){
 
       });
 
-      xit('should prompt for email', function(){
-
-      });
 
       xit('should move the participants to the landing page', function(){
 
@@ -430,18 +439,29 @@ describe('lean coffee', function(){
       });
 
       describe('email', function(){
+          it('should allow you to navigate to the complete phase', function() {
+            global.goToNextPhase();
+            expect(global.getPhaseText()).toMatch(/PHASE: COMPLETE/);
+          });
 
-          xit('should populate an email subject and body', function(){
+          it('send button disable if email input text empty', function(){
+             expect(global.getElemByButtonText('Send').isDisplayed()).toEqual(true);
+             expect(global.getElemByButtonText('Send').isEnabled()).toBe(false);
+          });
 
+          it('enable button if email input text not empty', function(){
+             global.getElemByModel('email.to').sendKeys("test@sf.com");
+             expect(global.getElemByButtonText('Send').isDisplayed()).toEqual(true);
+             expect(global.getElemByButtonText('Send').isEnabled()).toBe(true);
           });
 
           xit('should be optional', function(){
 
           });
 
-          describe('body', function(){
-              xit('should contain all the topics discussed', function(){
-
+          xdescribe('body', function(){
+              it('should contain all the topics discussed', function(){
+               expect(global.allSubmitTopics.count()).toEqual(7);
               });
 
               xit('should contain the notes for each topic', function(){

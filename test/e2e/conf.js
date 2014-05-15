@@ -20,7 +20,14 @@ exports.config = {
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: ['scenarios.js'],
+  suites: {
+    home: 'home-page.js',
+    submit: 'submit-phase.js',
+    merge: 'merge-phase.js',
+    vote: 'vote-phase.js',
+    discuss: 'discuss-phase.js',
+    everythingelse: 'scenarios.js'
+  },
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {
