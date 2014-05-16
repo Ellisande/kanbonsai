@@ -6,24 +6,13 @@ describe('lean coffee', function() {
 
   describe('complete', function(){
     var completePhase = new po.CompletePage();
-    xit('should show star guy', function(){
 
-    });
-
-
-    xit('should move the participants to the landing page', function(){
-
-    });
-
-    xit('should delete the meeting', function(){
-
-    });
+      it('should allow you to navigate to the complete phase', function() {
+        completePhase.bypassEarlierPages();
+        expect(global.getPhaseText()).toMatch(/PHASE: COMPLETE/);
+      });
 
     describe('email', function(){
-        it('should allow you to navigate to the complete phase', function() {
-          completePhase.bypassEarlierPages();
-          expect(global.getPhaseText()).toMatch(/PHASE: COMPLETE/);
-        });
 
         it('should disable send button if email input text empty', function(){
            expect(global.getElemByButtonText('Send').isDisplayed()).toEqual(true);
@@ -36,9 +25,12 @@ describe('lean coffee', function() {
            expect(global.getElemByButtonText('Send').isEnabled()).toBe(true);
         });
 
-        xit('should be optional', function(){
 
+        it('should be optional', function(){
+            expect(global.getElementById('exitMeeting').isDisplayed()).toEqual(true);
+            expect(global.getElementById('exitMeeting').isEnabled()).toBe(true);
         });
+
 
         xdescribe('body', function(){
             it('should contain all the topics discussed', function(){
@@ -48,6 +40,21 @@ describe('lean coffee', function() {
             xit('should contain the notes for each topic', function(){
 
             });
+
+        it('should move the participants to the landing page', function(){
+          expect(global.clickElemById('exitMeeting'));
+          ptor.waitForAngular();
+          expect(ptor.getCurrentUrl()).toContain('#/home');
+        });
+
+        xit('should delete the meeting', function(){
+
+        });
+
+        xit('should show star guy', function(){
+
+        });
+
         });
     });
   });
