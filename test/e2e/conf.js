@@ -27,7 +27,7 @@ exports.config = {
     vote: 'vote-phase.js',
     discuss: 'discuss-phase.js',
     complete: 'complete-phase.js',
-    all: ['home-page.js', 'submit-phase.js', 'merge-phase.js', 'vote-phase.js', 'discuss-phase.js'],
+    all: ['home-page.js', 'submit-phase.js', 'merge-phase.js', 'vote-phase.js', 'discuss-phase.js', 'complete-phase.js'],
     everythingelse: 'scenarios.js'
   },
 
