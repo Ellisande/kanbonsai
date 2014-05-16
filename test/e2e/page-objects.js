@@ -141,10 +141,42 @@ module.exports.MergePage = function() {
     element(by.buttonText('Next Topic →')).click();
   };
 
+  this.clickFirstTopic = function(){
+    return element.all(by.repeater('topic in meeting.topics').column('{{topic.author}}')).first().click();
+  };
+
+  this.getFirstNotes = function(){
+    return element.all(by.repeater('topic in meeting.topics')).first().findElement(by.textarea('topic.notes'));
+  };
+
   this.getTopics = function() {
     return element.all(
       by.repeater('topic in meeting.topics')
     );
+  };
+
+  this.continueButton = function(){
+    return element(by.buttonText('Keep Talking'))
+  };
+
+  this.stopButton = function(){
+    return element(by.buttonText('Keep Talking'))
+  };
+
+  this.continueVote = function(){
+    return element(by.buttonText('Keep Talking')).click();
+  };
+
+  this.stopVote = function(){
+    return element(by.buttonText('Move On')).click();
+  };
+
+  this.continueText = function(){
+    return $('.continue');
+  };
+
+  this.stopText = function(){
+    return $('.stop');
   };
 
   this.getTopicVotes = function() {

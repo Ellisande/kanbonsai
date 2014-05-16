@@ -80,6 +80,7 @@ module.exports = function ServerMeeting(name) {
     }
 
     this.nextTopic = function(){
+        if(this.topics.length <= 0) return;
         this.sortTopics();
         var currentTopic;
         var foundOne = this.topics.some(function(topic, index){
