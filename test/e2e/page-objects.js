@@ -131,6 +131,12 @@ module.exports.MergePage = function() {
  };
 
  module.exports.DiscussPage = function(){
+  this.bypassEarlierPages = function() {
+    var votingPage = new module.exports.VotingPage();
+    votingPage.bypassEarlierPages();
+    new module.exports.GlobalFunction().goToNextPhase();
+  };
+
   this.nextTopic = function(){
     element(by.buttonText('Next Topic →')).click();
   };
