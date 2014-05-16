@@ -7,6 +7,7 @@ var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
 var clean = require('gulp-clean');
 var protractor = require('gulp-protractor').protractor;
+var parsedArgs = require('minimist')(process.argv.slice());
 
 gulp.task('protractor', function() {
 
@@ -15,8 +16,7 @@ gulp.task('protractor', function() {
       protractor(
         {
           configFile: "./test/e2e/conf.js",
-          args: ['--suite','all']
-        }
+          args: ['--suite', parsedArgs.suite ? parsedArgs.suite : 'all']
       ));
 
 });
