@@ -46,10 +46,9 @@ function LocalTimerCtrl($scope, localTimer){
 
 function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetails, localStorageService) {
   'use strict';
-  var localStorageMeeting = localStorageService.get('meeting'),
-      localStorageUser = localStorageService.get('user');
+  var localStorageUser = localStorageService.get('user');
 
-    console.log("Meeting is " + localStorageMeeting + " user is " + localStorageUser);
+    console.log(" user is " + localStorageUser);
 
     socket.cleanup();
 
@@ -57,7 +56,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
       socket.emit('unsubscribe');
     }
     socket.emit('subscribe', {
-        meetingName: localStorageMeeting || $routeParams.meetingName,
+        meetingName: $routeParams.meetingName,
         userName: localStorageUser || ""
     });
 
@@ -70,7 +69,6 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, mtgDetai
         $scope.user = data.user;
         $scope.meeting = data.meeting;
         localStorageService.add('user', data.user.name);
-        localStorageService.add('meeting', data.meeting.name);
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
 	});
 

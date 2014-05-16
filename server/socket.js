@@ -163,21 +163,6 @@ var socket = function(io){
         for(var i = 0; i < allUsers.length; i++){
           allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
         }
-        var topics = meeting.topics;
-        var totalTopics = topics.length;
-        for(var i = 0; i < totalTopics; i++){
-          if(topics[i].author === user.name){
-            topics.splice(i,1);
-            i--;
-            totalTopics--;
-            continue;
-          }
-
-          var containingIndex = topics[i].voters.indexOf(user.name);
-          if(containingIndex !== -1){
-            topics[i].voters.splice(containingIndex,1);
-          }
-        }
 
         io.sockets.in(roomName).emit('user:left', {
           user: user
@@ -186,7 +171,7 @@ var socket = function(io){
         roomName = "default";
         meeting = meetings["default"];
 
-      }
+      };
 
       // clean up when a user leaves, and broadcast it to other users
       socket.on('unsubscribe', unsubscribe);
