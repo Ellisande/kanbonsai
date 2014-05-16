@@ -8,14 +8,21 @@
         <input name="status" type="text" required="true" class="block" ng-model="userTopic.status" />
     </div>
 
+    <p id="roomVotesRemaining" ng-show="user.isHost">
+      <ng-pluralize count="calculateVotesRemainingForRoom()"
+        when="{'0': 'There are no votes remaining in the room.',
+              '1': 'There is 1 vote remaining in the room.',
+              'other': 'There are {} votes remaining in the room.'}"
+      </ng-pluralize>
+    </p>
 
-    <span ng-class="{noVotesRemain: user.votesRemaining == 0}" id="votesRemaining">
+    <p ng-class="{noVotesRemain: user.votesRemaining == 0}" id="votesRemaining">
       <ng-pluralize count="user.votesRemaining"
         when="{'0': 'You have no votes remaining.',
              '1': 'You have 1 vote remaining.',
              'other': 'You have {} votes remaining.'}">
       </ng-pluralize>
-    </span>
+    </p>
 
     <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.status">
         <div class="grid-15 vote">
@@ -27,6 +34,7 @@
             <h4 class="author">{{topic.body}}</h4>
             <div class="by-line">By: {{topic.author}}</div>
         </div>
+        <br />
     </div>
   </div>
 

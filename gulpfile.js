@@ -5,9 +5,10 @@ var concat = require('gulp-concat');
 var minify = require('gulp-minify-css');
 var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
+var clean = require('gulp-clean');
 var protractor = require('gulp-protractor').protractor;
 
-gulp.task('e2e-test', function() {
+gulp.task('protractor', function() {
 
     gulp.src('./test/e2e/*.js')
     .pipe(
@@ -18,6 +19,13 @@ gulp.task('e2e-test', function() {
       ));
 
 });
+
+gulp.task('e2e-clean', function(){
+  gulp.src('test/screenshots', {read: false})
+    .pipe(clean());
+});
+
+gulp.task('e2e', ['e2e-clean', 'protractor']);
 
 gulp.task('js-minify', function(){
     return gulp.src('app/js/**/*.js')

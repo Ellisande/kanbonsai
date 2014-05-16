@@ -15,7 +15,7 @@
 </div>
 <!--Merge Topics End -->
 		<div class="topic  {{topic.selected}}" ng-repeat="topic in meeting.topics |  orderBy:commentOrder">
-				<div class="grid-5">
+				<div class="grid-5" ng-show="user.isHost">
 					<input type="checkbox" name="mergeCheckBoxes" id="mergeCheckBoxes{{$index}}"
 								ng-click="topicsSelectedToMerge(topic)" /><!-- Merge CheckBox -->
 				</div>
@@ -23,8 +23,8 @@
 						<h4 class="author">{{topic.body}}</h4>
 						<div class="by-line">By: {{topic.author}}</div>
 				</div>
+				<br />
 		</div>
-		</form>
 	</div>
 
 </div>

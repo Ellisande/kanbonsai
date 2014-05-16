@@ -29,6 +29,13 @@ module.exports = function ServerMeeting(name) {
         }
     };
 
+    this.sortTopics = function(){
+      this.topics.sort(function(left, right){
+        if(left.voters.length > right.voters.length) return -1;
+        return left.voters.length < right.voters.length ?  1 :  0;
+      });
+    };
+
     // serialize claimed names as an array
     this.getAllNames = function () {
         return this.participants;
@@ -60,6 +67,41 @@ module.exports = function ServerMeeting(name) {
         }
       });
     }
+
+    this.getCurrentTopic = function(){
+      var currentTopic;
+      var hasCurrentTopic = this.topics.some(function(topic){
+        if(topic.current == true){
+          currentTopic = topic;
+          return true;
+        }
+      });
+      return currentTopic;
+    }
+
+    this.nextTopic = function(){
+        this.sortTopics();
+        var currentTopic;
+        var foundOne = this.topics.some(function(topic, index){
+          var previousTopic = this.topics[index - 1] || {};
+          if(previousTopic.current){
+            previousTopic.current = false;
+            topic.current = true;
+            currentTopic = topic;
+            return true;
+          }
+        }, this);
+
+        if(!foundOne) {
+          var first = this.topics[0];
+          var last = this.topics.slice(-1)[0];
+          first.current = true;
+          currentTopic = first;
+          if(first != last) last.current = false;
+        }
+
+        return currentTopic;
+    };
 
     this.nextPhase = function(){
         this.phase = phases[this.phase.next];

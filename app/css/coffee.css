@@ -44,7 +44,6 @@ input[name="meeting-name"] {
     padding-bottom: 1em;
     border-bottom: 1px solid gray;
     font-size: 1.1em;
-    min-height: 1.75em;
 }
 
 .topic:last-child {
@@ -165,10 +164,6 @@ footer {
     background: rgb(202, 60, 60); /* this is a maroon */
 }
 
-.selected{
-  /*background: rgb(224, 224, 224); /* this is not a maroon */
-}
-
 .headlineUser span {
     display: inline;
     vertical-align: top;
@@ -197,7 +192,7 @@ footer {
   margin: 1em 0 1em 0;
 }
 
-.notes textarea.show{
+.notes .show {
   opacity: 1;
   display: block;
 }
