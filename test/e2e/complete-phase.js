@@ -32,8 +32,8 @@ describe('lean coffee', function() {
         });
 
 
-        xdescribe('body', function(){
-            it('should contain all the topics discussed', function(){
+        describe('body', function(){
+            xit('should contain all the topics discussed', function(){
              expect(global.allSubmitTopics.count()).toEqual(7);
             });
 
