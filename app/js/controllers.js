@@ -316,7 +316,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 // End
   $scope.email= {
     to : ''
-  }
+  };
 
 $scope.sendEmail = function(){
     var emailBody='Hi\n';
@@ -334,9 +334,9 @@ $scope.sendEmail = function(){
     }
     emailBody += '\nThanks';
 
-    var link = "mailto:"+$scope.email.to
-             + "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name
-             + "&body="+escape(emailBody);
+    var link = "mailto:"+$scope.email.to+
+             "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name+
+             "&body="+escape(emailBody);
     window.location.href = link;
  };
 }
