@@ -15,7 +15,7 @@ gulp.task('protractor', function() {
     .pipe(
       protractor(
         {
-          configFile: "./test/e2e/conf.js",
+          configFile: "./test/e2e/protractor.conf.js",
           args: ['--suite', parsedArgs.suite ? parsedArgs.suite : 'all']
         }
       ));
