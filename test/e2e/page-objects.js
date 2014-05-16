@@ -149,34 +149,34 @@ module.exports.MergePage = function() {
     return element.all(by.repeater('topic in meeting.topics')).first().findElement(by.textarea('topic.notes'));
   };
 
-  this.getNotes = function(){
-    return element(by.model('topic.notes'));
-  };
-
   this.getTopics = function() {
     return element.all(
       by.repeater('topic in meeting.topics')
     );
   };
 
+  this.continueButton = function(){
+    return element(by.buttonText('Keep Talking'))
+  };
+
+  this.stopButton = function(){
+    return element(by.buttonText('Keep Talking'))
+  };
+
   this.continueVote = function(){
-    element(by.buttonText('Keep Talking')).click();
+    return element(by.buttonText('Keep Talking')).click();
   };
 
   this.stopVote = function(){
-    element(by.buttonText('Stop')).click();
+    return element(by.buttonText('Move On')).click();
   };
 
-  this.winning = function(){
-    $('.stop').getAttribute('style').then(function(style){
-      expect(style).toEqual('display: none;');
-    });
+  this.continueText = function(){
+    return $('.continue');
   };
 
-  this.losing = function(){
-    $('.continue').getAttribute('style').then(function(style){
-      expect(style).toEqual('display: none;');
-    });
+  this.stopText = function(){
+    return $('.stop');
   };
 
   this.getTopicVotes = function() {
