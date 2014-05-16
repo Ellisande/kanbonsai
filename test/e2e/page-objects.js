@@ -110,6 +110,13 @@ module.exports.MergePage = function() {
 };
 
  module.exports.VotingPage = function() {
+   this.bypassEarlierPages = function() {
+     var topics = [];
+     var mergePage = new module.exports.MergePage();
+     mergePage.bypassEarlierPages(topics);
+     new module.exports.GlobalFunction().goToNextPhase();
+   };
+
    this.voteUp = function(rowNum) {
      element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteUp').click();
    };
