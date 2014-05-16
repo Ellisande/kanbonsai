@@ -50,6 +50,12 @@ module.exports.MeetingPage = function() {
       this.meetingName = homePage.getMeetingName();
     };
 
+    this.buildNineTopics = function(topics) {
+      for(var k=1; k< 10;k++){
+        topics.push(this.postTopic());
+      }
+    };
+
     this.meetingListText = function() {
         return $('.meeting-list').getText();
     };
@@ -90,9 +96,18 @@ module.exports.MeetingPage = function() {
       );
     };
 };
- module.exports.MergePage = function() {
+module.exports.MergePage = function() {
+  this.bypassEarlierPages = function(topics) {
+    var meetingPage = new module.exports.MeetingPage();
+    meetingPage.bypassEarlierPages();
+    meetingPage.buildNineTopics(topics);
 
- };
+    var global = new module.exports.GlobalFunction();
+    global.getElemByButtonText('Become a Host').click();
+    global.goToNextPhase();
+  };
+
+};
 
  module.exports.VotingPage = function() {
    this.voteUp = function(rowNum) {
