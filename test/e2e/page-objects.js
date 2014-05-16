@@ -103,7 +103,7 @@ module.exports.MergePage = function() {
     meetingPage.buildNineTopics(topics);
 
     var global = new module.exports.GlobalFunction();
-    global.getElemByButtonText('Become a Host').click();
+    global.becomeHost();
     global.goToNextPhase();
   };
 
@@ -153,7 +153,15 @@ module.exports.MergePage = function() {
       .column('{{topic.voters.length}}')
     );
   };
- }
+};
+
+module.exports.CompletePage = function() {
+  this.bypassEarlierPages = function() {
+    var discussPage = new module.exports.DiscussPage();
+    discussPage.bypassEarlierPages();
+    new module.exports.GlobalFunction().goToNextPhase();
+  };
+};
 
  module.exports.GlobalFunction = function() {
 
