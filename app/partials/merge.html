@@ -14,7 +14,7 @@
 	<button class="button pure-button-primary" style="padding: 2px;" ng-click="cancelMerge()">Cancel</button>
 </div>
 <!--Merge Topics End -->
-		<div class="topic  {{topic.selected}}" ng-repeat="topic in meeting.topics |  orderBy:commentOrder">
+		<div class="topic" ng-repeat="topic in meeting.topics |  orderBy:commentOrder">
 				<div class="grid-5" ng-show="user.isHost">
 					<input type="checkbox" name="mergeCheckBoxes" id="mergeCheckBoxes{{$index}}"
 								ng-click="topicsSelectedToMerge(topic)" /><!-- Merge CheckBox -->

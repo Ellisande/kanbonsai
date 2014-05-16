@@ -7,10 +7,11 @@
 
  <p style="marign-top:40px" class="list-heading">Phase: {{meeting.phase.name}}</p>
 <div class="pure-form">
-
+<form class="pure-form pure-form-stacked post" ng-submit="sendEmail()">
     <input name="status" type="email" required class="block" ng-model="email.to" autofocus placeHolder="Enter your Email Id" />&nbsp;
-    <button class="pure-button  pure-button-primary" ng-disabled="!email.to" ng-click="sendEmail()">Send</button>
+    <input type="submit" class="pure-button  pure-button-primary" ng-disabled="!email.to" value="Send">
     <br/><br/><a href="#" id="exitMeeting">EXIT MEETING / HOME PAGE</a>
 </div>
+</form>
 
 </div>
