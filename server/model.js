@@ -42,6 +42,7 @@ function Topic(topic){
   this.continue = topic.continue || [];
   this.stop = topic.stop || [];
   this.current = false;
+  this.timer = moment().duration('3', 'minutes');
   this.votes = function(){
     return this.voters.length;
   };
