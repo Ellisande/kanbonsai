@@ -60,6 +60,14 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
         $scope.user = data.user;
         $scope.meeting = data.meeting;
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
+        if($scope.meeting.phase.name == 'discuss'){
+          $scope.meeting.topics.some(function(topic){
+            if(topic.current){
+              $scope.currentTopic = topic;
+              return true;
+            }
+          });
+        }
 	});
 
 	socket.on('user:join', function(data){
@@ -183,6 +191,16 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 
   $scope.changePhase = function(){
     socket.emit('update:phase');
+  };
+
+  $scope.hasContinueVoted = function(){
+    var currentTopic = $scope.currentTopic;
+    if(!currentTopic) return false;
+    var hasVoted = currentTopic.continue.concat(currentTopic.stop).some(function(vote){
+      if(vote.user.name == $scope.user.name)
+        return true;
+    });
+    return hasVoted;
   };
 
   socket.on('topic:continue', function(data){
