@@ -56,7 +56,6 @@ var socket = function(io){
       socket.on('topic:continue', function(data){
         var topic = meeting.getCurrentTopic();
         if(!topic) return;
-        console.log(topic);
         var vote = new Vote(data.vote, user);
         if(!topic.hasContinueVoted(user)){
           topic.addContinueVote(vote);
@@ -187,6 +186,7 @@ var socket = function(io){
           phase: meeting.phase
         });
         if(meeting.phase.name == 'discuss'){
+          meeting.nextTopic();
           io.sockets.in(roomName).emit('topic:current', {
             topic: meeting.getCurrentTopic()
           });
