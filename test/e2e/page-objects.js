@@ -113,10 +113,42 @@ module.exports.MeetingPage = function() {
     element(by.buttonText('Next Topic →')).click();
   };
 
+  this.clickFirstTopic = function(){
+    return element.all(by.repeater('topic in meeting.topics').column('{{topic.author}}')).first().click();
+  };
+
+  this.getFirstNotes = function(){
+    return element.all(by.repeater('topic in meeting.topics')).first().findElement(by.textarea('topic.notes'));
+  };
+
+  this.getNotes = function(){
+    return element(by.model('topic.notes'));
+  };
+
   this.getTopics = function() {
     return element.all(
       by.repeater('topic in meeting.topics')
     );
+  };
+
+  this.continueVote = function(){
+    element(by.buttonText('Keep Talking')).click();
+  };
+
+  this.stopVote = function(){
+    element(by.buttonText('Stop')).click();
+  };
+
+  this.winning = function(){
+    $('.stop').getAttribute('style').then(function(style){
+      expect(style).toEqual('display: none;');
+    });
+  };
+
+  this.losing = function(){
+    $('.continue').getAttribute('style').then(function(style){
+      expect(style).toEqual('display: none;');
+    });
   };
 
   this.getTopicVotes = function() {
