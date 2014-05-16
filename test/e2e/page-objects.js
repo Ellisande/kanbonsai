@@ -50,6 +50,12 @@ module.exports.MeetingPage = function() {
       this.meetingName = homePage.getMeetingName();
     };
 
+    this.buildNineTopics = function(topics) {
+      for(var k=1; k< 10;k++){
+        topics.push(this.postTopic());
+      }
+    };
+
     this.meetingListText = function() {
         return $('.meeting-list').getText();
     };
@@ -90,11 +96,27 @@ module.exports.MeetingPage = function() {
       );
     };
 };
- module.exports.MergePage = function() {
+module.exports.MergePage = function() {
+  this.bypassEarlierPages = function(topics) {
+    var meetingPage = new module.exports.MeetingPage();
+    meetingPage.bypassEarlierPages();
+    meetingPage.buildNineTopics(topics);
 
- };
+    var global = new module.exports.GlobalFunction();
+    global.becomeHost();
+    global.goToNextPhase();
+  };
+
+};
 
  module.exports.VotingPage = function() {
+   this.bypassEarlierPages = function() {
+     var topics = [];
+     var mergePage = new module.exports.MergePage();
+     mergePage.bypassEarlierPages(topics);
+     new module.exports.GlobalFunction().goToNextPhase();
+   };
+
    this.voteUp = function(rowNum) {
      element(by.repeater('topic in meeting.topics').row(rowNum)).$('.voteUp').click();
    };
@@ -109,6 +131,12 @@ module.exports.MeetingPage = function() {
  };
 
  module.exports.DiscussPage = function(){
+  this.bypassEarlierPages = function() {
+    var votingPage = new module.exports.VotingPage();
+    votingPage.bypassEarlierPages();
+    new module.exports.GlobalFunction().goToNextPhase();
+  };
+
   this.nextTopic = function(){
     element(by.buttonText('Next Topic →')).click();
   };
@@ -157,7 +185,15 @@ module.exports.MeetingPage = function() {
       .column('{{topic.voters.length}}')
     );
   };
- }
+};
+
+module.exports.CompletePage = function() {
+  this.bypassEarlierPages = function() {
+    var discussPage = new module.exports.DiscussPage();
+    discussPage.bypassEarlierPages();
+    new module.exports.GlobalFunction().goToNextPhase();
+  };
+};
 
  module.exports.GlobalFunction = function() {
 

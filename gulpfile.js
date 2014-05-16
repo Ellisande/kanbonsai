@@ -59,7 +59,7 @@ gulp.task('node', function(){
   nodemon({
       script: 'coffee-server.js',
       ext: 'js',
-      ignore: ['app/**/*.js','config/**/*.js','test/**/*.js'] }
+      ignore: ['node_modules/**', 'app/**/*.js','config/**/*.js','test/**/*.js'] }
     )
     .on('restart', function () {
       console.log('restarted!');

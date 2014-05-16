@@ -43,13 +43,17 @@ function LocalTimerCtrl($scope, localTimer){
     };
 }
 
-function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
-  'use strict';
-  socket.cleanup();
+function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localStorageService) {
+    'use strict';
+    var localStorageUser = localStorageService.get('user');
+    socket.cleanup();
 
-  socket.emit('unsubscribe');
+  if (!localStorageUser) {
+    socket.emit('unsubscribe');
+  }
   socket.emit('subscribe', {
-      name: $routeParams.meetingName
+      meetingName: $routeParams.meetingName,
+      userName: localStorageUser || ""
   });
 
   $scope.meeting = {phase: 'submit'};
@@ -59,6 +63,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 	{
         $scope.user = data.user;
         $scope.meeting = data.meeting;
+        localStorageService.add('user', data.user.name);
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
         if($scope.meeting.phase.name == 'discuss'){
           $scope.meeting.topics.some(function(topic){
@@ -329,7 +334,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location) {
 // End
   $scope.email= {
     to : ''
-  }
+  };
 
 $scope.sendEmail = function(){
     var emailBody='Hi\n';
@@ -347,9 +352,9 @@ $scope.sendEmail = function(){
     }
     emailBody += '\nThanks';
 
-    var link = "mailto:"+$scope.email.to
-             + "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name
-             + "&body="+escape(emailBody);
+    var link = "mailto:"+$scope.email.to+
+             "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name+
+             "&body="+escape(emailBody);
     window.location.href = link;
  };
 }

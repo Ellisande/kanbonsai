@@ -7,13 +7,7 @@ describe('discuss phase', function(){
     var meetingPage = new po.MeetingPage();
 
     it('should allow navigation to the discuss phase', function(){
-      meetingPage.bypassEarlierPages();
-      global.becomeHost();
-      meetingPage.postTopic();
-      meetingPage.postTopic();
-      global.goToNextPhase();
-      global.goToNextPhase();
-      global.goToNextPhase();
+      discussPage.bypassEarlierPages();
       expect(global.getPhaseText()).toMatch(/PHASE: DISCUSS/);
     });
 
@@ -66,6 +60,11 @@ describe('discuss phase', function(){
 
         });
 
+        it('should allow you to vote to keep talking on about a topic', function(){
+          discussPage.continueVote();
+          
+        });
+
         describe('vote is to stop talking about the current topic' , function(){
 
             xit('automatically move to the next topic', function(){
@@ -91,7 +90,6 @@ describe('discuss phase', function(){
 
     });
 
-
     describe('tie breakers', function(){
 
         xit('should sort ties by creation timestamp', function(){
@@ -101,7 +99,6 @@ describe('discuss phase', function(){
     });
 
     describe('notes', function(){
-
         it('should allow all users to take peronsal notes on active topic', function(){
           discussPage.clickFirstTopic();
           var notesElement = discussPage.getNotes();
@@ -111,6 +108,5 @@ describe('discuss phase', function(){
             expect(notes).toEqual('These are notes');
           });
         });
-
     });
 });

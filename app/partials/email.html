@@ -1,3 +1,5 @@
+
+
 <div class="grid-70">
 <div class="headlineUser">
  <current-user></current-user>
@@ -6,13 +8,9 @@
  <p style="marign-top:40px" class="list-heading">Phase: {{meeting.phase.name}}</p>
 <div class="pure-form">
 
-    <input name="status" type="text" required class="block" ng-model="email.to" autofocus placeHolder="Enter your Email Id" />&nbsp;
+    <input name="status" type="email" required class="block" ng-model="email.to" autofocus placeHolder="Enter your Email Id" />&nbsp;
     <button class="pure-button  pure-button-primary" ng-disabled="!email.to" ng-click="sendEmail()">Send</button>
-</div>
-
- <div>
-
-  The end. There is no more. <h2> Leave Now </h2>
+    <br/><br/><a href="#" id="exitMeeting">EXIT MEETING / HOME PAGE</a>
 </div>
 
 </div>

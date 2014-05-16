@@ -44,9 +44,7 @@ describe('lean coffee', function() {
           author = userGreeting.substring(9);
         });
         var allTopics;
-        for(var k=1; k< 10;k++) {
-          topics.push(meetingPage.postTopic());
-        }
+        meetingPage.buildNineTopics(topics);
         allTopics = meetingPage.getTopics();
         expect(allTopics.count()).toBe(9);
     });

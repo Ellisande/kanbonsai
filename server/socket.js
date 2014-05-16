@@ -37,11 +37,34 @@ var socket = function(io){
         });
       };
 
+      var refresh = function(userName, roomName){
+        meeting = meetings[roomName] || function(){
+            meetings[roomName] = new ServerMeeting(roomName);
+            return meetings[roomName];
+        }();
+
+        user = new User(userName, meeting.name, socket.id);
+        meeting.participants.push(user);
+        socket.emit('init', {
+            user: user,
+            meeting: meeting
+        });
+
+        io.sockets.emit('meetings:update', {
+          meetings: meetings
+        });
+
+      };
+
       // join a room.
       socket.on('subscribe', function(data){
-        socket.join(data.name);
-        roomName = data.name;
-        initialize(data.name);
+        socket.join(data.meetingName);
+        roomName = data.meetingName;
+        if (data.userName) {
+          refresh(data.userName, data.meetingName);
+        } else {
+          initialize(data.meetingName);
+        }
       });
 
       // event to save and broadcast out when a user adds a comment.
@@ -151,21 +174,6 @@ var socket = function(io){
         for(var i = 0; i < allUsers.length; i++){
           allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
         }
-        var topics = meeting.topics;
-        var totalTopics = topics.length;
-        for(var i = 0; i < totalTopics; i++){
-          if(topics[i].author === user.name){
-            topics.splice(i,1);
-            i--;
-            totalTopics--;
-            continue;
-          }
-
-          var containingIndex = topics[i].voters.indexOf(user.name);
-          if(containingIndex !== -1){
-            topics[i].voters.splice(containingIndex,1);
-          }
-        }
 
         io.sockets.in(roomName).emit('user:left', {
           user: user
@@ -174,7 +182,7 @@ var socket = function(io){
         roomName = "default";
         meeting = meetings["default"];
 
-      }
+      };
 
       // clean up when a user leaves, and broadcast it to other users
       socket.on('unsubscribe', unsubscribe);
