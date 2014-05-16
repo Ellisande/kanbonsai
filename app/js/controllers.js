@@ -67,6 +67,14 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
         $scope.meeting = data.meeting;
         localStorageService.add(localStorageUserKey, data.user.name);
         $scope.meetingPhase = phaseMap[$scope.meeting.phase.name];
+        if($scope.meeting.phase.name == 'discuss'){
+          $scope.meeting.topics.some(function(topic){
+            if(topic.current){
+              $scope.currentTopic = topic;
+              return true;
+            }
+          });
+        }
 	});
 
 	socket.on('user:join', function(data){
@@ -192,18 +200,33 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
     socket.emit('update:phase');
   };
 
-  //Not DONE DAMMNIT FIX THIS.
-  // socket.on('topic:continue', function(data){
-  //   $scope.meeting.topics.some(function(topic, index){
-  //     if(data.topic.id == topic.id)
-  //       $scope.meeting.topics[index] = data.topic;
-  //   });
-  // });
+  $scope.hasContinueVoted = function(){
+    var currentTopic = $scope.currentTopic;
+    if(!currentTopic) return false;
+    var hasVoted = currentTopic.continue.concat(currentTopic.stop).some(function(vote){
+      if(vote.user.name == $scope.user.name)
+        return true;
+    });
+    return hasVoted;
+  };
+
+  socket.on('topic:continue', function(data){
+    $scope.meeting.topics.some(function(topic, index){
+      if(data.topic.id == topic.id && data.topic.id == $scope.currentTopic.id){
+        $scope.meeting.topics[index] = data.topic;
+        $scope.currentTopic = $scope.meeting.topics[index];
+        return true;
+      }
+    });
+  });
 
   socket.on('topic:current', function(data){
-    $scope.meeting.topics.some(function(topic){
+    $scope.meeting.topics.forEach(function(topic){
       if(topic.current) topic.current = false;
-      if(topic.id == data.topic.id) topic.current = true;
+      if(topic.id == data.topic.id){
+        topic.current = true;
+        $scope.currentTopic = topic;
+      }
     });
   });
 
@@ -211,23 +234,13 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
     socket.emit('topic:current');
   };
 
-  socket.on('topic:continue', function(data){
-    console.log('fired');
-    console.log(data);
-    $scope.meeting.topics.some(function(topic){
-      if(topic.current) topic.continue.push(data.vote);
-    });
-  });
-
   $scope.continueVote = function(){
-    console.log('go');
     socket.emit('topic:continue', {
-      vote: 'go'
+      vote: 'continue'
     });
   };
 
   $scope.stopVote = function(){
-    console.log('stop');
     socket.emit('topic:continue', {
       vote: 'stop'
     });

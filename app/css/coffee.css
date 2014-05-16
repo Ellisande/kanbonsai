@@ -200,3 +200,19 @@ footer {
 .current, .current .author{
   color: rgb(0, 120, 231);
 }
+
+.voting-buttons {
+  font-size: 0.7em;
+}
+
+.continueVote {
+  font-weight: bold;
+}
+
+.stop {
+  color: red;
+}
+
+.continue {
+  color: green;
+}

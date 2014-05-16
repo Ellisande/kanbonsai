@@ -40,42 +40,40 @@ function Topic(topic){
   this.voters = topic.voters || [];
   this.author = topic.author;
   this.continue = topic.continue || [];
+  this.stop = topic.stop || [];
   this.current = false;
   this.votes = function(){
     return this.voters.length;
   };
 
-  this.goVotes = function(){
-    var sum = 0;
-    this.continue.forEach(function(vote){
-      if(vote.type == 'go') sum++;
-    });
-    return sum;
-  };
-
-  this.stopVotes = function(){
-    var sum = 0;
-    this.continue.forEach(function(vote){
-      if(vote.type == 'stop') sum++;
-    });
-    return sum;
-  };
-
   this.shouldContinue = function(){
-    var stopVotes = this.stopVotes();
-    var goVotes = this.goVotes();
+    var stopVotes = this.stop.length;
+    var goVotes = this.continue.length;
     return {
-      decision: stopVotes >= goVotes ? 'stop' : 'go',
+      decision: stopVotes >= goVotes ? 'stop' : 'continue',
       stopVotes: stopVotes,
       goVotes: goVotes
     }
   }
 
   this.hasContinueVoted = function(user){
-    return this.continue.some(function(vote){
+    return this.continue.concat(this.stop).some(function(vote){
       if(vote.user == user) return true;
     });
   }
+
+  this.addContinueVote = function(vote){
+    if(vote.type == 'continue'){
+      this.continue.push(vote);
+    } else {
+      this.stop.push(vote);
+    }
+  };
+
+  this.reset = function(){
+    this.continue = [];
+    this.stop = [];
+  };
 }
 
 function isNameFree(searchTerm, myArray) {
