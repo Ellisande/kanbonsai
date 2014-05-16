@@ -19,15 +19,6 @@ module.exports = function ServerMeeting(name) {
     this.participants = [];
     this.topics = [];
     this.phase = phases.submit;
-    this.startTime = moment(new Date()).add('minutes', 15);
-    this.timer = {
-        endTime: 0,
-        isStarted: function(){
-            var now = moment();
-            var endTime = moment(endTime);
-            return now.isAfter(endTime);
-        }
-    };
 
     this.sortTopics = function(){
       this.topics.sort(function(left, right){
@@ -107,5 +98,20 @@ module.exports = function ServerMeeting(name) {
     this.nextPhase = function(){
         this.phase = phases[this.phase.next];
         return this.phase;
+    };
+
+    var getRegularTimer = function(){
+      return this.phase.timer;
+    };
+
+    var getDiscussPhaseTimer = function(){
+      var currentTopic = this.getCurrentTopic();
+      if(!currentTopic) return;
+      return currentTopic.timer;
+    };
+
+    this.getTimer = function(){
+      if(this.phase == phases.discuss) return getDiscussPhaseTimer();
+      return getRegularTimer();
     };
 };
