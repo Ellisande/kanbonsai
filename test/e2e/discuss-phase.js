@@ -60,20 +60,24 @@ describe('discuss phase', function(){
 
         });
 
-        it('should allow you to vote to keep talking on about a topic', function(){
+        it('should allow you to vote to keep talking about a topic', function(){
+          expect(discussPage.continueButton().isDisplayed()).toEqual(true);
           discussPage.continueVote();
-          
-        });
-
-        describe('vote is to stop talking about the current topic' , function(){
-
-            xit('automatically move to the next topic', function(){
-
-            });
-
+          expect(discussPage.continueButton().isDisplayed()).toEqual(false);
+          expect(discussPage.stopButton().isDisplayed()).toEqual(false);
         });
 
         describe('vote is to continue talking' , function(){
+
+            it('should display the continue is winning', function(){
+              expect(discussPage.continueButton().isDisplayed()).toEqual(false);
+              expect(discussPage.stopButton().isDisplayed()).toEqual(false);
+              expect(discussPage.continueText().isDisplayed()).toEqual(true);
+              discussPage.continueText().getText().then(function(text){
+                expect(text).toEqual('Continue is Winning');
+              });
+
+            });
 
             xit('should automatically add half of the duration to the clock', function(){
 
@@ -81,10 +85,35 @@ describe('discuss phase', function(){
 
         });
 
+        it('should allow you to vote to stop talking about a topic', function(){
+          discussPage.nextTopic();
+          expect(discussPage.stopButton().isDisplayed()).toEqual(true);
+          discussPage.stopVote();
+          expect(discussPage.continueButton().isDisplayed()).toEqual(false);
+          expect(discussPage.stopButton().isDisplayed()).toEqual(false);
+        });
+
+        describe('vote is to stop talking about the current topic' , function(){
+            it('should display the continue is winning', function(){
+              expect(discussPage.continueButton().isDisplayed()).toEqual(false);
+              expect(discussPage.stopButton().isDisplayed()).toEqual(false);
+              expect(discussPage.stopText().isDisplayed()).toEqual(true);
+              discussPage.stopText().getText().then(function(text){
+                expect(text).toEqual('Stop is Winning');
+              });
+            });
+
+            xit('automatically move to the next topic', function(){
+
+            });
+
+        });
+
         describe('the vote to continue is tied or no one votes', function(){
 
-            xit('should stop on tie', function(){
-
+            it('should stop on tie', function(){
+              discussPage.nextTopic();
+              expect(discussPage.stopText().isDisplayed()).toEqual(true);
             });
         });
 
@@ -101,10 +130,9 @@ describe('discuss phase', function(){
     describe('notes', function(){
         it('should allow all users to take peronsal notes on active topic', function(){
           discussPage.clickFirstTopic();
-          var notesElement = discussPage.getNotes();
+          var notesElement = discussPage.getFirstNotes();
           notesElement.sendKeys('These are notes');
-          console.log(discussPage.getFirstNotes());
-          discussPage.getFirstNotes().getAttribute('value').then(function(notes){
+          notesElement.getAttribute('value').then(function(notes){
             expect(notes).toEqual('These are notes');
           });
         });
