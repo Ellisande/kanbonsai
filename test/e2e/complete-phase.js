@@ -5,12 +5,16 @@ describe('lean coffee', function() {
   var global = new po.GlobalFunction();
 
   describe('complete', function(){
+
     var completePhase = new po.CompletePage();
+
 
       it('should allow you to navigate to the complete phase', function() {
         completePhase.bypassEarlierPages();
         expect(global.getPhaseText()).toMatch(/PHASE: COMPLETE/);
       });
+
+
 
     describe('email', function(){
 
@@ -32,28 +36,20 @@ describe('lean coffee', function() {
         });
 
 
-        xdescribe('body', function(){
+        describe('body', function(){
             it('should contain all the topics discussed', function(){
-             expect(global.allSubmitTopics.count()).toEqual(7);
+             expect(completePhase.getAllTopicsCount()).toBe(9);
             });
 
-            xit('should contain the notes for each topic', function(){
-
+            it('should contain the notes for each topic', function(){
+             expect(completePhase.getFirstNotes()).toBe("These are notes");
             });
 
-        it('should move the participants to the landing page', function(){
-          expect(global.clickElemById('exitMeeting'));
-          ptor.waitForAngular();
-          expect(ptor.getCurrentUrl()).toContain('#/home');
-        });
-
-        xit('should delete the meeting', function(){
-
-        });
-
-        xit('should show star guy', function(){
-
-        });
+            it('should move the participants to the landing page', function(){
+              expect(global.clickElemById('exitMeeting'));
+              ptor.waitForAngular();
+              expect(ptor.getCurrentUrl()).toContain('#/home');
+            });
 
         });
     });
