@@ -188,11 +188,29 @@ module.exports.MergePage = function() {
 };
 
 module.exports.CompletePage = function() {
-  this.bypassEarlierPages = function() {
-    var discussPage = new module.exports.DiscussPage();
+  var topicCount;
+  var firstNote;
+
+   this.bypassEarlierPages = function() {
+   var discussPage = new module.exports.DiscussPage();
     discussPage.bypassEarlierPages();
+    discussPage.clickFirstTopic();
+    var notesElement = discussPage.getFirstNotes();
+    notesElement.sendKeys('These are notes');
+
+    topicCount = (discussPage.getTopics()).count();
+    firstNote = (discussPage.getFirstNotes()).getAttribute('value');
     new module.exports.GlobalFunction().goToNextPhase();
   };
+
+  this.getAllTopicsCount = function() {
+       return topicCount;
+  };
+
+  this.getFirstNotes = function(){
+    return firstNote;
+  };
+
 };
 
  module.exports.GlobalFunction = function() {
