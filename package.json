@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": " 2.5.x",
+    "express": "~2.5.11",
     "moment": ">= 2.x",
     "socket.io": "^0.9.16",
     "morgan": "~1.0.1",
-    "angular-local-storage": "0.0.1"
+    "angular-local-storage": "0.0.1",
+    "gulp-uglify": "~0.2.1"
   },
   "devDependencies": {
     "gulp-uglify": "^0.2.1",
@@ -23,6 +24,7 @@
     "protractor-screenshot-reporter": "0.0.5",
     "protractor-html-screenshot-reporter": "0.0.8",
     "gulp-protractor": "0.0.7",
-    "gulp-clean": "~0.2.4"
+    "gulp-clean": "~0.2.4",
+    "minimist" : "~0.1.0"
   }
 }

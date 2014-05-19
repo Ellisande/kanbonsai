@@ -7,6 +7,7 @@ var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
 var clean = require('gulp-clean');
 var protractor = require('gulp-protractor').protractor;
+var parsedArgs = require('minimist')(process.argv.slice());
 
 gulp.task('protractor', function() {
 
@@ -14,11 +15,10 @@ gulp.task('protractor', function() {
     .pipe(
       protractor(
         {
-          configFile: "./test/e2e/conf.js",
-          args: ['--suite','all']
+          configFile: "./test/e2e/protractor.conf.js",
+          args: ['--suite', parsedArgs.suite ? parsedArgs.suite : 'all']
         }
       ));
-
 });
 
 gulp.task('e2e-clean', function(){
