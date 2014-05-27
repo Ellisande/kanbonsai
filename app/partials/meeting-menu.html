@@ -17,13 +17,13 @@
 
         </li>
         <li class="list-heading">Voting</li>
-        <li>
+        <li ng-show="meeting.phase.name == 'discuss'">
           <div ng-show="!hasContinueVoted()" class="voting-buttons">
             <button class="pure-button pure-button-primary" ng-click="continueVote()">Keep Talking</button>
             <button class="pure-button pure-button-primary" ng-click="stopVote()">Move On</button>
           </div>
         </li>
-        <li>
+        <li  ng-show="meeting.phase.name == 'discuss'">
           <div class="continueVote stop" ng-show="currentTopic.continue.length <= currentTopic.stop.length">Stop is Winning</div>
           <div class="continueVote continue" ng-show="currentTopic.continue.length > currentTopic.stop.length">Continue is Winning</div>
         </li>
