@@ -3,7 +3,7 @@ var moment = require('moment');
 
 function Phase(name, next){
     this.name = name;
-    this.time = moment.duration(3, 'minutes');
+    this.timer = moment.duration(3, 'minutes');
     this.next = next;
 }
 
@@ -19,15 +19,6 @@ module.exports = function ServerMeeting(name) {
     this.participants = [];
     this.topics = [];
     this.phase = phases.submit;
-    this.startTime = moment(new Date()).add('minutes', 15);
-    this.timer = {
-        endTime: 0,
-        isStarted: function(){
-            var now = moment();
-            var endTime = moment(endTime);
-            return now.isAfter(endTime);
-        }
-    };
 
     this.sortTopics = function(){
       this.topics.sort(function(left, right){
@@ -107,5 +98,20 @@ module.exports = function ServerMeeting(name) {
     this.nextPhase = function(){
         this.phase = phases[this.phase.next];
         return this.phase;
+    };
+
+    this.getRegularTimer = function(){
+      return this.phase.timer;
+    };
+
+    this.getDiscussPhaseTimer = function(meeting){
+      var currentTopic = this.getCurrentTopic();
+      if(!currentTopic) return moment.duration(0, 'seconds');
+      return currentTopic.timer;
+    };
+
+    this.getTimer = function(){
+      if(this.phase == phases.discuss) return this.getDiscussPhaseTimer();
+      return this.getRegularTimer();
     };
 };

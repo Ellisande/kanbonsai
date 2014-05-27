@@ -16,14 +16,14 @@
             <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired && user.isHost">Stop</button>
 
         </li>
-        <li class="list-heading">Voting</li>
+        <li class="list-heading" ng-show="meeting.phase.name == 'discuss'">Voting</li>
         <li ng-show="meeting.phase.name == 'discuss'">
           <div ng-show="!hasContinueVoted()" class="voting-buttons">
             <button class="pure-button pure-button-primary" ng-click="continueVote()">Keep Talking</button>
             <button class="pure-button pure-button-primary" ng-click="stopVote()">Move On</button>
           </div>
         </li>
-        <li  ng-show="meeting.phase.name == 'discuss'">
+        <li ng-show="meeting.phase.name == 'discuss'">
           <div class="continueVote stop" ng-show="currentTopic.continue.length <= currentTopic.stop.length">Stop is Winning</div>
           <div class="continueVote continue" ng-show="currentTopic.continue.length > currentTopic.stop.length">Continue is Winning</div>
         </li>

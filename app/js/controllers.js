@@ -21,10 +21,10 @@ function HomeCtrl($scope, $location, socket) {
 
 function TimerCtrl($scope, timerService){
     'use strict';
-    $scope.duration = moment.duration(0);
+    $scope.duration = moment.duration(3, 'minutes');
     $scope.timer = timerService($scope);
     $scope.start = function(){
-        $scope.timer.start(180000);
+        $scope.timer.start();
     };
     $scope.stop = function(){
         $scope.timer.stop();

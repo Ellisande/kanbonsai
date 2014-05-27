@@ -119,14 +119,6 @@ describe('discuss phase', function(){
 
     });
 
-    describe('tie breakers', function(){
-
-        xit('should sort ties by creation timestamp', function(){
-
-        });
-
-    });
-
     describe('notes', function(){
         it('should allow all users to take peronsal notes on active topic', function(){
           discussPage.clickFirstTopic();
