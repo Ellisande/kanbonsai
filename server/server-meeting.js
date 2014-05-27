@@ -3,7 +3,7 @@ var moment = require('moment');
 
 function Phase(name, next){
     this.name = name;
-    this.time = moment.duration(3, 'minutes');
+    this.timer = moment.duration(3, 'minutes');
     this.next = next;
 }
 
@@ -100,18 +100,18 @@ module.exports = function ServerMeeting(name) {
         return this.phase;
     };
 
-    var getRegularTimer = function(){
+    this.getRegularTimer = function(){
       return this.phase.timer;
     };
 
-    var getDiscussPhaseTimer = function(){
+    this.getDiscussPhaseTimer = function(meeting){
       var currentTopic = this.getCurrentTopic();
-      if(!currentTopic) return;
+      if(!currentTopic) return moment.duration(0, 'seconds');
       return currentTopic.timer;
     };
 
     this.getTimer = function(){
-      if(this.phase == phases.discuss) return getDiscussPhaseTimer();
-      return getRegularTimer();
+      if(this.phase == phases.discuss) return this.getDiscussPhaseTimer();
+      return this.getRegularTimer();
     };
 };
