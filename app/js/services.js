@@ -86,14 +86,21 @@ factory('mtgDetails', function (){
 }).
 factory('timerService', function(socket, $timeout){
     return function($scope){
-        $scope.duration = moment.duration(3, 'minutes');
         var currentTimeout = {};
+        var lastDuration;
+
+        socket.global('timer:init', function(data){
+          console.log(data.duration);
+          lastDuration = moment.duration(data.duration);
+          $scope.duration = lastDuration;
+          console.log($scope.duration);
+        });
 
         var startTimeout = function(timer){
             var onTimeout = function(){
                 timer.expired = moment().isAfter(timer.endTime);
                 if(timer.expired){
-                    $scope.duration = moment.duration(3, 'minutes');
+                    $scope.duration = lastDuration;
                 } else {
                     $scope.duration = timer.currentDuration();
                     currentTimeout = $timeout(onTimeout,1000);
@@ -114,7 +121,7 @@ factory('timerService', function(socket, $timeout){
             },
 
             stop: function(){
-                $scope.duration = moment.duration(3,'minutes');
+                $scope.duration = lastDuration;
                 $timeout.cancel(currentTimeout);
                 timer.expired = true;
                 socket.emit('timer:stop',{});
@@ -123,18 +130,20 @@ factory('timerService', function(socket, $timeout){
             expired: true
         };
 
-        socket.on('timer:start', function(data){
+        socket.global('timer:start', function(data){
             $timeout.cancel(currentTimeout);
-            timer.endTime = moment().add(data.duration, 'milliseconds');
+            timer.endTime = moment().add(data.duration);
+            lastDuration = moment.duration(data.duration);
             startTimeout(timer);
             timer.expired = false;
         });
 
-        socket.on('timer:stop', function(){
+        socket.global('timer:stop', function(){
             if(!timer.expired){
                 timer.stop();
             }
         });
+
         return timer;
     };
 }).factory('localTimer', function($timeout){
