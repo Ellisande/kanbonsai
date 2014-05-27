@@ -4,6 +4,7 @@ var meetings = {default: new ServerMeeting('default')};
 var User = model.User;
 var Vote = model.Vote;
 var Topic = model.Topic;
+var moment = require('moment');
 
 var socket = function(io){
   return function (socket) {
@@ -28,6 +29,11 @@ var socket = function(io){
             meeting: meeting
         });
 
+        console.log('fired');
+        socket.emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
+
         io.sockets.emit('meetings:update', {
           meetings: meetings
         });
@@ -45,15 +51,25 @@ var socket = function(io){
 
         user = new User(userName, meeting.name, socket.id);
         meeting.participants.push(user);
+
+        console.log(meeting.getTimer().asMilliseconds());
+
         socket.emit('init', {
             user: user,
             meeting: meeting
         });
 
+        console.log('Fired 2');
+
+        console.log('Post fire');
+
         io.sockets.emit('meetings:update', {
           meetings: meetings
         });
 
+        socket.emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
       };
 
       // join a room.
@@ -157,13 +173,19 @@ var socket = function(io){
       }
 
       socket.on('timer:start', function(data){
-        meeting.timer.endTime = new Date().getTime()+data.duration;
+        var duration = moment().add(meeting.getTimer());
         io.sockets.in(roomName).emit('timer:start', {
-            duration: data.duration
+            duration: meeting.getTimer().asMilliseconds()
         });
       });
 
       socket.on('timer:stop', function(){
+        if(meeting.phase.name == 'discuss'){
+          meeting.getCurrentTopic().reset();
+          io.sockets.in(roomName).emit('topic:continue', {
+            topic: meeting.getCurrentTopic()
+          });
+        }
         io.sockets.in(roomName).emit('timer:stop', {});
       });
 
@@ -190,6 +212,9 @@ var socket = function(io){
 
       socket.on('update:phase', function(){
         meeting.nextPhase();
+        io.sockets.in(roomName).emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
         io.sockets.in(roomName).emit('update:phase', {
           phase: meeting.phase
         });
