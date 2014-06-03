@@ -274,6 +274,7 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
 
   $scope.mergeTopicsButtonClk = function(){
     var newMergeTopic = new Topic();
+    var removedTopics = new Array();
 
     var authorArray=[];
     for (var i=0; i<$scope.topicSelected.length; i++) {
@@ -283,13 +284,14 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
         if(authorArray.indexOf($scope.meeting.topics[j].author) == -1) {
          authorArray.push($scope.meeting.topics[j].author);
         }
+        removedTopics.push($scope.meeting.topics[j]);
         $scope.meeting.topics.splice(j,1);
       }
       }
     }
 
    //thread safety issue. This would clobber other people's changes.
-   socket.emit('update:meeting:topics', $scope.meeting.topics);
+   socket.emit('remove:meeting:topics', removedTopics);
 
    newMergeTopic.body = $scope.newMergeText.value;
    newMergeTopic.author = authorArray.toString();

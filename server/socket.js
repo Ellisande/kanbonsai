@@ -112,9 +112,16 @@ var socket = function(io){
       });
 
       //@REMOVE EDITTED OR MERGE TOPIC
-      socket.on('update:meeting:topics', function(data){
-        meeting.topics=data;
-        io.sockets.in(roomName).emit('update:meeting:topics', data);
+      socket.on('remove:meeting:topics', function(data){
+        data.forEach(function(topic) {
+            for(var i = meeting.topics.length-1; i >= 0; i--) {
+              if (topic.id == meeting.topics[i].id) {
+                meeting.topics.splice(i,1);
+              }
+            }
+        });
+
+        io.sockets.in(roomName).emit('update:meeting:topics', meeting.topics);
       });
 
        //@Highlight selected row
