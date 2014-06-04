@@ -31,19 +31,7 @@ function TimerCtrl($scope, timerService){
     };
 }
 
-function LocalTimerCtrl($scope, localTimer){
-    'use strict';
-    $scope.duration = moment.duration(0);
-    $scope.timer = localTimer($scope);
-    $scope.start = function(){
-        $scope.timer.start(180000);
-    };
-    $scope.stop = function(){
-        $scope.timer.stop();
-    };
-}
-
-function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localStorageService) {
+function MeetingCtrl($scope, $routeParams, socket, $location, localStorageService) {
     'use strict';
     var meetingNameParam = $routeParams.meetingName || '',
       localStorageUserKey = meetingNameParam + ".user",
