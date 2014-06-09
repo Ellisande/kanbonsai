@@ -7,6 +7,17 @@ var Topic = model.Topic;
 var moment = require('moment');
 
 var socket = function(io){
+
+  setInterval(function() {
+    Object.keys(meetings).forEach(function(meetingKey){
+      var meeting = meetings[meetingKey];
+      if(typeof meeting.isAbandoned === "function" && meeting.isAbandoned()) {
+        console.log("Found abandoned meeting. Deleting " + meetingKey);
+        delete meetings[meetingKey];
+      }
+    });
+  }, 60000);
+
   return function (socket) {
       var meeting = meetings.default;
       var user = "";
@@ -204,9 +215,18 @@ var socket = function(io){
           allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
         }
 
-        io.sockets.in(roomName).emit('user:left', {
-          user: user
-        });
+        // If there are no more users in the room, delete the meeting...
+        if (allUsers.length === 0) {
+          if (roomName !== "default") {
+            console.log("Deleting room. Last one out of " + roomName);
+            delete meetings[roomName];
+          }
+        // otherwise, notify the other users in the meeting that someone has left.
+        } else {
+          io.sockets.in(roomName).emit('user:left', {
+            user: user
+          });
+        }
 
         roomName = "default";
         meeting = meetings["default"];
@@ -233,6 +253,6 @@ var socket = function(io){
         }
       });
     };
-}
+};
 
 module.exports = socket;
