@@ -178,7 +178,7 @@ var socket = function(io){
       });
 
       socket.on('timer:stop', function(){
-        if(meeting.phase.name == 'discuss'){
+        if(meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
           meeting.getCurrentTopic().reset();
           io.sockets.in(roomName).emit('topic:continue', {
             topic: meeting.getCurrentTopic()
