@@ -306,18 +306,6 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
   $scope.topicSelected =[];
   $scope.newMergeText = '';
  };
-// Merge Fuctionality Ends
-
-  // Selected row hightlighted
-  // socket.on('highlight:selected:row', function(topic){
-  // for(var j=0; j<$scope.meeting.topics.length ; j++){
-  //   if($scope.meeting.topics[j].body == topic.body){
-  //       $scope.meeting.topics[j] = topic;
-  //   }else{
-  //    $scope.meeting.topics[j].selected = '';
-  //   }
-  // }
-  // });
 
   $scope.toggleSelected = function(topic) {
      topic.selected = !topic.selected;
