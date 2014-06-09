@@ -75,6 +75,7 @@ function Topic(topic){
   this.reset = function(){
     this.continue = [];
     this.stop = [];
+    this.timer = moment.duration(this.timer.minutes() / 2, 'minutes');
   };
 }
 
