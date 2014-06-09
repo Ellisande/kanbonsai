@@ -29,7 +29,6 @@ var socket = function(io){
             meeting: meeting
         });
 
-        console.log('fired');
         socket.emit('timer:init', {
           duration: meeting.getTimer().asMilliseconds()
         });
@@ -52,16 +51,10 @@ var socket = function(io){
         user = new User(userName, meeting.name, socket.id);
         meeting.participants.push(user);
 
-        console.log(meeting.getTimer().asMilliseconds());
-
         socket.emit('init', {
             user: user,
             meeting: meeting
         });
-
-        console.log('Fired 2');
-
-        console.log('Post fire');
 
         io.sockets.emit('meetings:update', {
           meetings: meetings
@@ -108,6 +101,9 @@ var socket = function(io){
         var newCurrentTopic = meeting.nextTopic();
         io.sockets.in(roomName).emit('topic:current', {
           topic: newCurrentTopic
+        });
+        io.sockets.in(roomName).emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
         });
       });
 
@@ -176,7 +172,7 @@ var socket = function(io){
       });
 
       function isTopicSame(firstTopic, secondTopic) {
-        return firstTopic.body === secondTopic.body && firstTopic.author === secondTopic.author;
+        return firstTopic.id === secondTopic.id;
       }
 
       socket.on('timer:start', function(data){
@@ -193,7 +189,9 @@ var socket = function(io){
             topic: meeting.getCurrentTopic()
           });
         }
-        io.sockets.in(roomName).emit('timer:stop', {});
+        io.sockets.in(roomName).emit('timer:stop', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
       });
 
       var unsubscribe = function () {

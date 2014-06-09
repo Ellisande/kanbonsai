@@ -84,13 +84,9 @@
   services.factory('timerService', function(socket, $timeout){
       return function($scope){
           var currentTimeout = {};
-          var lastDuration;
 
           socket.global('timer:init', function(data){
-            console.log(data.duration);
-            lastDuration = moment.duration(data.duration);
-            $scope.duration = lastDuration;
-            console.log($scope.duration);
+            $scope.duration = moment.duration(data.duration);
           });
 
           var startTimeout = function(timer){
@@ -117,10 +113,14 @@
                   });
               },
 
+              expire: function(duration){
+                $scope.duration = moment.duration(duration);
+                timer.endTime = moment().add(duration);
+                lastDuration = moment.duration(duration);
+                $timeout.cancel(currentTimeout);
+                timer.expired = true;
+              },
               stop: function(){
-                  $scope.duration = lastDuration;
-                  $timeout.cancel(currentTimeout);
-                  timer.expired = true;
                   socket.emit('timer:stop',{});
               },
 
@@ -135,9 +135,9 @@
               timer.expired = false;
           });
 
-          socket.global('timer:stop', function(){
+          socket.global('timer:stop', function(data){
               if(!timer.expired){
-                  timer.stop();
+                  timer.expire(data.duration);
               }
           });
 
