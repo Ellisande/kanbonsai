@@ -120,11 +120,6 @@ var socket = function(io){
         io.sockets.in(roomName).emit('update:meeting:topics', meeting.topics);
       });
 
-       //@Highlight selected row
-      socket.on('highlight:selected:row', function(data){
-        io.sockets.in(roomName).emit('highlight:selected:row', data);
-      });
-
        //@Toggle Host
       socket.on('host:toggle', function(userData){
         user.isHost = !user.isHost;

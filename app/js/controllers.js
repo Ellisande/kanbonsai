@@ -309,7 +309,6 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
 
   $scope.toggleSelected = function(topic) {
      topic.selected = !topic.selected;
-    //  socket.emit('highlight:selected:row', topic);
   };
 // End
   $scope.email= {
