@@ -31,19 +31,7 @@ function TimerCtrl($scope, timerService){
     };
 }
 
-function LocalTimerCtrl($scope, localTimer){
-    'use strict';
-    $scope.duration = moment.duration(0);
-    $scope.timer = localTimer($scope);
-    $scope.start = function(){
-        $scope.timer.start(180000);
-    };
-    $scope.stop = function(){
-        $scope.timer.stop();
-    };
-}
-
-function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localStorageService) {
+function MeetingCtrl($scope, $routeParams, socket, $location, localStorageService) {
     'use strict';
     var meetingNameParam = $routeParams.meetingName || '',
       localStorageUserKey = meetingNameParam + ".user",
@@ -318,22 +306,9 @@ function MeetingCtrl($scope, $routeParams, socket, snapshot, $location, localSto
   $scope.topicSelected =[];
   $scope.newMergeText = '';
  };
-// Merge Fuctionality Ends
-
-  // Selected row hightlighted
-  // socket.on('highlight:selected:row', function(topic){
-  // for(var j=0; j<$scope.meeting.topics.length ; j++){
-  //   if($scope.meeting.topics[j].body == topic.body){
-  //       $scope.meeting.topics[j] = topic;
-  //   }else{
-  //    $scope.meeting.topics[j].selected = '';
-  //   }
-  // }
-  // });
 
   $scope.toggleSelected = function(topic) {
      topic.selected = !topic.selected;
-    //  socket.emit('highlight:selected:row', topic);
   };
 // End
   $scope.email= {

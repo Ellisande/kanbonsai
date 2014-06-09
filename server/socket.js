@@ -40,7 +40,6 @@ var socket = function(io){
             meeting: meeting
         });
 
-        console.log('fired');
         socket.emit('timer:init', {
           duration: meeting.getTimer().asMilliseconds()
         });
@@ -63,16 +62,10 @@ var socket = function(io){
         user = new User(userName, meeting.name, socket.id);
         meeting.participants.push(user);
 
-        console.log(meeting.getTimer().asMilliseconds());
-
         socket.emit('init', {
             user: user,
             meeting: meeting
         });
-
-        console.log('Fired 2');
-
-        console.log('Post fire');
 
         io.sockets.emit('meetings:update', {
           meetings: meetings
@@ -120,6 +113,9 @@ var socket = function(io){
         io.sockets.in(roomName).emit('topic:current', {
           topic: newCurrentTopic
         });
+        io.sockets.in(roomName).emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
       });
 
       //@REMOVE EDITTED OR MERGE TOPIC
@@ -133,11 +129,6 @@ var socket = function(io){
         });
 
         io.sockets.in(roomName).emit('update:meeting:topics', meeting.topics);
-      });
-
-       //@Highlight selected row
-      socket.on('highlight:selected:row', function(data){
-        io.sockets.in(roomName).emit('highlight:selected:row', data);
       });
 
        //@Toggle Host
@@ -187,7 +178,7 @@ var socket = function(io){
       });
 
       function isTopicSame(firstTopic, secondTopic) {
-        return firstTopic.body === secondTopic.body && firstTopic.author === secondTopic.author;
+        return firstTopic.id === secondTopic.id;
       }
 
       socket.on('timer:start', function(data){
@@ -198,13 +189,15 @@ var socket = function(io){
       });
 
       socket.on('timer:stop', function(){
-        if(meeting.phase.name == 'discuss'){
+        if(meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
           meeting.getCurrentTopic().reset();
           io.sockets.in(roomName).emit('topic:continue', {
             topic: meeting.getCurrentTopic()
           });
         }
-        io.sockets.in(roomName).emit('timer:stop', {});
+        io.sockets.in(roomName).emit('timer:stop', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
       });
 
       var unsubscribe = function () {
