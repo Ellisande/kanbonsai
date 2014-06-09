@@ -118,12 +118,6 @@ module.exports = function ServerMeeting(name) {
         timer = this.getRegularTimer();
       }
 
-      // All this saftey checking is a workaround until we figure out why
-      // this method sometimes returns a non-duration object.
-      // if (!timer || typeof timer.asMilliseconds != 'function') {
-      //   timer = moment.duration(0, 'seconds');
-      // }
-
       return timer;
     };
 };
