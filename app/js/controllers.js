@@ -19,15 +19,14 @@ function HomeCtrl($scope, $location, socket) {
     };
 }
 
-function TimerCtrl($scope, timerService){
+function TimerCtrl($scope, timer){
     'use strict';
-    $scope.duration = moment.duration(3, 'minutes');
-    $scope.timer = timerService($scope);
+    $scope.timer = timer;
     $scope.start = function(){
-        $scope.timer.start();
+        timer.start();
     };
     $scope.stop = function(){
-        $scope.timer.stop();
+        timer.stop();
     };
 }
 
