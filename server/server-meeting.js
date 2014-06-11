@@ -15,10 +15,19 @@ module.exports = function ServerMeeting(name) {
         discuss: new Phase('discuss', 'complete'),
         complete: new Phase('complete', 'complete')
     };
+
+    var created = moment();
+
     this.name = name;
     this.participants = [];
     this.topics = [];
     this.phase = phases.submit;
+
+    this.isAbandoned = function() {
+      // The default meeting is never abandoned!
+      if (this.name === "default") return false;
+      return (this.participants.length === 0 && (moment().diff(created, 'hours') > 2));
+    };
 
     this.sortTopics = function(){
       this.topics.sort(function(left, right){
@@ -57,7 +66,7 @@ module.exports = function ServerMeeting(name) {
           return true;
         }
       });
-    }
+    };
 
     this.getCurrentTopic = function(){
       var currentTopic;
@@ -68,7 +77,7 @@ module.exports = function ServerMeeting(name) {
         }
       });
       return currentTopic;
-    }
+    };
 
     this.nextTopic = function(){
         if(this.topics.length <= 0) return;
