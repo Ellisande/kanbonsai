@@ -81,68 +81,53 @@
     };
   });
 
-  services.factory('timerService', function(socket, $timeout){
-      return function($scope){
-          var currentTimeout = {};
+  services.factory('timer', function(socket, $timeout){
+      var duration = moment.duration(3, 'minutes');
 
-          socket.global('timer:init', function(data){
-            $scope.duration = moment.duration(data.duration);
-          });
+      var currentTimeout = {};
+      var startTimeout = function(){
+        if(duration.asSeconds() == 0){
+          socket.emit('timer:stop');
+          return;
+        }
 
-          var startTimeout = function(timer){
-              var onTimeout = function(){
-                  timer.expired = moment().isAfter(timer.endTime);
-                  if(timer.expired){
-                      $scope.duration = lastDuration;
-                  } else {
-                      $scope.duration = timer.currentDuration();
-                      currentTimeout = $timeout(onTimeout,1000);
-                  }
-              };
-              currentTimeout = $timeout(onTimeout,1000);
-          };
-
-          var timer = {
-              endTime: moment(),
-              currentDuration: function(){
-                return moment.duration(this.endTime.diff(moment()));
-              },
-              start: function(duration){
-                  socket.emit('timer:start',{
-                      duration:duration
-                  });
-              },
-
-              expire: function(duration){
-                $scope.duration = moment.duration(duration);
-                timer.endTime = moment().add(duration);
-                lastDuration = moment.duration(duration);
-                $timeout.cancel(currentTimeout);
-                timer.expired = true;
-              },
-              stop: function(){
-                  socket.emit('timer:stop',{});
-              },
-
-              expired: true
-          };
-
-          socket.global('timer:start', function(data){
-              $timeout.cancel(currentTimeout);
-              timer.endTime = moment().add(data.duration);
-              lastDuration = moment.duration(data.duration);
-              startTimeout(timer);
-              timer.expired = false;
-          });
-
-          socket.global('timer:stop', function(data){
-              if(!timer.expired){
-                  timer.expire(data.duration);
-              }
-          });
-
-          return timer;
+        duration.subtract(1, 'seconds');
+        currentTimeout = $timeout(startTimeout, 1000);
       };
+
+      var timer = {
+        expired: true,
+        duration: duration,
+        start: function(){
+          socket.emit('timer:start');
+        },
+        stop: function(){
+          socket.emit('timer:stop');
+        }
+      }
+
+      var reset = function(newDuration){
+        $timeout.cancel(currentTimeout);
+        //Used to maintain the same duration reference, but reset it.
+        duration.subtract(duration.asMilliseconds()).add(moment.duration(newDuration));
+        timer.expired = true;
+      };
+
+      socket.global('timer:init', function(data){
+        reset(data.duration);
+      });
+
+      socket.global('timer:start', function(data){
+        reset(data.duration);
+        timer.expired = false;
+        startTimeout();
+      });
+
+      socket.global('timer:stop', function(data){
+        reset(data.duration);
+      });
+
+      return timer;
   });
 
 })(angular.module('services',[]));
