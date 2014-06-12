@@ -60,7 +60,7 @@
         emit: emitWrapper,
         cleanup: cleanup
     };
-  })
+  });
 
   services.factory('mtgDetails', function (){
     return {
@@ -86,7 +86,7 @@
 
       var currentTimeout = {};
       var startTimeout = function(){
-        if(duration.asSeconds() == 0){
+        if(duration.asSeconds() === 0){
           socket.emit('timer:stop');
           return;
         }
@@ -104,7 +104,7 @@
         stop: function(){
           socket.emit('timer:stop');
         }
-      }
+      };
 
       var reset = function(newDuration){
         $timeout.cancel(currentTimeout);
