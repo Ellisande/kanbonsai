@@ -10,8 +10,8 @@
 <form class="pure-form pure-form-stacked post" ng-submit="sendEmail()">
     <input name="status" type="email" required class="block" ng-model="email.to" autofocus placeHolder="Enter your Email Id" />&nbsp;
     <input type="submit" class="pure-button  pure-button-primary" ng-disabled="!email.to" value="Send">
-    <br/><br/><a href="#" id="exitMeeting">EXIT MEETING / HOME PAGE</a>
 </div>
 </form>
+<br/><br/><a ng-click="signout()" id="exitMeeting">EXIT MEETING / HOME PAGE</a>
 
 </div>
