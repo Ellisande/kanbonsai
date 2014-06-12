@@ -36,7 +36,15 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     var meetingNameParam = $routeParams.meetingName || '',
       localStorageUserKey = meetingNameParam + ".user",
       localStorageUser = localStorageService.get(localStorageUserKey);
+
     socket.cleanup();
+
+    $scope.signout = function(){
+      console.log("Leaving meeting...");
+      socket.emit('unsubscribe');
+      $location.url('/');
+    };
+
 
   if (!localStorageUser) {
     socket.emit('unsubscribe');
@@ -336,4 +344,5 @@ $scope.sendEmail = function(){
              "&body="+escape(emailBody);
     window.location.href = link;
  };
+
 }
