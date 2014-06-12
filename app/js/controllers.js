@@ -261,7 +261,7 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
 
   $scope.mergeTopicsButtonClk = function(){
     var newMergeTopic = new Topic();
-    var removedTopics = new Array();
+    var removedTopics = [];
 
     var authorArray=[];
     for (var i=0; i<$scope.topicSelected.length; i++) {
