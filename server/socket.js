@@ -201,6 +201,7 @@ var socket = function(io){
       });
 
       var unsubscribe = function () {
+        console.log(user.name + " is leaving " + roomName);
         socket.leave(roomName);
 
         var allUsers = meeting.participants || [];
@@ -210,16 +211,20 @@ var socket = function(io){
 
         // If there are no more users in the room, delete the meeting...
         if (allUsers.length === 0) {
-          if (roomName !== "default") {
+          if (meetings[roomName].isDone()) {
             console.log("Deleting room. Last one out of " + roomName);
             delete meetings[roomName];
           }
         // otherwise, notify the other users in the meeting that someone has left.
-        } else {
-          io.sockets.in(roomName).emit('user:left', {
-            user: user
-          });
         }
+        
+        io.sockets.emit('meetings:update', {
+          meetings: meetings
+        });
+
+        io.sockets.in(roomName).emit('user:left', {
+          user: user
+        });
 
         roomName = "default";
         meeting = meetings["default"];
