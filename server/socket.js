@@ -237,9 +237,6 @@ var socket = function(io){
 
       socket.on('update:phase', function(){
         meeting.nextPhase();
-        io.sockets.in(roomName).emit('timer:init', {
-          duration: meeting.getTimer().asMilliseconds()
-        });
         io.sockets.in(roomName).emit('update:phase', {
           phase: meeting.phase
         });
@@ -249,6 +246,9 @@ var socket = function(io){
             topic: meeting.getCurrentTopic()
           });
         }
+        io.sockets.in(roomName).emit('timer:init', {
+          duration: meeting.getTimer().asMilliseconds()
+        });
       });
     };
 };
