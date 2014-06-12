@@ -29,6 +29,11 @@ module.exports = function ServerMeeting(name) {
       return (this.participants.length === 0 && (moment().diff(created, 'hours') > 2));
     };
 
+    this.isDone = function() {
+      if (this.name === "default") return false;
+      return ((this.participants.length === 0) && (this.phase === phases.complete));
+    };
+
     this.sortTopics = function(){
       this.topics.sort(function(left, right){
         if(left.voters.length > right.voters.length) return -1;
