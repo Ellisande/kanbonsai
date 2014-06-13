@@ -36,18 +36,20 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
       localStorageUserKey = meetingNameParam + ".user",
       localStorageUser = localStorageService.get(localStorageUserKey);
 
-    socket.cleanup();
-
     $scope.signout = function(){
       console.log("Leaving meeting...");
+      localStorageService.remove(localStorageUserKey);
       socket.emit('unsubscribe');
       $location.url('/');
     };
 
+    console.log("Meeting is " + meetingNameParam + " Local storage user is " + localStorageUser);
 
-  if (!localStorageUser) {
-    socket.emit('unsubscribe');
-  }
+    if (localStorageUser) {
+      socket.cleanup();
+      socket.emit('unsubscribe');
+    }
+    
   socket.emit('subscribe', {
       meetingName: meetingNameParam,
       userName: localStorageUser || ""
