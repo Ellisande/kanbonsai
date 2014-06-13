@@ -3,7 +3,7 @@
 /* Controllers */
 function MeetingListCtrl($scope, socket){
     'use strict';
-    socket.global('meetings:update', function(meetings){
+    socket.on('meetings:update', function(meetings){
        $scope.meetings = meetings.meetings;
     });
     $scope.leave = function(){
@@ -36,10 +36,7 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
       localStorageUserKey = meetingNameParam + ".user",
       localStorageUser = localStorageService.get(localStorageUserKey);
 
-    socket.cleanup();
-
     $scope.signout = function(){
-      console.log("Leaving meeting...");
       socket.emit('unsubscribe');
       $location.url('/');
     };
@@ -323,26 +320,26 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     to : ''
   };
 
-$scope.sendEmail = function(){
-    var emailBody='Hi\n';
-    emailBody+='Topics:\n\n';
+  $scope.sendEmail = function(){
+      var emailBody='Hi\n';
+      emailBody+='Topics:\n\n';
 
-    for(var p=0;p<$scope.meeting.topics.length;p++){
-      var topic = $scope.meeting.topics[p];
-      emailBody+='Topic: ';
-      emailBody+=topic.body+'\n';
-      if(topic.notes){
-        emailBody+='Notes: ';
-        emailBody+=topic.notes+'\n\n';
+      for(var p=0;p<$scope.meeting.topics.length;p++){
+        var topic = $scope.meeting.topics[p];
+        emailBody+='Topic: ';
+        emailBody+=topic.body+'\n';
+        if(topic.notes){
+          emailBody+='Notes: ';
+          emailBody+=topic.notes+'\n\n';
+        }
+
       }
+      emailBody += '\nThanks';
 
-    }
-    emailBody += '\nThanks';
-
-    var link = "mailto:"+$scope.email.to+
-             "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name+
-             "&body="+escape(emailBody);
-    window.location.href = link;
- };
+      var link = "mailto:"+$scope.email.to+
+               "?subject=Meeting%20Notes%20MeetingId:%20"+$scope.meeting.name+
+               "&body="+escape(emailBody);
+      window.location.href = link;
+  };
 
 }
