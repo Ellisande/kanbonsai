@@ -54,7 +54,8 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
   });
 
   $scope.meeting = {phase: 'submit'};
-	$scope.topicOrder = '-voters.length';
+	$scope.topicOrderPrimary = '-voters.length';
+  $scope.topicOrderSub = '-topic.id';
 	$scope.userTopic = new Topic();
 	socket.on('init', function (data)
 	{
