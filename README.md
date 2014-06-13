@@ -14,9 +14,9 @@ The process of Lean Coffee follows these basic steps:
  * Take the topic with the most votes
  * Talk about the topic (3 minutes)
  * At the end of three minutes everyone votes on whether or not to continue talking about the topic
-  * If they vote yes, keep talking (time is reduced by half)
+  * If they vote yes, keep talking (time is reduced by half for each successful continue)
   * If they vote no, remove the topic and repeat the main body steps again
-* Main body is repeated until the meeting is over
+* Main body is repeated for each topic, in vote order, until the meeting is over
 
 ### Benefits
 Lean Coffee has a couple of great benefits from a meeting perspective.
