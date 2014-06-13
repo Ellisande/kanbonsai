@@ -19,13 +19,16 @@ function getNewName(meeting){
 
   return name;
 }
+
+// This User object must be able to persist across browser resets.
 function User(name, meetingName, socketId){
     this.name = name;
     this.meetingName = meetingName;
     this.socketId = socketId || "";
     this.isHost = false;
-    this.votesRemaining = 3;
+    this.votesRemaining = 3; // This is a bug, refresh browser resets your votes.
     this.votedOn = [];
+    this.disconnected = false;
 }
 
 function Vote(type, user){

@@ -19,71 +19,75 @@ var socket = function(io){
   }, 60000);
 
   return function (socket) {
+      // This function will execute when a user connects. A user connects any time a 
+      // socket is created. This includes the normal case and when a user refreshes
+      // their browser.
       var meeting = meetings.default;
       var user = "";
       var roomName = "default";
 
+      // A user has just connected, let them know what meetings are here.
       socket.emit('meetings:update',{
         meetings: meetings
       });
-      // send the new user their name and a list of users
-      var initialize = function(roomName){
-        meeting = meetings[roomName] || function(){
-            meetings[roomName] = new ServerMeeting(roomName);
-            return meetings[roomName];
-        }();
-         user = new User(model.getNewName(meeting), meeting.name, socket.id);
-
-        meeting.participants.push(user);
+      
+      var preInitialize = function() {
+          // Create a the meeting if it does not exist already.
+          meeting = meetings[roomName] || function(){
+              meetings[roomName] = new ServerMeeting(roomName);
+              return meetings[roomName];
+          }();
+      };
+      
+      var postInitialize = function(aUser) {
+        // Create the user object.
+        user = aUser.name;
+        // Let your client know your user and meeting objects.
         socket.emit('init', {
-            user: user,
+            user: aUser,
             meeting: meeting
         });
 
+        // Let your client know the status of the meeting timer.
         socket.emit('timer:init', {
           duration: meeting.getTimer().asMilliseconds()
         });
 
+        // Let all clients know what meetings there are.
         io.sockets.emit('meetings:update', {
           meetings: meetings
-        });
-
-        socket.broadcast.to(roomName).emit('user:join', {
-            user: user
         });
       };
+      
+      // send the new user their name and a list of users
+      var initialize = function(){
+          preInitialize(aUser, roomName); // meeting is created
+          var aUser = new User(model.getNewName(meeting), roomName, socket.id);
+          meeting.participants.push(aUser);
+          postInitialize(aUser);
+          // Unlike the case where the browser knows what meeting you are in,
+          // this method needs to let all users in the room know you have 
+          // just joined.
+          socket.broadcast.to(roomName).emit('user:join', {
+              user: aUser
+          });
+      };
 
-      var refresh = function(userName, roomName){
-        meeting = meetings[roomName] || function(){
-            meetings[roomName] = new ServerMeeting(roomName);
-            return meetings[roomName];
-        }();
-
-        user = new User(userName, meeting.name, socket.id);
-        meeting.participants.push(user);
-
-        socket.emit('init', {
-            user: user,
-            meeting: meeting
-        });
-
-        io.sockets.emit('meetings:update', {
-          meetings: meetings
-        });
-
-        socket.emit('timer:init', {
-          duration: meeting.getTimer().asMilliseconds()
-        });
+      var refresh = function(userName){
+          preInitialize(roomName);
+          var aUser = meeting.getParticipant(userName);
+          postInitialize(aUser);
       };
 
       // join a room.
       socket.on('subscribe', function(data){
-        socket.join(data.meetingName);
-        roomName = data.meetingName;
+          console.log("Joining room " + data.meetingName);
+        roomName = data.meetingName || "default";
+        socket.join(roomName);
         if (data.userName) {
-          refresh(data.userName, data.meetingName);
+          refresh(data.userName);
         } else {
-          initialize(data.meetingName);
+          initialize();
         }
       });
 
@@ -201,34 +205,20 @@ var socket = function(io){
       });
 
       var unsubscribe = function () {
-        console.log(user.name + " is leaving " + roomName);
-        socket.leave(roomName);
+          console.log(user + " is leaving " + roomName);
+          socket.leave(roomName);
 
-        var allUsers = meeting.participants || [];
-        for(var i = 0; i < allUsers.length; i++){
-          allUsers.splice(allUsers[i].name.indexOf(user.name), 1);
-        }
-
-        // If there are no more users in the room, delete the meeting...
-        if (allUsers.length === 0) {
-          if (meetings[roomName].isDone()) {
-            console.log("Deleting room. Last one out of " + roomName);
-            delete meetings[roomName];
+          if (user) {
+              // Set status of user in user object 
+              var meetingAbandoned = meeting.disconnect(user);
+              if (meetingAbandoned) {
+                  delete meetings[roomName];
+              }
           }
-        // otherwise, notify the other users in the meeting that someone has left.
-        }
-        
-        io.sockets.emit('meetings:update', {
-          meetings: meetings
-        });
 
-        io.sockets.in(roomName).emit('user:left', {
-          user: user
-        });
-
-        roomName = "default";
-        meeting = meetings["default"];
-
+          io.sockets.emit('meetings:update', {
+            meetings: meetings
+          });          
       };
 
       // clean up when a user leaves, and broadcast it to other users

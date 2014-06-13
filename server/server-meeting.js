@@ -22,6 +22,25 @@ module.exports = function ServerMeeting(name) {
     this.participants = [];
     this.topics = [];
     this.phase = phases.submit;
+    
+    this.getParticipant = function(userId) {
+        var p = null;
+        this.participants.some(function(participant) {
+            if (participant.name == userId) {
+                p = participant;
+                return true;
+            }
+            return false;
+        });
+        return p;
+    };
+    
+    this.disconnect = function(userName) {
+        var user = this.getParticipant(userName);
+        if (user)
+            user.disconnected = true;
+        // TODO: if all users are gone from the meeting, disconnect
+    }
 
     this.isAbandoned = function() {
       // The default meeting is never abandoned!
