@@ -2,7 +2,7 @@
     <div class="headlineUser">
      <current-user></current-user>
     </div>
-    <div class="topic" ng-class="{current: topic.current, selected: topic.selected}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:topicOrder">
+    <div class="topic" ng-class="{current: topic.current, selected: topic.selected}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:[topicOrderPrimary, topicOrderSub]">
         <div class="grid-10">+{{topic.voters.length}}</div>
         <div class="grid-90" ng-click="topic.selected = !topic.selected" >
             <h4 class="author">{{topic.body}}</h4>
