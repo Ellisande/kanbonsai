@@ -6,20 +6,19 @@
     var socket;
     var registeredEvents = [];
 
-    var connect = function(){
-          if(!socket){
-            socket = io.connect('http://'+$location.host()+':5000');
-          }
-    };
+    if(!socket){
+      socket = io.connect('http://'+$location.host()+':5000');
+    }
 
-    connect();
-
-    var globalOn = function(eventName, callback){
-      socket.on(eventName, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
+    var sanatizeEvent = function(newEvent, newCallback){
+      registeredEvents.forEach(function(registeredEvent){
+        if(registeredEvent.eventName == newEvent){
+          socket.removeListener(registeredEvent.eventName, registeredEvent.callback);
+        }
+      });
+      registeredEvents.push({
+        eventName: newEvent,
+        callback: newCallback
       });
     };
 
@@ -30,10 +29,7 @@
           callback.apply(socket, args);
         });
       };
-      registeredEvents.push({
-        eventName: eventName,
-        callback: proxyFunction
-      });
+      sanatizeEvent(eventName, proxyFunction);
       socket.on(eventName, proxyFunction);
     };
 
@@ -48,17 +44,9 @@
       });
     };
 
-    var cleanup = function(){
-      registeredEvents.forEach(function(event, index){
-        socket.removeListener(event.eventName, event.callback);
-      });
-    };
-
     return {
-        global: globalOn,
         on: registeredOn,
-        emit: emitWrapper,
-        cleanup: cleanup
+        emit: emitWrapper
     };
   });
 
@@ -113,17 +101,17 @@
         timer.expired = true;
       };
 
-      socket.global('timer:init', function(data){
+      socket.on('timer:init', function(data){
         reset(data.duration);
       });
 
-      socket.global('timer:start', function(data){
+      socket.on('timer:start', function(data){
         reset(data.duration);
         timer.expired = false;
         startTimeout();
       });
 
-      socket.global('timer:stop', function(data){
+      socket.on('timer:stop', function(data){
         reset(data.duration);
       });
 
