@@ -45,10 +45,9 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     console.log("Meeting is " + meetingNameParam + " Local storage user is " + localStorageUser);
 
     if (localStorageUser) {
-      socket.cleanup();
       socket.emit('unsubscribe');
     }
-    
+
   socket.emit('subscribe', {
       meetingName: meetingNameParam,
       userName: localStorageUser || ""
