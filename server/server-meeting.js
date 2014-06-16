@@ -40,6 +40,7 @@ module.exports = function ServerMeeting(name) {
         if (user)
             user.disconnected = true;
         // TODO: if all users are gone from the meeting, disconnect
+        return this.isDone();
     }
 
     this.isAbandoned = function() {
@@ -50,7 +51,17 @@ module.exports = function ServerMeeting(name) {
 
     this.isDone = function() {
       if (this.name === "default") return false;
-      return ((this.participants.length === 0) && (this.phase === phases.complete));
+      var done = true;
+      this.participants.some(function(participant) {
+          if (participant.disconnected === false) {
+              done = false;
+              return true;
+          } else {
+              return false;
+          }
+      });
+        
+      return ((done || this.participants.length === 0) && (this.phase === phases.complete));
     };
 
     this.sortTopics = function(){
