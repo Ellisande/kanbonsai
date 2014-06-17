@@ -1,6 +1,6 @@
 var ServerMeeting = require('./server-meeting');
 var model = require('./model');
-var meetings = {default: new ServerMeeting('default')};
+var meetings = {};
 var User = model.User;
 var Vote = model.Vote;
 var Topic = model.Topic;
@@ -8,29 +8,19 @@ var moment = require('moment');
 
 var socket = function(io){
 
-  setInterval(function() {
-    Object.keys(meetings).forEach(function(meetingKey){
-      var meeting = meetings[meetingKey];
-      if(typeof meeting.isAbandoned === "function" && meeting.isAbandoned()) {
-        console.log("Found abandoned meeting. Deleting " + meetingKey);
-        delete meetings[meetingKey];
-      }
-    });
-  }, 60000);
-
   return function (socket) {
-      // This function will execute when a user connects. A user connects any time a 
+      // This function will execute when a user connects. A user connects any time a
       // socket is created. This includes the normal case and when a user refreshes
       // their browser.
-      var meeting = meetings.default;
+      var meeting;
       var user = "";
-      var roomName = "default";
+      var roomName;
 
       // A user has just connected, let them know what meetings are here.
       socket.emit('meetings:update',{
         meetings: meetings
       });
-      
+
       var preInitialize = function() {
           // Create a the meeting if it does not exist already.
           meeting = meetings[roomName] || function(){
@@ -38,7 +28,7 @@ var socket = function(io){
               return meetings[roomName];
           }();
       };
-      
+
       var postInitialize = function(aUser) {
         // Create the user object.
         user = aUser.name;
@@ -58,7 +48,7 @@ var socket = function(io){
           meetings: meetings
         });
       };
-      
+
       // send the new user their name and a list of users
       var initialize = function(){
           preInitialize(aUser, roomName); // meeting is created
@@ -66,7 +56,7 @@ var socket = function(io){
           meeting.participants.push(aUser);
           postInitialize(aUser);
           // Unlike the case where the browser knows what meeting you are in,
-          // this method needs to let all users in the room know you have 
+          // this method needs to let all users in the room know you have
           // just joined.
           socket.broadcast.to(roomName).emit('user:join', {
               user: aUser
@@ -74,6 +64,7 @@ var socket = function(io){
       };
 
       var refresh = function(userName){
+          if(!meeting) return initialize();
           preInitialize(roomName);
           var aUser = meeting.getParticipant(userName);
           postInitialize(aUser);
@@ -208,8 +199,8 @@ var socket = function(io){
           console.log(user + " is leaving " + roomName);
           socket.leave(roomName);
 
-          if (user) {
-              // Set status of user in user object 
+          if (user && meeting) {
+              // Set status of user in user object
               var meetingAbandoned = meeting.disconnect(user);
               if (meetingAbandoned) {
                   delete meetings[roomName];
@@ -218,7 +209,10 @@ var socket = function(io){
 
           io.sockets.emit('meetings:update', {
             meetings: meetings
-          });          
+          });
+
+          meeting = null;
+          roomName = null;
       };
 
       // clean up when a user leaves, and broadcast it to other users
