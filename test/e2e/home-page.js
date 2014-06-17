@@ -13,10 +13,6 @@ describe('lean coffee', function() {
       expect(ptor.getCurrentUrl()).toContain('#/home');
     });
 
-    it('should present the user with a default room in the inactive meeting list', function() {
-      expect($('.meeting-list').getText()).toContain('default');
-    });
-
     it('should allow user to enter a meeting name', function() {
       expect(element(by.model('meetingName')).getAttribute('value')).toBe('');
       homePage.setMeetingNameInput('Testing Meeting Name');
