@@ -148,8 +148,8 @@ footer {
     margin-top: 1em;
 }
 
-.pure-skin-coffee .button-success,
-.pure-skin-coffee .button-error,
+.button-success,
+.button-error,
 .pure-skin-coffee .button-warning,
 .pure-skin-coffee .button-secondary {
     color: white;
@@ -157,12 +157,14 @@ footer {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.pure-skin-coffee .button-success {
+.button-success {
     background: rgb(28, 184, 65); /* this is a green */
+    font-size: 125%;
 }
 
-.pure-skin-coffee .button-error {
+.button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
+    font-size: 125%;
 }
 
 .headlineUser span {

@@ -19,8 +19,8 @@
         <li class="list-heading" ng-show="meeting.phase.name == 'discuss'">Voting</li>
         <li ng-show="meeting.phase.name == 'discuss'">
           <div ng-show="!hasContinueVoted()" class="voting-buttons">
-            <button class="pure-button pure-button-primary" ng-click="continueVote()">Keep Talking</button>
-            <button class="pure-button pure-button-primary" ng-click="stopVote()">Move On</button>
+            <button class="pure-button button-success" ng-click="continueVote()">Keep Talking</button>
+            <button class="pure-button button-error" ng-click="stopVote()">Move On</button>
           </div>
         </li>
         <li ng-show="meeting.phase.name == 'discuss'">
