@@ -27,10 +27,10 @@
     <div class="topic" ng-repeat="topic in meeting.topics | filter:userTopic.status">
         <div class="grid-20 vote">
             +{{topic.voters.length}}
-            <a ng-click="vote(topic)" ng-class="{hidden: user.votesRemaining == 0}">
+            <a ng-click="vote(topic)" class="voteUp" ng-class="{hidden: user.votesRemaining == 0}">
               <img src="../images/thumbs_up.png"></img>
             </a>
-            <a ng-click="downvote(topic)" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}">
+            <a ng-click="downvote(topic)" class="voteDown" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}">
               <img src="../images/thumbs_down.png"></img>
             </a>
         </div>

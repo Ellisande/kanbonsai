@@ -13,8 +13,12 @@ describe('lean coffee', function() {
       expect(global.getPhaseText()).toMatch(/PHASE: VOTING/);
     });
 
-    it('should display an icon to vote with', function(){
-      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp').getText()).toBe('↑');
+    it('should display an icon to vote up a topic', function(){
+      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp img').isPresent()).toBe(true);
+    });
+
+    it('should display an icon to vote down a topic', function(){
+      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteDown img').isPresent()).toBe(true);
     });
 
     it('should display the number of votes the user has remaining', function(){
