@@ -92,6 +92,7 @@ var socket = function(io){
       });
 
       socket.on('topic:continue', function(data){
+        if(!meeting) return;
         var topic = meeting.getCurrentTopic();
         if(!topic) return;
         var vote = new Vote(data.vote, user);
