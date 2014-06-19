@@ -200,7 +200,7 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     var currentTopic = $scope.currentTopic;
     if(!currentTopic) return false;
     var hasVoted = currentTopic.continue.concat(currentTopic.stop).some(function(vote){
-      if(vote.user.name == $scope.user.name)
+      if(vote.user == $scope.user.name)
         return true;
     });
     return hasVoted;
