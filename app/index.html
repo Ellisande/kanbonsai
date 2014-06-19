@@ -18,13 +18,9 @@
   <div class="grid-15">
       <div class="meeting-directory">
           <ul class="meeting-list" ng-controller="MeetingListCtrl">
-            <li class="list-heading">Active Meetings</li>
+            <li class="list-heading">Meetings</li>
             <li ng-repeat="meeting in meetings | orderBy:meeting.participants.length"  ng-show="meeting.participants.length>0">
               <a href="#/meeting/{{meeting.name}}" ng-click="leave()">{{meeting.name | limitTo:limit}}: {{meeting.participants.length}}</a>
-            </li>
-            <li class="list-heading">Inactive Meetings</li>
-            <li ng-repeat="inactiveMeeting in meetings" ng-show="inactiveMeeting.participants.length<1">
-              <a href="#/meeting/{{inactiveMeeting.name}}" class="unavailable" ng-click="leave()">{{inactiveMeeting.name}}</a>
             </li>
           </ul>
       </div>
