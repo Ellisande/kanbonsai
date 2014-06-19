@@ -160,7 +160,7 @@ module.exports.MergePage = function() {
   };
 
   this.stopButton = function(){
-    return element(by.buttonText('Keep Talking'))
+    return element(by.buttonText('Move On'))
   };
 
   this.continueVote = function(){
