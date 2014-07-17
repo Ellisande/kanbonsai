@@ -84,6 +84,7 @@ var socket = function(io){
 
       // event to save and broadcast out when a user adds a comment.
       socket.on('topic:post', function(data){
+        if(!meeting) return;
         var newTopic = new Topic(data.topic);
         meeting.topics.push(newTopic);
         io.sockets.in(roomName).emit('topic:post', {
@@ -178,6 +179,7 @@ var socket = function(io){
       }
 
       socket.on('timer:start', function(data){
+        if(!meeting) return;
         var duration = moment().add(meeting.getTimer());
         io.sockets.in(roomName).emit('timer:start', {
             duration: meeting.getTimer().asMilliseconds()
@@ -185,7 +187,7 @@ var socket = function(io){
       });
 
       socket.on('timer:stop', function(){
-        if(meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
+        if(!meeting && meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
           meeting.getCurrentTopic().reset();
           io.sockets.in(roomName).emit('topic:continue', {
             topic: meeting.getCurrentTopic()
