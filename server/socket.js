@@ -187,7 +187,8 @@ var socket = function(io){
       });
 
       socket.on('timer:stop', function(){
-        if(!meeting && meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
+        if(!meeting) return;
+        if(meeting.phase.name == 'discuss' && meeting.getCurrentTopic()){
           meeting.getCurrentTopic().reset();
           io.sockets.in(roomName).emit('topic:continue', {
             topic: meeting.getCurrentTopic()
@@ -223,6 +224,7 @@ var socket = function(io){
       socket.on('disconnect', unsubscribe);
 
       socket.on('update:phase', function(){
+        if(!meeting) return;
         meeting.nextPhase();
         io.sockets.in(roomName).emit('update:phase', {
           phase: meeting.phase
