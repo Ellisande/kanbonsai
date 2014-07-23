@@ -28,10 +28,10 @@
         <div class="grid-20 vote">
             +{{topic.voters.length}}
             <a ng-click="vote(topic)" class="voteUp" ng-class="{hidden: user.votesRemaining == 0}">
-              <img src="/images/thumbs_up.png"></img>
+              <img src="images/thumbs_up.png"></img>
             </a>
             <a ng-click="downvote(topic)" class="voteDown" ng-class="{hidden: !userVotedForThisTopic(topic, user.name)}">
-              <img src="/images/thumbs_down.png"></img>
+              <img src="images/thumbs_down.png"></img>
             </a>
         </div>
         <div class="grid-80">
