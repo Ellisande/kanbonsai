@@ -42,8 +42,6 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
       $location.url('/');
     };
 
-    console.log("Meeting is " + meetingNameParam + " Local storage user is " + localStorageUser);
-
     if (localStorageUser) {
       socket.emit('unsubscribe');
     }
