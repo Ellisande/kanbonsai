@@ -11,7 +11,7 @@ describe('lean coffee', function() {
 
       it('should allow you to navigate to the complete phase', function() {
         completePhase.bypassEarlierPages();
-        expect(global.getPhaseText()).toMatch(/PHASE: COMPLETE/);
+        expect(global.getElemByButtonText('Send').isDisplayed()).toEqual(true);
       });
 
 
