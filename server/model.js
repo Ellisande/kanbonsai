@@ -4,7 +4,7 @@ var allNames = [
   'Bubble Puppy','Dora the Explorer','Spongebob Squarepants','Moonpie','Smores','Onyx','Uncle Bob','Godzilla',
   'McLovin','Sparky, the Fire Breathing Chameleon','The Tin Man', 'Magic Mike', 'Squared', 'MD', 'Darth Helemet', 'President Scroob',
   'Glass Popcorn', 'Kobe', 'Pierre the Pelican', 'The Dunstan', 'Secret Squirrel', 'Luigi', 'Yoda', 'Jar Jar Binks',
-  'Nemo', 'Dory', 'Toothless', 'Hiccup', 'Professor X', 'Dark Phoenix', 'Not a Bug', 'A Feature', '.Troll', 'Vincent Vega'
+  'Nemo', 'Dory', 'Toothless', 'Hiccup', 'Professor X', 'Dark Phoenix', 'Not a Bug', 'A Feature', 'Troll', 'Vincent Vega'
 ];
 
 var randomName = function(allNames){
