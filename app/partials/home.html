@@ -24,7 +24,7 @@
     <div>
         <form class="pure-form" id="create-form" name="create-form" ng-submit="create()">
             <fieldset>
-                <input type="text" name="meeting-name" class="search-query" ng-model="meetingName" placeholder="Meeting Name" required>
+                <input type="text" name="meeting-name" class="search-query" ng-model="meetingName" placeholder="Meeting Name" required pattern="[^/]*">
                 <button class="pure-button pure-button-primary">Create a Meeting!</button>
             </fieldset>
         </form>
