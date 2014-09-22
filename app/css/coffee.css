@@ -104,6 +104,10 @@ input[name="meeting-name"] {
     padding: .25em .8em;
 }
 
+.welcome {
+  font-size: 3.2rem;
+}
+
 .meeting-header {
     font-weight: bold;
     color: rgb(105, 105, 105);

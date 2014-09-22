@@ -13,6 +13,9 @@ var randomName = function(allNames){
 
 function getNewName(meeting){
   var name;
+  if(meeting.participants.length > 48){
+    return Math.floor(Math.random() * 10000000);
+  }
   do{
     name = randomName(allNames);
 
