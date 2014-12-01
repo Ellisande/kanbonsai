@@ -1,4 +1,4 @@
-# Lean Coffee
+# Kanbonsai
 
 ## Introduction
 There is a new style of meeting that is gaining tracition amongst large organizations called Lean Coffee. Lean Coffee is a way to approach meetings that have no strongly defined agenda.
