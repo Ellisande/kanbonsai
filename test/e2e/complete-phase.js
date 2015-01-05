@@ -7,6 +7,7 @@ describe('lean coffee', function() {
   describe('complete', function(){
 
     var completePhase = new po.CompletePage();
+    var homePage = new po.HomePage();
 
 
       it('should allow you to navigate to the complete phase', function() {
@@ -45,10 +46,25 @@ describe('lean coffee', function() {
              expect(completePhase.getFirstNotes()).toBe("These are notes");
             });
 
-            it('should move the participants to the landing page', function(){
+            it('should move users to home when they click exit meeting', function(){
               expect(global.clickElemById('exitMeeting'));
               ptor.waitForAngular();
               expect(ptor.getCurrentUrl()).toContain('#/home');
+            });
+
+            describe('delete button', function(){
+
+              it('should move the user to the home screen', function(){
+                completePhase.bypassEarlierPages();
+                expect(global.clickElemById('deleteMeeting'));
+                ptor.waitForAngular();
+                expect(ptor.getCurrentUrl()).toContain('#/home');
+              });
+
+              it('should delete the current meeting', function(){
+                console.log(completePhase.getAllMeetings());
+
+              });
             });
 
         });

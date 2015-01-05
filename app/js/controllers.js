@@ -42,6 +42,11 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
       $location.url('/');
     };
 
+    $scope.deleteMeeting = function(){
+      socket.emit('meeting:delete');
+    }
+
+    //No Longer needed: suspected
     if (localStorageUser) {
       socket.emit('unsubscribe');
     }
@@ -49,6 +54,11 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
   socket.emit('subscribe', {
       meetingName: meetingNameParam,
       userName: localStorageUser || ""
+  });
+
+  socket.on('meeting:delete', function(){
+    socket.emit('unsubscribe');
+    $location.url('/');
   });
 
   $scope.meeting = {phase: 'submit'};

@@ -223,3 +223,8 @@ footer {
 .continue {
   color: green;
 }
+
+.finalActions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

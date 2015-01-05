@@ -122,7 +122,7 @@ describe('lean coffee', function() {
       });
     });
 
-    it('should allow the host to reset the timer', function(){
+    xit('should allow the host to reset the timer', function(){
       //global.clickElemByButtonText('Start');
       //expect(global.getElemByButtonText('Start').isDisplayed()).toEqual(false);
       //expect(global.getElemByButtonText('Stop').isDisplayed()).toEqual(true);

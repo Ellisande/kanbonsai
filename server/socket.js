@@ -72,7 +72,7 @@ var socket = function(io){
 
       // join a room.
       socket.on('subscribe', function(data){
-          console.log("Joining room " + data.meetingName);
+          //console.log("Joining room " + data.meetingName);
         roomName = data.meetingName || "default";
         socket.join(roomName);
         if (data.userName) {
@@ -184,6 +184,12 @@ var socket = function(io){
         io.sockets.in(roomName).emit('timer:start', {
             duration: meeting.getTimer().asMilliseconds()
         });
+      });
+
+      socket.on('meeting:delete', function(){
+        delete(meetings[roomName]);
+        unsubscribe();
+        io.sockets.in(roomName).emit('meeting:delete');
       });
 
       socket.on('timer:stop', function(){

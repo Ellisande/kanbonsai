@@ -2,16 +2,18 @@
 
 <div class="grid-70">
 
-<p>Your meeting has ended! Its a sad, sad day. This phase is a dead end. All you can do now is leave the meeting.</p>
-<p>If you like, you can put enter your email below and we will auto-populate an email for you with all the topics for this meeting and any notes you took.</p>
-<p>Otherwise, leave. Now.</p>
-<div class="pure-form">
-<form class="pure-form pure-form-stacked post" ng-submit="sendEmail()">
-    <label for="status">Email Address</label>
-    <input name="status" type="email" required class="block" ng-model="email.to" autofocus placeHolder="someperson@domain.com" />&nbsp;
-    <input type="submit" class="pure-button  pure-button-primary" ng-disabled="!email.to" value="Send">
-</div>
-</form>
-<br/><br/><a ng-click="signout()" id="exitMeeting">Return to Home Page</a>
-
+  <p>Your meeting has ended! Its a sad, sad day. This phase is a dead end. All you can do now is leave the meeting.</p>
+  <p>If you like, you can put enter your email below and we will auto-populate an email for you with all the topics for this meeting and any notes you took.</p>
+  <p>Otherwise, leave. Now.</p>
+  <div class="pure-form">
+  <form class="pure-form pure-form-stacked post" ng-submit="sendEmail()">
+      <label for="status">Email Address</label>
+      <input name="status" type="email" required class="block" ng-model="email.to" autofocus placeHolder="someperson@domain.com" />&nbsp;
+      <input type="submit" class="pure-button  pure-button-primary" ng-disabled="!email.to" value="Send">
+  </div>
+  </form>
+  <div class="finalActions">
+    <button class="pure-button button-success" ng-click="signout()" id="exitMeeting">Return to Home Page</button>
+    <button class="pure-button button-error" ng-click="deleteMeeting()" id="deleteMeeting">Delete Meeting</button>
+  </div>
 </div>

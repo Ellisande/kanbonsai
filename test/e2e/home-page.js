@@ -9,7 +9,7 @@ describe('lean coffee', function() {
 
     it('should display the home page', function() {
       homePage.get();
-      expect($('.welcome').getText()).toBe('Welcome to Lean Coffee! ');
+      expect($('.welcome').getText()).toBe('Welcome to Kanbonsai!');
       expect(ptor.getCurrentUrl()).toContain('#/home');
     });
 

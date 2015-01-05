@@ -211,6 +211,13 @@ module.exports.CompletePage = function() {
     return firstNote;
   };
 
+  this.getAllMeetings = function(){
+    return element.all(
+      by.repeater('meeting in meetings')
+      .column('{{meeting.name}}')
+    );
+  }
+
 };
 
  module.exports.GlobalFunction = function() {
