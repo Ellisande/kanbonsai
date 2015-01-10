@@ -4,7 +4,13 @@ var allNames = [
   'Bubble Puppy','Dora the Explorer','Spongebob Squarepants','Moonpie','Smores','Onyx','Uncle Bob','Godzilla',
   'McLovin','Sparky, the Fire Breathing Chameleon','The Tin Man', 'Magic Mike', 'Squared', 'MD', 'Darth Helemet', 'President Scroob',
   'Glass Popcorn', 'Kobe', 'Pierre the Pelican', 'The Dunstan', 'Secret Squirrel', 'Luigi', 'Yoda', 'Jar Jar Binks',
-  'Nemo', 'Dory', 'Toothless', 'Hiccup', 'Professor X', 'Dark Phoenix', 'Not a Bug', 'A Feature', 'Troll', 'Vincent Vega'
+  'Nemo', 'Dory', 'Toothless', 'Hiccup', 'Professor X', 'Dark Phoenix', 'Not a Bug', 'A Feature', 'Troll', 'Vincent Vega',
+  'Yardbird','Velvet Fog','Tom Servo','Blast ThickNeck','Uncle Enzo','Neuruomancer','Empress Zawditu','Quatro Quatro','X-Wing',
+  'Steve the Pirate','Cotton McKnight','White Goodman','Professor Farnsworth','Princess Bubblegum','Finn the Human','Bender',
+  'Captain Napalm','Jarvis','Dastardly','Space Ghost','To Wong Foo','Mothra','Hank Scorpio','Belgarath','Eriond','Lord Macintosh',
+  'Cindy Lou Who','The Dread Pirate Roberts','Falcore','Atreyu','The Childlike Empress','Mogwai','Data','Liberty Belle',
+  'Peter Venkman','Buck Rogers','Bliss','Mistress Quickly','Pacman','Ness','Pepper Pots','Merkin Muffly','Foghorn Leghorn',
+  'Wile E. Coyote', 'Mugato', 'Hansel', 'Derek Zoolander', 'Count Chocula','Buffolo Bill','Disco Stu','Sideshow Bob'
 ];
 
 var randomName = function(allNames){
@@ -13,7 +19,7 @@ var randomName = function(allNames){
 
 function getNewName(meeting){
   var name;
-  if(meeting.participants.length > 48){
+  if(meeting.participants.length >= allNames.length){
     return Math.floor(Math.random() * 10000000);
   }
   do{
