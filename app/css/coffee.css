@@ -228,3 +228,8 @@ footer {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+.awesome-person {
+  font-weight: bold;
+  color: pink;
+}
