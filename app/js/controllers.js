@@ -44,12 +44,14 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
 
     $scope.deleteMeeting = function(){
       socket.emit('meeting:delete');
-    }
+    };
 
     //No Longer needed: suspected
+    /*
     if (localStorageUser) {
       socket.emit('unsubscribe');
     }
+    */
 
   socket.emit('subscribe', {
       meetingName: meetingNameParam,

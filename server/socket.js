@@ -60,14 +60,19 @@ var socket = function(io){
           // just joined.
           socket.broadcast.to(roomName).emit('user:join', {
               user: aUser
-          });
+          }); 
       };
 
-      var refresh = function(userName){
-          if(!meeting) return initialize();
+      var refresh = function(data){
+          if(!meetings[data.meetingName]) return initialize();
           preInitialize(roomName);
-          var aUser = meeting.getParticipant(userName);
-          postInitialize(aUser);
+          var aUser = meeting.getParticipant(data.userName);
+          if(!aUser){
+              initialize();
+          }
+          else{
+              postInitialize(aUser);
+          }
       };
 
       // join a room.
@@ -76,7 +81,7 @@ var socket = function(io){
         roomName = data.meetingName || "default";
         socket.join(roomName);
         if (data.userName) {
-          refresh(data.userName);
+          refresh(data);
         } else {
           initialize();
         }
@@ -144,6 +149,7 @@ var socket = function(io){
                 if(topic.voters.indexOf(voter) == -1){
                     topic.voters.push(voter);
                     voter.votesRemaining--;
+                    meeting.getParticipant(voter.name).votesRemaining--;
                     io.sockets.in(roomName).emit('topic:vote', {
                       topic: topic,
                       voter: voter
@@ -163,6 +169,7 @@ var socket = function(io){
               if (thisVoter.name === currentVoter.name) {
                 topic.voters.splice(index, 1);
                 thisVoter.votesRemaining++;
+                meeting.getParticipant(thisVoter.name).votesRemaining++;
                 io.sockets.in(roomName).emit('topic:downvote', {
                   topic: topic,
                   voter: thisVoter
