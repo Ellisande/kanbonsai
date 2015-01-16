@@ -104,7 +104,7 @@ describe('lean coffee', function() {
     });
 		
 		it('should not reset amount of votes on refresh', function(){
-			browser.refresh();
+			ptor.refresh();
       expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
       expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
 		});
