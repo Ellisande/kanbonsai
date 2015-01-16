@@ -6,6 +6,7 @@ describe('lean coffee', function() {
   describe('voting phase', function(){
 
     var votingPage = new po.VotingPage();
+    var meetingPage = new po.MeetingPage();
 
     it('should allow you to navigate to the voting phase', function() {
       // global.goToNextPhase();
@@ -104,7 +105,7 @@ describe('lean coffee', function() {
     });
 		
 		it('should not reset amount of votes on refresh', function(){
-			browser.get('http://localhost:5000/#/meeting/Testing%20Meeting%20Name');
+			browser.get('http://localhost:5000/#/meeting/' + meetingPage.meetingName);
       expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
       expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
 		});
