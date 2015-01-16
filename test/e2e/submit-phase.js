@@ -14,7 +14,7 @@ describe('lean coffee', function() {
       
     it('should display same user name after refresh', function(){
     	var userName = meetingPage.userGreeting().getText();
-			ptor.refresh();
+			browser.get(ptor.getCurrentUrl());
 			expect(meetingPage.userGreeting().getText()).toEqual(userName);
     });
 
