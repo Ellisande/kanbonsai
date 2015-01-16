@@ -102,6 +102,12 @@ describe('lean coffee', function() {
       var voteUpElement = element(by.repeater('topic in meeting.topics').row(0)).$('.vote').$('.voteUp');
       expect(voteUpElement.getAttribute('class')).toContain('hidden');
     });
+		
+		it('should not reset amount of votes on refresh', function(){
+			browser.refresh();
+      expect(global.getElementById('votesRemaining').getText()).toBe('You have no votes remaining.');
+      expect(votingPage.getNumberOfVotesForTopic(0)).toContain('3');
+		});
 
     xit('should allow the host to manually start the phase timer', function(){
 
