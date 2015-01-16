@@ -97,6 +97,7 @@ module.exports.MeetingPage = function() {
     };
 };
 module.exports.MergePage = function() {
+  this.meetingName;
   this.bypassEarlierPages = function(topics) {
     var meetingPage = new module.exports.MeetingPage();
     meetingPage.bypassEarlierPages();
@@ -105,16 +106,19 @@ module.exports.MergePage = function() {
     var global = new module.exports.GlobalFunction();
     global.becomeHost();
     global.goToNextPhase();
+    this.meetingName = meetingPage.meetingName;
   };
 
 };
 
  module.exports.VotingPage = function() {
+   this.meetingName;
    this.bypassEarlierPages = function() {
      var topics = [];
      var mergePage = new module.exports.MergePage();
      mergePage.bypassEarlierPages(topics);
      new module.exports.GlobalFunction().goToNextPhase();
+     this.meetingName = mergePage.meetingName;
    };
 
    this.voteUp = function(rowNum) {
