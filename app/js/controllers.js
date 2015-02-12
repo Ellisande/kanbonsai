@@ -219,8 +219,8 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
   socket.on('topic:continue', function(data){
     $scope.meeting.topics.some(function(topic, index){
       if(data.topic.id == topic.id && data.topic.id == $scope.currentTopic.id){
-        $scope.meeting.topics[index] = data.topic;
-        $scope.currentTopic = $scope.meeting.topics[index];
+        $scope.meeting.topics[index].timer = data.topic.timer;
+        $scope.currentTopic.timer = $scope.meeting.topics[index].timer;
         return true;
       }
     });
