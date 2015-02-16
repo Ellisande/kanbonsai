@@ -62,7 +62,6 @@ describe('lean coffee', function() {
               });
 
               it('should delete the current meeting', function(){
-                console.log(completePhase.getAllMeetings());
 
               });
             });
