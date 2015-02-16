@@ -220,11 +220,11 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     $scope.meeting.topics.some(function(topic, index){
       if(data.topic.id == topic.id && data.topic.id == $scope.currentTopic.id){
         $scope.meeting.topics[index].timer = data.topic.timer;
-				$scope.meeting.topics[index].continue = data.topic.continue;
-				$scope.meeting.topics[index].stop = data.topic.stop;
-        $scope.currentTopic.timer = $scope.meeting.topics[index].timer;
-				$scope.currentTopic.continue = $scope.meeting.topics[index].continue;
-				$scope.currentTopic.stop = $scope.meeting.topics[index].stop;
+								$scope.meeting.topics[index].continue = data.topic.continue;
+								$scope.meeting.topics[index].stop = data.topic.stop;
+    				$scope.currentTopic.timer = $scope.meeting.topics[index].timer;
+								$scope.currentTopic.continue = $scope.meeting.topics[index].continue;
+								$scope.currentTopic.stop = $scope.meeting.topics[index].stop;
         return true;
       }
     });

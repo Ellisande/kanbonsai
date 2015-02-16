@@ -77,7 +77,7 @@ module.exports.MeetingPage = function() {
    };
 
   this.goToMergePhase = function() {
-    element(by.buttonText('Next Phase →')).click();
+    element(by.partialButtonText('Next')).click();
   };
 
     // returns a promise of an array of WebElements (see: https://github.com/angular/protractor/blob/master/docs/api.md#elementall)
@@ -142,7 +142,7 @@ module.exports.MergePage = function() {
   };
 
   this.nextTopic = function(){
-    element(by.buttonText('Next Topic →')).click();
+    $('.current .next-topic').click();
   };
 
   this.clickFirstTopic = function(){
@@ -160,19 +160,22 @@ module.exports.MergePage = function() {
   };
 
   this.continueButton = function(){
-    return element(by.buttonText('Keep Talking'))
+    //return element(by.repeater('topic in meeting.topics').row(0));
+			 //element(by.repeater('topic in meeting.topics').$('.current vote-up'))
+			 return $('.current .vote-up');
   };
 
-  this.stopButton = function(){
-    return element(by.buttonText('Move On'))
+  this.stopButton = function(rowNum){
+    //element(by.repeater('topic in meeting.topics').row(rowNum)).$('.stop');
+			return $('.current .vote-down');
   };
 
   this.continueVote = function(){
-    return element(by.buttonText('Keep Talking')).click();
+    return this.continueButton().click();
   };
 
   this.stopVote = function(){
-    return element(by.buttonText('Move On')).click();
+    return this.stopButton().click();
   };
 
   this.continueText = function(){
@@ -227,7 +230,7 @@ module.exports.CompletePage = function() {
  module.exports.GlobalFunction = function() {
 
    this.goToNextPhase = function() {
-     return element(by.buttonText('Next Phase →')).click();
+     return element(by.partialButtonText('Next')).click();
    };
 
    this.getPhaseText = function() {
@@ -266,7 +269,7 @@ module.exports.CompletePage = function() {
   };
 
   this.becomeHost = function() {
-    var becomeHostButton = element(by.buttonText('Become a Host'));
+    var becomeHostButton = element(by.id('hostToggleOff'));
     if (becomeHostButton) {
       return becomeHostButton.click();
     } else {
@@ -275,11 +278,11 @@ module.exports.CompletePage = function() {
   };
 
   this.startTimer = function() {
-    return element(by.buttonText('Start')).click();
+    return element(by.id('startTimer')).click();
   };
 
   this.stopTimer = function() {
-    return element(by.buttonText('Stop')).click();
+    return element(by.id('stopTimer')).click();
   };
 
 };

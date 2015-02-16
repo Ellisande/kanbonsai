@@ -89,7 +89,7 @@ var socket = function(io){
 
       // event to save and broadcast out when a user adds a comment.
       socket.on('topic:post', function(data){
-        if(!meeting) return;
+        if(!meeting || !data.topic.body) return;
         var newTopic = new Topic(data.topic);
         meeting.topics.push(newTopic);
         io.sockets.in(roomName).emit('topic:post', {
@@ -135,7 +135,7 @@ var socket = function(io){
 
        //@Toggle Host
       socket.on('host:toggle', function(userData){
-        user.isHost = !user.isHost;
+							 meeting.getParticipant(userData.name).isHost = !meeting.getParticipant(userData.name).isHost;
         io.sockets.in(roomName).emit('host:toggled', userData);
       });
 

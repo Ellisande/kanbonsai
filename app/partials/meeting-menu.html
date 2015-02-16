@@ -1,28 +1,26 @@
 <div class="grid-25 push-5 meeting-menu">
     <ul class="meeting-list">
-        <li id="phase" class="list-heading">Phase: {{meeting.phase.name}}</li>
-        <li><toggle-host></toggle-host></li>
-        <li ng-show="user.isHost">
-          <button  ng-click="changePhase()" id="nextPhase" class="pure-button pure-button-primary">Next Phase &rarr;</button>
-        </li>
-        <li ng-show="user.isHost && meeting.phase.name == 'discuss'">
-          <button ng-click="nextTopic()" id="nextTopic" class="pure-button pure-button-primary">Next Topic &rarr;</button>
-        </li>
+					<li id="phase" class="list-heading">Phase: {{meeting.phase.name}}
+					</li>
+					<li>
+							<button id='nextPhase' class="pure-button pure-button-primary next-buttons" ng-show="user.isHost" ng-click="changePhase()"> 
+								Next <i class="fa fa-arrow-circle-right"></i>
+							</button>
+					</li>
         <li class="list-heading" ng-show="meeting.phase.name != 'merge'">Timer</li>
         <li ng-controller="TimerCtrl" class="timer" ng-class="{low: timer.duration.asSeconds() < 10}" ng-show="meeting.phase.name != 'merge'">
             <span>{{timer.duration.minutes() | timer}} :</span>
-            <span>{{timer.duration.seconds() | timer}}</span>
-            <button class="pure-button pure-button-primary " ng-click="start()" ng-show="timer.expired && user.isHost">Start</button>
-            <button class="pure-button pure-button-secondary" ng-click="stop()" ng-show="!timer.expired && user.isHost">Stop</button>
+            <span>{{timer.duration.seconds() | timer}} </span>
+						<a id='startTimer' ng-show="timer.expired && user.isHost" ng-click="start()"> 
+								<i class="fa fa-play start-timer"></i>
+						</a>
+						<a id='stopTimer' ng-show="!timer.expired && user.isHost" ng-click="stop()"> 
+								<i class="fa fa-pause stop-timer"></i>
+						</a>
 
         </li>
         <li class="list-heading" ng-show="meeting.phase.name == 'discuss'">Voting</li>
-        <li ng-show="meeting.phase.name == 'discuss'">
-          <div ng-show="!hasContinueVoted()" class="voting-buttons">
-            <button class="pure-button button-success" ng-click="continueVote()">Keep Talking</button>
-            <button class="pure-button button-error" ng-click="stopVote()">Move On</button>
-          </div>
-        </li>
+
         <li ng-show="meeting.phase.name == 'discuss'">
           <div class="continueVote stop" ng-show="currentTopic.continue.length <= currentTopic.stop.length">Stop is Winning</div>
           <div class="continueVote continue" ng-show="currentTopic.continue.length > currentTopic.stop.length">Continue is Winning</div>

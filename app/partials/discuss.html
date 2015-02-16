@@ -1,20 +1,32 @@
 <div class="grid-70 discuss">
-    <div class="headlineUser">
-     <current-user></current-user>
-    </div>
-    <div class="topic" ng-class="{current: topic.current, selected: topic.selected}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:[topicOrderPrimary, topicOrderSub]">
-        <div class="grid-10">+{{topic.voters.length}}</div>
-        <div class="grid-90" ng-click="topic.selected = !topic.selected" >
-            <h4 class="author">{{topic.body}}</h4>
-            <div class="by-line">By: {{topic.author}}</div>
-        </div>
-        <div class="notes grid-100 pure-form">
-          <textarea ng-model="topic.notes" ng-class="{show: topic.selected}" placeholder="Topic Notes"></textarea>
-        </div>
-        <br />
-    </div>
-    </form>
-  </div>
+ <div class="headlineUser">
+	<current-user></current-user>
+	<toggle-host></toggle-host>
+ </div>
+ <div class="topic" ng-class="{current: topic.current, selected: topic.selected}" ng-repeat="topic in meeting.topics | filter:usertopic.status | orderBy:[topicOrderPrimary, topicOrderSub]">
+		 <div class="grid-10">+{{topic.voters.length}}</div>
+		 <div class="grid-40" ng-click="topic.selected = !topic.selected" >
+			<h4 class="author">{{topic.body}}</h4>
+			<div class="by-line">By: {{topic.author}}</div>
+		 </div>
 
+		 <div class="grid-30">
+			 <div ng-show="topic.current && !hasContinueVoted()">
+				 Keep Talking: 
+				 <a id='keepTalking' class="vote-up" ng-click="continueVote()"><i class="fa fa-thumbs-o-up"></i></a>&nbsp;&nbsp;
+				 <a id='stopTalking' class="vote-down" ng-click="stopVote()"><i class="fa fa-thumbs-o-down"></i></a>
+			 </div>
+			 <span ng-show="topic.current && hasContinueVoted()">Already Voted</span>
+		 </div>
+
+		 <div class="grid-20 next-topic" ng-show="user.isHost && topic.current" ng-click="nextTopic()">
+			 Next Topic <i class="fa fa-arrow-circle-down"></i>
+		 </div>
+
+		 <div class="notes grid-100 pure-form">
+			 <textarea ng-model="topic.notes" ng-class="{show: topic.selected}" placeholder="Topic Notes"></textarea>
+		 </div>
+		 <br />
+ </div>
 </div>
 <meeting-menu></meeting-menu>

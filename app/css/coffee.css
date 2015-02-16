@@ -87,6 +87,7 @@ input[name="meeting-name"] {
     color: #AAA;
     font-size: 1.5em;
     font-weight: bold;
+	  vertical-align: middle;
 }
 
 .timer li {
@@ -143,8 +144,8 @@ input[name="meeting-name"] {
     text-transform: uppercase;
     color: rgb(105, 105, 105);
     font-weight: bold;
-    padding: 3px 10px;
-    font-size: 0.75em;
+    padding: 3px 0px;
+    font-size: 1.0em;
 }
 
 footer {
@@ -173,7 +174,7 @@ footer {
 
 .headlineUser span {
     display: inline;
-    vertical-align: top;
+    vertical-align: middle;
     line-height: 28px;
     font-size: 25px;
     font-weight: bold;
@@ -212,6 +213,10 @@ footer {
   font-size: 0.7em;
 }
 
+.next-buttons {
+  padding: 0.3em .6em;
+}
+
 .continueVote {
   font-weight: bold;
 }
@@ -224,6 +229,14 @@ footer {
   color: green;
 }
 
+.start-timer {
+	 color: green;
+}
+
+.stop-timer {
+	 color: red;
+}
+
 .finalActions {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -232,4 +245,16 @@ footer {
 .awesome-person {
   font-weight: bold;
   color: pink;
+}
+
+.host-toggle {
+	 color: #0078e7;
+}
+
+.vote-up {
+	 color: green;
+}
+
+.vote-down {
+	 color: red;
 }

@@ -1,4 +1,7 @@
-<p>
-<input type="button" ng-click="becomeHost()"  class="pure-button pure-button-primary" value="Become a Host" ng-hide="user.isHost" />
-<input type="button" ng-click="becomeHost()"  class="pure-button pure-button-primary" value="Back to Normal User" ng-show="user.isHost"/>
-</p>
+
+<a id='hostToggleOff' ng-hide="user.isHost" ng-click="becomeHost()"> 
+		Host: <i class="fa fa-toggle-off host-toggle"></i>
+</a>
+<a id='hostToggleOn' ng-show="user.isHost" ng-click="becomeHost()"> 
+		Host: <i class="fa fa-toggle-on host-toggle"></i>
+</a>

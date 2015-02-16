@@ -28,8 +28,10 @@ describe('lean coffee', function() {
     });
 
     it('should allow a user to become a host', function(){
-        var becomeHost = global.getElemByButtonText('Become a Host');
-        var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+        //var becomeHost = global.getElemByButtonText('Become a Host');
+								var becomeHost = global.getElementById('hostToggleOff');
+        //var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+								var backToNormalUser = global.getElementById('hostToggleOn');
 
         expect(becomeHost.isDisplayed()).toEqual(true);
         expect(backToNormalUser.isDisplayed()).toEqual(false);
@@ -89,8 +91,10 @@ describe('lean coffee', function() {
     });
 
     it('should allow the host to transition to the next phase', function(){
-        var becomeHost = global.getElemByButtonText('Become a Host');
-        var nextPhase = global.getElemByButtonText('Next Phase →');
+        //var becomeHost = global.getElemByButtonText('Become a Host');
+								var becomeHost = global.getElementById('hostToggleOff');
+        //var nextPhase = global.getElemByButtonText('Next Phase →');
+					   var nextPhase = global.getElementById('nextPhase');
         expect(nextPhase.isDisplayed()).toEqual(false);
         becomeHost.click();
         expect(nextPhase.isDisplayed()).toEqual(true);

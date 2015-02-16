@@ -14,11 +14,11 @@ describe('lean coffee', function() {
     });
 
    it('should display an icon to vote up a topic', function(){
-      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp img').isPresent()).toBe(true);
+      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteUp i').isPresent()).toBe(true);
     });
 
    it('should display an icon to vote down a topic', function(){
-      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteDown img').isPresent()).toBe(true);
+      expect(element(by.repeater('topic in meeting.topics').row(0)).$('.voteDown i').isPresent()).toBe(true);
     });
 
    it('should display the number of votes the user has remaining', function(){
@@ -81,8 +81,8 @@ describe('lean coffee', function() {
     });
 
    it('should not display total number of remaining votes across all users to the normal users', function(){
-      var becomeHost = global.getElemByButtonText('Become a Host');
-      var backToNormalUser = global.getElemByButtonText('Back to Normal User');
+      var becomeHost = global.getElementById('hostToggleOff');
+      var backToNormalUser = global.getElementById('hostToggleOn');
 
       expect(becomeHost.isDisplayed()).toEqual(false);
       backToNormalUser.click();

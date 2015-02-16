@@ -66,7 +66,7 @@ describe('lean coffee', function() {
 
     describe('timer', function(){
       it('should do nothing', function() {
-        var start = global.getElemByButtonText('Start');
+        var start = global.getElementById('startTimer');
         expect(start.isDisplayed()).toEqual(false);
       });
     });
