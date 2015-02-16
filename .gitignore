@@ -4,3 +4,4 @@ node_modules
 build
 xmloutput
 test/screenshots
+npm-debug.log
