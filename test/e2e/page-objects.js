@@ -135,10 +135,12 @@ module.exports.MergePage = function() {
  };
 
  module.exports.DiscussPage = function(){
+	this.meetingName;
   this.bypassEarlierPages = function() {
     var votingPage = new module.exports.VotingPage();
     votingPage.bypassEarlierPages();
     new module.exports.GlobalFunction().goToNextPhase();
+		this.meetingName = votingPage.meetingName;
   };
 
   this.nextTopic = function(){

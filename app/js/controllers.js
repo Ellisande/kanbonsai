@@ -80,6 +80,7 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
               return true;
             }
           });
+					$scope.reloadNotes();
         }
 	});
 
@@ -220,11 +221,11 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
     $scope.meeting.topics.some(function(topic, index){
       if(data.topic.id == topic.id && data.topic.id == $scope.currentTopic.id){
         $scope.meeting.topics[index].timer = data.topic.timer;
-								$scope.meeting.topics[index].continue = data.topic.continue;
-								$scope.meeting.topics[index].stop = data.topic.stop;
+						$scope.meeting.topics[index].continue = data.topic.continue;
+						$scope.meeting.topics[index].stop = data.topic.stop;
     				$scope.currentTopic.timer = $scope.meeting.topics[index].timer;
-								$scope.currentTopic.continue = $scope.meeting.topics[index].continue;
-								$scope.currentTopic.stop = $scope.meeting.topics[index].stop;
+						$scope.currentTopic.continue = $scope.meeting.topics[index].continue;
+						$scope.currentTopic.stop = $scope.meeting.topics[index].stop;
         return true;
       }
     });
@@ -255,6 +256,22 @@ function MeetingCtrl($scope, $routeParams, socket, $location, localStorageServic
       vote: 'stop'
     });
   };
+	
+	$scope.saveNote = function(topicId, note){
+		var noteKey = meetingNameParam + "." + topicId + ".note";
+		localStorageService.add(noteKey, note);
+ 	};
+	
+  $scope.reloadNotes = function(){
+		
+		$scope.meeting.topics.forEach(function(topic){
+			var note = localStorageService.get(meetingNameParam + "." + topic.id + ".note");
+      if(note){
+        topic.notes = note;
+      }
+    });
+		
+	}
 
   socket.on('update:phase', function(data){
     $scope.meeting.phase = data.phase;

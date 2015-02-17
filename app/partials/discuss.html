@@ -24,7 +24,7 @@
 		 </div>
 
 		 <div class="notes grid-100 pure-form">
-			 <textarea ng-model="topic.notes" ng-class="{show: topic.selected}" placeholder="Topic Notes"></textarea>
+			 <textarea ng-model="topic.notes" ng-class="{show: topic.selected}" placeholder="Topic Notes" ng-change="saveNote(topic.id, topic.notes)"></textarea>
 		 </div>
 		 <br />
  </div>

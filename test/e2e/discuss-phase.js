@@ -128,5 +128,13 @@ describe('discuss phase', function(){
             expect(notes).toEqual('These are notes');
           });
         });
+			
+				it('should persist notes when the browswer refreshes', function(){
+					browser.get('http://localhost:5000/#/meeting/' + discussPage.meetingName);
+					var notesElement = discussPage.getFirstNotes();
+          notesElement.getAttribute('value').then(function(notes){
+            expect(notes).toEqual('These are notes');
+          });
+				});
     });
 });
