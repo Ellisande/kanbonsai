@@ -42,10 +42,10 @@ If you are interested in setting up your own Lean Coffee server, its quick and e
  * http://nodejs.org
 * __Checkout the Code__ - Lean coffee is publicly available on Github. You just need to clone the repository
  * __Download Git__ - http://git-scm.com
- * __Clone the Repository__ - ```git clone https://github.com/Ellisande/lean-coffee```
+ * __Clone the Repository__ - ```git clone https://github.com/Ellisande/kanbonsai```
 * __Install the Dependencies__ - Npm makes this quick and easy. Simply run the following command:
  * ```npm install```
-* __Run the Server__ - Gulp JS is configured to run the application just run ```gulp```
+* __Run the Server__ - Gulp JS is configured to run the application just run ```gulp``` (assuming you have already installed it globally)
 
 Your server should be all setup and running, now to try a meeting!
 
