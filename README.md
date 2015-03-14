@@ -29,9 +29,9 @@ Lean Coffee has a couple of great benefits from a meeting perspective.
 
 ## Getting Started (simple)
 
-* __Go to the Site__ - navigate to http://www.lean-coffee.com
+* __Go to the Site__ - navigate to http://www.kanbonsai.com
 * __Join a Meeting__ - either choose an existing meeting from the left-hand side, or create a new meeting.
-* __Invite your Friends__ - simply copy the meeting URL (e.g. http://lean-coffee.com/meeting/myMeeting) and share it with the other participants.
+* __Invite your Friends__ - simply copy the meeting URL (e.g. http://kanbonsai.com/meeting/myMeeting) and share it with the other participants.
 * __Enjoy the Meeting!__
 
 ## Getting Started (advanced)
