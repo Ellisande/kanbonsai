@@ -29,9 +29,9 @@ Lean Coffee has a couple of great benefits from a meeting perspective.
 
 ## Getting Started (simple)
 
-* __Go to the Site__ - navigate to http://www.lean-coffee.com
+* __Go to the Site__ - navigate to http://www.kanbonsai.com
 * __Join a Meeting__ - either choose an existing meeting from the left-hand side, or create a new meeting.
-* __Invite your Friends__ - simply copy the meeting URL (e.g. http://lean-coffee.com/meeting/myMeeting) and share it with the other participants.
+* __Invite your Friends__ - simply copy the meeting URL (e.g. http://kanbonsai.com/meeting/myMeeting) and share it with the other participants.
 * __Enjoy the Meeting!__
 
 ## Getting Started (advanced)
@@ -42,10 +42,10 @@ If you are interested in setting up your own Lean Coffee server, its quick and e
  * http://nodejs.org
 * __Checkout the Code__ - Lean coffee is publicly available on Github. You just need to clone the repository
  * __Download Git__ - http://git-scm.com
- * __Clone the Repository__ - ```git clone https://github.com/Ellisande/lean-coffee```
+ * __Clone the Repository__ - ```git clone https://github.com/Ellisande/kanbonsai```
 * __Install the Dependencies__ - Npm makes this quick and easy. Simply run the following command:
  * ```npm install```
-* __Run the Server__ - Gulp JS is configured to run the application just run ```gulp```
+* __Run the Server__ - Gulp JS is configured to run the application just run ```gulp``` (assuming you have already installed it globally)
 
 Your server should be all setup and running, now to try a meeting!
 
