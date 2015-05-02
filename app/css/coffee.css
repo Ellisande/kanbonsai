@@ -258,3 +258,8 @@ footer {
 .vote-down {
 	 color: red;
 }
+
+.help-inline {
+	 color: red; 
+     font-size: 0.8em;
+}

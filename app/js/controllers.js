@@ -19,14 +19,29 @@ function HomeCtrl($scope, $location, socket) {
     };
 }
 
-function TimerCtrl($scope, timer){
+function TimerCtrl($scope, socket,timer){
     'use strict';
+    socket.on('timer:init', function(data){
+          $scope.timer.reset(data.duration);
+      });
     $scope.timer = timer;
+    $scope.timerEditDisplay = "partials/timerView.html";
     $scope.start = function(){
         timer.start();
     };
     $scope.stop = function(){
         timer.stop();
+    };
+    $scope.edit = function(){
+        if($scope.timerEditDisplay == "partials/timerEdit.html"){
+            $scope.timerEditDisplay = "partials/timerView.html";
+        }else{
+            $scope.timerEditDisplay = "partials/timerEdit.html";
+        }
+    };
+    $scope.update = function(increment, meetingName){
+        timer.setMinutes(increment.amount,meetingName);
+        $scope.timerEditDisplay = "partials/timerView.html";
     };
 }
 

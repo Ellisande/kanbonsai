@@ -37,12 +37,10 @@ var socket = function(io){
             user: aUser,
             meeting: meeting
         });
-
         // Let your client know the status of the meeting timer.
         socket.emit('timer:init', {
           duration: meeting.getTimer().asMilliseconds()
         });
-
         // Let all clients know what meetings there are.
         io.sockets.emit('meetings:update', {
           meetings: meetings
@@ -74,7 +72,11 @@ var socket = function(io){
               postInitialize(aUser);
           }
       };
-
+      // modify the timekeeper's duration.
+      socket.on("timer:modify",function(data){
+          meetings[data.meetingName].adjustTimeKeeper(data.newDuration);
+      });
+      
       // join a room.
       socket.on('subscribe', function(data){
           //console.log("Joining room " + data.meetingName);
@@ -91,6 +93,8 @@ var socket = function(io){
       socket.on('topic:post', function(data){
         if(!meeting || !data.topic.body) return;
         var newTopic = new Topic(data.topic);
+        // Update the topic timekeeper with the current timekeeper for the meeting.
+        newTopic.timer = meeting.phase.timer
         meeting.topics.push(newTopic);
         io.sockets.in(roomName).emit('topic:post', {
             topic: newTopic

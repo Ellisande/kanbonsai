@@ -1,9 +1,12 @@
 'use strict';
 var moment = require('moment');
+var keeper = require('./timekeeper');
+var Timekeeper = keeper.Timekeeper;
 
 function Phase(name, next){
     this.name = name;
-    this.timer = moment.duration(3, 'minutes');
+//    this.timer = moment.duration(3, 'minutes');
+    this.timer = new Timekeeper(3);
     this.next = next;
 }
 
@@ -15,7 +18,8 @@ module.exports = function ServerMeeting(name) {
         discuss: new Phase('discuss', 'complete'),
         complete: new Phase('complete', 'complete')
     };
-
+    
+    
     var created = moment();
 
     this.name = name;
@@ -23,6 +27,19 @@ module.exports = function ServerMeeting(name) {
     this.topics = [];
     this.phase = phases.submit;
     
+    this.adjustTimeKeeper = function(duration){
+        //Update the phase timers
+        var phaseKeys = Object.keys(phases);
+        for (var i = 0; i < phaseKeys.length; i++) {
+            phases[phaseKeys[i]].timer = new Timekeeper(duration);
+        }
+        // Update the topics timer if there are topics.
+        if(this.topics.length > 0){
+            for (var i = 0; i < this.topics.length; i++) {
+                this.topics[i].timer = new Timekeeper(duration);
+            }
+        }
+    };
     this.getParticipant = function(userId) {
         var p = null;
         this.participants.some(function(participant) {
@@ -145,13 +162,15 @@ module.exports = function ServerMeeting(name) {
     };
 
     this.getRegularTimer = function(){
-      return this.phase.timer;
+     //return this.phase.timer;
+      return this.phase.timer.amount;
     };
 
     this.getDiscussPhaseTimer = function(meeting){
       var currentTopic = this.getCurrentTopic();
       if(!currentTopic) return moment.duration(0, 'seconds');
-      return currentTopic.timer;
+      //return currentTopic.timer;
+      return currentTopic.timer.amount;
     };
 
     this.getTimer = function(){
