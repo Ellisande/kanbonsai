@@ -22,9 +22,11 @@ function HomeCtrl($scope, $location, socket) {
 function TimerCtrl($scope, socket,timer){
     'use strict';
     socket.on('timer:init', function(data){
-          $scope.timer.reset(data.duration);
+            timer.init(data.duration);
+          $scope.timer = timer;
       });
     $scope.timer = timer;
+    
     $scope.timerEditDisplay = "partials/timerView.html";
     $scope.start = function(){
         timer.start();
