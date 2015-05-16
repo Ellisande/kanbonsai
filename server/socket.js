@@ -75,6 +75,10 @@ var socket = function(io){
       // modify the timekeeper's duration.
       socket.on("timer:modify",function(data){
           meetings[data.meetingName].adjustTimeKeeper(data.newDuration);
+          // Let your client know the status of the meeting timer.
+          io.sockets.in(data.meetingName).emit('timer:init', {
+            duration: meetings[data.meetingName].getTimer().asMilliseconds()
+           });
       });
       
       // join a room.
