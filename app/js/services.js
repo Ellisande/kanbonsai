@@ -70,39 +70,49 @@
   });
 
   services.factory('timer', function(socket, $timeout){
-      var duration = moment.duration(3, 'minutes');
-
+      var factory_duration = moment.duration(3, 'minutes');
+      
       var currentTimeout = {};
       var startTimeout = function(){
-        if(duration.asSeconds() === 0){
+        if(factory_duration.asSeconds() === 0){
           socket.emit('timer:stop');
           return;
         }
 
-        duration.subtract(1, 'seconds');
+        factory_duration.subtract(1, 'seconds');
         currentTimeout = $timeout(startTimeout, 1000);
       };
-
+      
       var timer = {
+        isEdit:false,
         expired: true,
-        duration: duration,
-        start: function(){
-          socket.emit('timer:start');
+        duration: factory_duration,
+        init: function(duration){
+             reset(duration);
+        },
+        start: function(clientDuration){
+          socket.emit('timer:start',{duration:clientDuration});
         },
         stop: function(){
-          socket.emit('timer:stop');
+            socket.emit('timer:stop');
+        },
+        setMinutes: function(amount,meetingName){
+            var newDuration = parseInt(amount);
+            var modifiedDuration = moment.duration(newDuration,'minutes');
+            reset(modifiedDuration);
+            socket.emit("timer:modify",{"newDuration":newDuration,"meetingName":meetingName});
         }
       };
 
       var reset = function(newDuration){
         $timeout.cancel(currentTimeout);
         //Used to maintain the same duration reference, but reset it.
-        duration.subtract(duration.asMilliseconds()).add(moment.duration(newDuration));
+        factory_duration.subtract(factory_duration.asMilliseconds()).add(moment.duration(newDuration));
         timer.expired = true;
       };
 
       socket.on('timer:init', function(data){
-        reset(data.duration);
+          reset(data.duration);
       });
 
       socket.on('timer:start', function(data){

@@ -7,18 +7,23 @@
 								Next <i class="fa fa-arrow-circle-right"></i>
 							</button>
 					</li>
-        <li class="list-heading" ng-show="meeting.phase.name != 'merge'">Timer</li>
-        <li ng-controller="TimerCtrl" class="timer" ng-class="{low: timer.duration.asSeconds() < 10}" ng-show="meeting.phase.name != 'merge'">
-            <span>{{timer.duration.minutes() | timer}} :</span>
-            <span>{{timer.duration.seconds() | timer}} </span>
-						<a id='startTimer' ng-show="timer.expired && user.isHost" ng-click="start()"> 
-								<i class="fa fa-play start-timer"></i>
-						</a>
-						<a id='stopTimer' ng-show="!timer.expired && user.isHost" ng-click="stop()"> 
-								<i class="fa fa-pause stop-timer"></i>
-						</a>
-
-        </li>
+                    <span ng-controller="TimerCtrl">
+                    <li class="list-heading" ng-show="meeting.phase.name != 'merge'">Timer 
+                        <a id="editTimer" ng-show="user.isHost" ng-click="edit()"><i class="fa fa-cog" title="Edit Timer"></i></a>
+                    </li>
+                    <li id="timer" class="timer" ng-class="{low: timer.duration.asSeconds() < 10}" ng-show="meeting.phase.name != 'merge' && !timer.isEdit">
+                        <span>{{timer.duration.minutes() | timer}} :</span>
+                        <span>{{timer.duration.seconds() | timer}} </span>
+                        <a id='startTimer' ng-show="timer.expired && user.isHost" ng-click="start(timer.duration)"> 
+                                <i class="fa fa-play start-timer"></i>
+                        </a>
+                        <a id='stopTimer' ng-show="!timer.expired && user.isHost" ng-click="stop()"> 
+                                <i class="fa fa-pause stop-timer"></i>
+                        </a>
+                        <div ng-include="timerEditDisplay"></div>
+                    </li>
+                    
+                    </span>        
         <li class="list-heading" ng-show="meeting.phase.name == 'discuss'">Voting</li>
 
         <li ng-show="meeting.phase.name == 'discuss'">

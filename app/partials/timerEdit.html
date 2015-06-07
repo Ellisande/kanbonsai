@@ -1,0 +1,10 @@
+                <form class="pure-form" id="create_form" name="create_form" ng-submit="update(increment,meeting.name)">
+                    <div class="control-group" width="100%" ng-class="{error: create_form.incrementAmount.$invalid && !create_form.incrementAmount.$pristine}">
+                    <input type="text" name="incrementAmount" ng-model="increment.amount" placeholder="Minutes" ng-minlength="1" ng-maxlength="2" ng-pattern="/^[0-9]{1,2}$/" required size="7">
+                    <a id="setTimer" href="" ng-click="update(increment,meeting.name)"><i class="fa fa-chevron-circle-right" title="Set Timer"></i></a>
+                        <div class="help-inline" ng-class="help-inline">
+                            <span ng-show="create_form.incrementAmount.$error.required && !create_form.incrementAmount.$pristine" >Minutes required!</span>
+                            <span ng-show="create_form.incrementAmount.$error.pattern && !create_form.incrementAmount.$pristine">Valid minutes: 1 to 99</span>
+                        </div>
+                    </div>
+                </form>      

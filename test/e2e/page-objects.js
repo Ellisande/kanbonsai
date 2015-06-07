@@ -75,10 +75,10 @@ module.exports.MeetingPage = function() {
 
       return topic;
    };
-
-  this.goToMergePhase = function() {
-    element(by.partialButtonText('Next')).click();
-  };
+    this.goToMergePhase = function() {
+        element(by.partialButtonText('Next')).click();
+      };
+  
 
     // returns a promise of an array of WebElements (see: https://github.com/angular/protractor/blob/master/docs/api.md#elementall)
     this.getTopics = function() {
@@ -96,6 +96,63 @@ module.exports.MeetingPage = function() {
       );
     };
 };
+   
+   module.exports.TimerEditPage = function() {
+    this.meetingName;
+    this.userGreeting = function() {
+        return element(by.binding('user'));
+    };
+
+    this.bypassEarlierPages = function() {
+      var homePage = new module.exports.HomePage();
+      homePage.get();
+      homePage.createMeeting();
+      this.meetingName = homePage.getMeetingName();
+    };
+    this.enableEditTimer = function(){
+        element(by.id('editTimer')).click();
+    }
+    
+    this.setEditTimer = function(minutes){
+        element(by.model('increment.amount')).sendKeys(minutes);
+        element(by.id('setTimer')).click();
+    }
+
+    this.timerMinutes = function() {
+      return element(by.binding('duration.minutes() | timer'));
+    };
+    
+    this.buildTwoTopics = function() {
+      var topics = [];
+      for(var k=1; k< 3;k++){
+        topics.push(this.postTopic());
+      }
+    };
+    
+    this.postTopic = function() {
+      var topic = "test topic " + random(10000, 90000);
+      element(by.model('userTopic.body')).sendKeys(topic);
+      element(by.buttonText('Speak Up!')).click();
+
+      return topic;
+   };
+    this.getTopics = function() {
+        return element.all(
+          by.repeater('topic in meeting.topics')
+        );
+      };
+       
+    this.goToMergePhase = function() {
+        element(by.partialButtonText('Next')).click();
+      };
+    this.goToVotePhase = function() {
+        this.goToMergePhase();
+        element(by.partialButtonText('Next')).click();
+      };
+    this.goToDiscussPhaseFromVotePhase = function() {
+        element(by.partialButtonText('Next')).click();
+      };
+   };
 module.exports.MergePage = function() {
   this.meetingName;
   this.bypassEarlierPages = function(topics) {
